@@ -1,0 +1,17 @@
+dhe_pidicho "Hello world\n Ada mwone\n"
+
+ada_mwone guriji
+guriji = "ikka\n"
+dhe_pidicho guriji
+
+ada_mwone guhan
+ada_mwone Guhan
+
+guhan = "payam"
+dhe_pidicho guhan
+dhe_pidicho "\n"
+
+guhan = 1 +2 * 3
+dhe_pidicho guhan
+dhe_pidicho "\n"
+

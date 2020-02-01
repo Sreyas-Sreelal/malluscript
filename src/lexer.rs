@@ -1,0 +1,157 @@
+use std::fs::File;
+use std::io::{self, BufRead};
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum TokenType {
+    Declaration,
+    Write,
+    Input,
+    LeftBrace,
+    RightBrace,
+    If,
+    Else,
+    //LOOP,
+    Assignment,
+    Plus,
+    Minus,
+    Product,
+    Divide,
+    Modulus,
+    Literal(String),
+    Number(i32),
+    Symbol(String),
+}
+
+#[derive(Debug)]
+pub struct Token {
+    pub line: usize,
+    pub offset: usize,
+    pub token: TokenType,
+}
+
+impl Token {
+    fn new(token: TokenType, line: usize, offset: usize) -> Self {
+        Token {
+            line,
+            offset,
+            token,
+        }
+    }
+}
+
+pub fn tokenize(name: &str) -> Vec<Vec<Token>> {
+    if let Ok(file) = File::open(name) {
+        let lines = io::BufReader::new(file).lines();
+        let mut compiled: Vec<Vec<Token>> = Vec::new();
+        let mut lineno = 0;
+
+        for line in lines {
+            lineno += 1;
+            let mut tokens: Vec<Token> = Vec::new();
+            let mut offset: usize = 0;
+
+            if let Ok(l) = line {
+                let length = l.len();
+                let l: Vec<char> = l.chars().collect();
+                let mut x = 0;
+
+                while x < length {
+                    offset += 1;
+                    let c = l[x];
+
+                    match c {
+                        ' ' => {
+                            offset += 1;
+                            x += 1;
+                            continue;
+                        }
+                        '=' => tokens.push(Token::new(TokenType::Assignment, lineno, offset)),
+                        '{' => tokens.push(Token::new(TokenType::LeftBrace, lineno, offset)),
+                        '}' => tokens.push(Token::new(TokenType::RightBrace, lineno, offset)),
+                        '+' => tokens.push(Token::new(TokenType::Plus, lineno, offset)),
+                        '-' => tokens.push(Token::new(TokenType::Minus, lineno, offset)),
+                        '*' => tokens.push(Token::new(TokenType::Product, lineno, offset)),
+                        '/' => tokens.push(Token::new(TokenType::Divide, lineno, offset)),
+                        '%' => tokens.push(Token::new(TokenType::Modulus, lineno, offset)),
+                        '"' => {
+                            x += 1;
+                            let mut word = String::new();
+                            while x < length && l[x] != '"' {
+                                word.push(l[x]);
+                                x += 1;
+                            }
+                            offset = x;
+
+                            if l[x] != '"' {
+                                panic!(
+                                    "Invalid Literal Closing Quotation Not Found at {}:{}",
+                                    lineno, offset
+                                )
+                            }
+                            x += 1;
+                            tokens.push(Token::new(TokenType::Literal(word), lineno, offset));
+                        }
+                        _ if c.is_alphabetic() => {
+                            let mut word = String::new();
+                            while x < length {
+                                if l[x] == ' ' {
+                                    break;
+                                }
+                                word.push(l[x]);
+                                x += 1;
+                            }
+
+                            match word.as_str() {
+                                "ada_mwone" => {
+                                    tokens.push(Token::new(TokenType::Declaration, lineno, offset))
+                                }
+                                "address_thada" => {
+                                    tokens.push(Token::new(TokenType::Input, lineno, offset))
+                                }
+                                "dhe_pidicho" => {
+                                    tokens.push(Token::new(TokenType::Write, lineno, offset))
+                                }
+                                "seriyano_mwone" => {
+                                    tokens.push(Token::new(TokenType::If, lineno, offset))
+                                }
+                                "allel_polik" => {
+                                    tokens.push(Token::new(TokenType::Else, lineno, offset))
+                                }
+                                _ => {
+                                    tokens.push(Token::new(TokenType::Symbol(word), lineno, offset))
+                                }
+                            }
+                            offset = x;
+                        }
+
+                        _ if c.is_digit(10) => {
+                            let mut word = String::new();
+                            while x < length && l[x].is_digit(10) {
+                                if l[x] == ' ' {
+                                    break;
+                                }
+                                word.push(l[x]);
+                                x += 1;
+                            }
+                            offset = x;
+                            if let Ok(number) = word.parse() {
+                                tokens.push(Token::new(TokenType::Number(number), lineno, offset));
+                                continue;
+                            } else {
+                                panic!("Invalid literal {} at {} {}", word, lineno, offset);
+                            }
+                        }
+                        _ => {
+                            panic!("Oh no unknown token {} at {} {} ", c, lineno, offset);
+                        }
+                    }
+                    x += 1;
+                }
+            }
+            compiled.push(tokens);
+        }
+        compiled
+    } else {
+        panic!("File {} not found", name);
+    }
+}
