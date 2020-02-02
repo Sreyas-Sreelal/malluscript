@@ -1,28 +1,19 @@
-dhe_pidicho "Hello world\n Ada mwone\n"
+ada_mwone i
+ada_mwone j
+ada_mwone FIVE
+ada_mwone ZERO
 
-ada_mwone guriji
-guriji = "ikka\n"
-dhe_pidicho guriji
+ZERO = 0
+FIVE = 5
+i=FIVE
 
-ada_mwone guhan
-ada_mwone Guhan
-ada_mwone jimit 
-ada_mwone koyi 
-
-guhan = "payam"
-dhe_pidicho guhan
-dhe_pidicho "\n"
-
-guhan = 1
-jimit = 2
-seriyano_mwone guhan jimit inekal_cheruthane {
-dhe_pidicho "\n1"
-
-guhan = 0
-    seriyano_mwone guhan jimit inekal_cheruthane {
-        dhe_pidicho "\n2"
+repeat_adi i ZERO um_same_alle {
+    j = i
+    repeat_adi j ZERO um_same_alle {
+        dhe_pidicho "* "
+        j = j-1
     }
-    dhe_pidicho "\n3"
+    dhe_pidicho "\n"
+    i = i - 1
 }
 dhe_pidicho "\n"
-

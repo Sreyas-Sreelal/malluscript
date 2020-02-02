@@ -9,7 +9,7 @@ pub enum TokenType {
     LeftBrace,
     RightBrace,
     If,
-    //LOOP,
+    LOOP,
     Assignment,
     Plus,
     Minus,
@@ -19,6 +19,7 @@ pub enum TokenType {
     GreaterThan,
     LessThan,
     EqualTo,
+    NotEqual,
     Literal(String),
     Number(i32),
     Symbol(String),
@@ -94,8 +95,11 @@ pub fn tokenize(name: &str) -> Vec<Vec<Token>> {
                         }
                         _ if c.is_alphabetic() => {
                             let mut word = String::new();
+                            word.push(l[x]);
+                            x += 1;
                             while x < length {
-                                if l[x] == ' ' {
+                                if l[x] == ' ' || !(l[x].is_ascii_alphanumeric() || l[x] == '_') {
+                                    x -= 1;
                                     break;
                                 }
                                 word.push(l[x]);
@@ -115,8 +119,14 @@ pub fn tokenize(name: &str) -> Vec<Vec<Token>> {
                                 "seriyano_mwone" => {
                                     tokens.push(Token::new(TokenType::If, lineno, offset))
                                 }
+                                "repeat_adi" => {
+                                    tokens.push(Token::new(TokenType::LOOP, lineno, offset))
+                                }
                                 "inekal_veluthane" => {
                                     tokens.push(Token::new(TokenType::GreaterThan, lineno, offset))
+                                }
+                                "um_same_alle" => {
+                                    tokens.push(Token::new(TokenType::NotEqual, lineno, offset))
                                 }
                                 "inekal_cheruthane" => {
                                     tokens.push(Token::new(TokenType::LessThan, lineno, offset))
