@@ -30,7 +30,7 @@ pub struct Token {
 }
 
 impl Token {
-    fn new(token: TokenType, line: usize, offset: usize) -> Self {
+    pub fn new(token: TokenType, line: usize, offset: usize) -> Self {
         Token {
             line,
             offset,

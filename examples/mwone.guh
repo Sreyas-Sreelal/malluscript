@@ -14,7 +14,7 @@ dhe_pidicho guhan
 dhe_pidicho "\n"
 
 guhan = 1
-jimit = "10"
+jimit = 10
 koyi = guhan + jimit * 3
 
 dhe_pidicho koyi
