@@ -1,3 +1,4 @@
+use std::process::exit;
 use crate::lexer::{Token, TokenType};
 use meval::eval_str;
 use std::collections::HashMap;
@@ -176,11 +177,12 @@ impl Executor {
     }
 
     fn throw_error(&self, msg: &str) -> ! {
-        panic!(
-            "[{}:{}] => {}",
+        println!(
+            "Oh Sed Noki chey monuse..Error at {}:{} => {}",
             &self.lines[self.cur_row][self.cur_col].line,
             &self.lines[self.cur_row][self.cur_col].offset,
             msg
         );
+        exit(0);
     }
 }

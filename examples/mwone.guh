@@ -17,6 +17,6 @@ guhan = 1
 jimit = 10
 koyi = guhan + jimit * 3
 
-dhe_pidicho koyi
+dhe_pidicho kdoyi
 dhe_pidicho "\n"
 
