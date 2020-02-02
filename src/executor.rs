@@ -1,27 +1,28 @@
 use crate::lexer::{Token, TokenType};
+use meval::eval_str;
 use std::collections::HashMap;
 use std::mem::discriminant;
-use meval::eval_str;
 
 pub enum DataTypes {
     String(String),
     Integer(i32),
     Unknown,
 }
+
 pub struct Executor {
     symbol_table: HashMap<String, DataTypes>,
-    lines: Vec<Vec<Token>>
+    lines: Vec<Vec<Token>>,
 }
+
 impl Executor {
-    pub fn new(lines: Vec<Vec<Token>>)->Self {
+    pub fn new(lines: Vec<Vec<Token>>) -> Self {
         Executor {
-            symbol_table:HashMap::new(),
-            lines
+            symbol_table: HashMap::new(),
+            lines,
         }
     }
 
     pub fn execute(&mut self) {
-       
         for line in &self.lines {
             let mut x = 0;
             let length = line.len();
@@ -48,11 +49,11 @@ impl Executor {
                                         }
                                         DataTypes::Integer(value) => {
                                             print!("{}", value);
-                                        },
+                                        }
                                         DataTypes::Unknown => {
                                             panic!(
                                                 "Use of uninitialized variable {} at {}:{}",
-                                                variable,line[x].line, line[x].offset
+                                                variable, line[x].line, line[x].offset
                                             );
                                         }
                                     }
@@ -68,7 +69,6 @@ impl Executor {
                             );
                         }
                     }
-
                     TokenType::Declaration => {
                         x += 1;
                         if discriminant(&line[x].token)
@@ -76,7 +76,9 @@ impl Executor {
                         {
                             if let TokenType::Symbol(data) = &line[x].token {
                                 if !&self.symbol_table.contains_key(data) {
-                                    &self.symbol_table.insert(data.to_string(), DataTypes::Unknown);
+                                    &self
+                                        .symbol_table
+                                        .insert(data.to_string(), DataTypes::Unknown);
                                 } else {
                                     panic!(
                                         "Duplicate Symbol {} at {}:{}",
@@ -86,7 +88,6 @@ impl Executor {
                             }
                         }
                     }
-
                     TokenType::Symbol(data) => {
                         //var = 1
                         if !&self.symbol_table.contains_key(data) {
@@ -105,21 +106,28 @@ impl Executor {
                         x += 1;
                         match &line[x].token {
                             TokenType::Literal(value) => {
-                                &self.symbol_table
+                                &self
+                                    .symbol_table
                                     .insert(data.to_string(), DataTypes::String(value.to_string()));
                             }
-                            TokenType::Number(_) => {
+                            TokenType::Number(_) | TokenType::Symbol(_) => {
                                 let mut y = x;
                                 let mut expr = String::new();
                                 while y < length {
                                     let token = &line[y].token;
                                     let word = self.arithmetic(token);
                                     expr.push_str(&word);
-                                    y+=1;
+                                    y += 1;
                                 }
-                                x = y;
                                 if let Ok(value) = eval_str(&expr) {
-                                    self.symbol_table.insert(data.to_string(), DataTypes::Integer(value as i32));
+                                    self.symbol_table
+                                        .insert(data.to_string(), DataTypes::Integer(value as i32));
+                                    x = y;
+                                } else {
+                                    panic!(
+                                        "Illegal expression at {}:{}",
+                                        line[x].line, line[x].offset
+                                    );
                                 }
                             }
                             _ => {
@@ -127,58 +135,44 @@ impl Executor {
                             }
                         }
                     }
-
                     TokenType::If => {
-                        x+=1;
-                        
+                        x += 1;
                     }
                     TokenType::Else => {
-                        panic!("Else expression without If at {}:{}",line[x].line,line[x].offset);
+                        panic!(
+                            "Else expression without If at {}:{}",
+                            line[x].line, line[x].offset
+                        );
                     }
                     _ => panic!(
-                        "Unknown Error at {}:{} {:?}",
-                        line[x].line, line[x].offset, line[x].token
+                        "Unknown Token {:?} at {}:{}",
+                        line[x].token, line[x].line, line[x].offset
                     ),
-                    
                 }
                 x += 1;
             }
         }
     }
 
-    fn literal_eval(&self,data: String) -> String {
+    fn literal_eval(&self, data: String) -> String {
         data.replace("\\n", "\n")
     }
 
-    fn arithmetic(&self,token:&TokenType) -> String {
+    fn arithmetic(&self, token: &TokenType) -> String {
         match token {
-            TokenType::Plus => {
-                "+".to_string()
-            }
-            TokenType::Product => {
-                "*".to_string()
-            }
-            TokenType::Minus => {
-                "-".to_string()
-            }
-            TokenType::Divide => {
-                "/".to_string()
-            }
-            TokenType::Symbol(data) => {
-                match &self.symbol_table[data] {
-                    DataTypes::Integer(value) => {
-                        value.to_string()
-                    }
-                    DataTypes::String(value) => {
-                        value.to_string()
-                    }
-                    DataTypes::Unknown => {
-                        panic!(
-                            "Use of uninitialized variable in the expression"
-                        );
-                    }
+            TokenType::Plus => "+".to_string(),
+            TokenType::Product => "*".to_string(),
+            TokenType::Minus => "-".to_string(),
+            TokenType::Divide => "/".to_string(),
+            TokenType::Symbol(data) => match &self.symbol_table[data] {
+                DataTypes::Integer(value) => value.to_string(),
+                DataTypes::String(_) => {
+                    panic!("Arithmetic operation with string is not yet supported");
                 }
-            }
+                DataTypes::Unknown => {
+                    panic!("Use of uninitialized variable in the expression");
+                }
+            },
             TokenType::Number(data) => {
                 let data = data.to_string();
                 data

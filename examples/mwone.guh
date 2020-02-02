@@ -6,12 +6,17 @@ dhe_pidicho guriji
 
 ada_mwone guhan
 ada_mwone Guhan
+ada_mwone jimit 
+ada_mwone koyi 
 
 guhan = "payam"
 dhe_pidicho guhan
 dhe_pidicho "\n"
 
-guhan = 1 +2 * 3
-dhe_pidicho guhan
+guhan = 1
+jimit = "10"
+koyi = guhan + jimit * 3
+
+dhe_pidicho koyi
 dhe_pidicho "\n"
 
