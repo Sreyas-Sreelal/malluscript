@@ -132,9 +132,7 @@ impl Executor {
                     TokenType::Else => {
                         self.throw_error("Else expression without If");
                     }
-                    _ => {
-                        self.throw_error(&format!("Unknown Token {:?}", line[self.cur_col].token))
-                    }
+                    _ => self.throw_error(&format!("Unknown Token {:?}", line[self.cur_col].token)),
                 }
                 self.cur_col += 1;
             }
