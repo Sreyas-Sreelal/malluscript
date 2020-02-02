@@ -14,6 +14,7 @@ pub struct Executor {
     lines: Vec<Vec<Token>>,
     cur_row: usize,
     cur_col: usize,
+    stack:Vec<Token>
 }
 
 impl Executor {
@@ -23,6 +24,7 @@ impl Executor {
             lines,
             cur_row: 0,
             cur_col: 0,
+            stack:Vec::new(),
         }
     }
 
@@ -45,6 +47,9 @@ impl Executor {
                                     print!("{}", data);
                                 }
                                 TokenType::Symbol(variable) => {
+                                    if !&self.symbol_table.contains_key(variable) {
+                                        self.throw_error(&format!("Undefined Symbol  {}", variable));
+                                    }
                                     let data = &self.symbol_table[variable];
                                     match data {
                                         DataTypes::String(value) => {
@@ -126,6 +131,7 @@ impl Executor {
                             }
                         }
                     }
+                    //TODO
                     TokenType::If => {
                         self.cur_col += 1;
                     }
