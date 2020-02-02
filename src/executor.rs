@@ -4,7 +4,7 @@ use std::collections::HashMap;
 use std::mem::discriminant;
 use std::process::exit;
 
-#[derive(Debug,PartialEq)]
+#[derive(Debug, PartialEq)]
 pub enum DataTypes {
     String(String),
     Integer(i32),
@@ -176,61 +176,74 @@ impl<'a> Executor<'a> {
 
                         self.cur_col += 1;
                         let success = match &self.lines[self.cur_row][self.cur_col].token {
-                            TokenType::EqualTo => {
-                                operand1 == operand2
-                            },
+                            TokenType::EqualTo => operand1 == operand2,
                             TokenType::GreaterThan => {
                                 if let DataTypes::Integer(operand1) = operand1 {
                                     if let DataTypes::Integer(operand2) = operand2 {
                                         operand1 > operand2
                                     } else {
-                                        self.throw_error("Only integers can be used for logical comparison")
+                                        self.throw_error(
+                                            "Only integers can be used for logical comparison",
+                                        )
                                     }
                                 } else {
-                                    self.throw_error("Only integers can be used for logical comparison")
-                                } 
-                            },
+                                    self.throw_error(
+                                        "Only integers can be used for logical comparison",
+                                    )
+                                }
+                            }
                             TokenType::LessThan => {
                                 if let DataTypes::Integer(operand1) = operand1 {
                                     if let DataTypes::Integer(operand2) = operand2 {
                                         operand1 < operand2
                                     } else {
-                                        self.throw_error("Only integers can be used for logical comparison")
+                                        self.throw_error(
+                                            "Only integers can be used for logical comparison",
+                                        )
                                     }
                                 } else {
-                                    self.throw_error("Only integers can be used for logical comparison")
-                                } 
+                                    self.throw_error(
+                                        "Only integers can be used for logical comparison",
+                                    )
+                                }
                             }
-                            e @ _=>{
-                                self.throw_error(&format!("Illegal operator {:?}",e));
+                            e @ _ => {
+                                self.throw_error(&format!("Illegal operator {:?}", e));
                             }
                         };
-                        self.cur_col+=1;
-                        if discriminant(&self.lines[self.cur_row][self.cur_col].token) != discriminant(&TokenType::LeftBrace) {
+                        self.cur_col += 1;
+                        if discriminant(&self.lines[self.cur_row][self.cur_col].token)
+                            != discriminant(&TokenType::LeftBrace)
+                        {
                             self.throw_error("Expected a `{`")
                         }
-                        if self.cur_col+1 != length {
+                        if self.cur_col + 1 != length {
                             self.throw_error("A block should start in new line after `{`")
                         }
 
                         if success {
-                            self.stack.push(&self.lines[self.cur_row][self.cur_col].token);
-                            //self.cur_row +=1;
-                            //self.cur_col = 0;
-                            //continue;
+                            self.stack
+                                .push(&self.lines[self.cur_row][self.cur_col].token);
+                        //self.cur_row +=1;
+                        //self.cur_col = 0;
+                        //continue;
                         } else {
                             //skip if
                             let mut level = 1;
-                            while level !=0 {
+                            while level != 0 {
                                 self.cur_row += 1;
                                 self.cur_col = 0;
-                                while self.cur_col <  self.lines[self.cur_row].len(){
-                                    if discriminant(&TokenType::LeftBrace)  == discriminant(&self.lines[self.cur_row][0].token) {
-                                        level +=1;
-                                    } else if  discriminant(&TokenType::RightBrace)  == discriminant(&self.lines[self.cur_row][0].token) {
-                                        level -=1;
+                                while self.cur_col < self.lines[self.cur_row].len() {
+                                    if discriminant(&TokenType::LeftBrace)
+                                        == discriminant(&self.lines[self.cur_row][0].token)
+                                    {
+                                        level += 1;
+                                    } else if discriminant(&TokenType::RightBrace)
+                                        == discriminant(&self.lines[self.cur_row][0].token)
+                                    {
+                                        level -= 1;
                                     }
-                                    self.cur_col +=1;
+                                    self.cur_col += 1;
                                 }
                             }
                             //self.cur_row+=1;
@@ -241,7 +254,7 @@ impl<'a> Executor<'a> {
                     }
 
                     TokenType::RightBrace => {
-                        if self.cur_col !=0 {
+                        if self.cur_col != 0 {
                             self.throw_error("A block should end in new line with `}`")
                         }
                         if let Some(_) = self.stack.last() {

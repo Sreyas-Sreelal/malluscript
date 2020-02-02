@@ -22,7 +22,6 @@ pub enum TokenType {
     Literal(String),
     Number(i32),
     Symbol(String),
-
 }
 
 pub struct Token {
