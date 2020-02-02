@@ -1,55 +1,61 @@
-use std::process::exit;
 use crate::lexer::{Token, TokenType};
 use meval::eval_str;
 use std::collections::HashMap;
 use std::mem::discriminant;
+use std::process::exit;
 
+#[derive(Debug,PartialEq)]
 pub enum DataTypes {
     String(String),
     Integer(i32),
     Unknown,
 }
 
-pub struct Executor {
+pub struct Executor<'a> {
     symbol_table: HashMap<String, DataTypes>,
     lines: Vec<Vec<Token>>,
     cur_row: usize,
     cur_col: usize,
-    stack:Vec<Token>
+    stack: Vec<&'a TokenType>,
 }
 
-impl Executor {
+impl<'a> Executor<'a> {
     pub fn new(lines: Vec<Vec<Token>>) -> Self {
         Executor {
             symbol_table: HashMap::new(),
             lines,
             cur_row: 0,
             cur_col: 0,
-            stack:Vec::new(),
+            stack: Vec::new(),
         }
     }
 
-    pub fn execute(&mut self) {
-        for line in &self.lines {
+    pub fn execute(&'a mut self) {
+        let lines = self.lines.len();
+        while self.cur_row < lines {
             self.cur_col = 0;
-            let length = line.len();
+            let length = self.lines[self.cur_row].len();
             while self.cur_col < length {
-                match &line[self.cur_col].token {
+                match &self.lines[self.cur_row][self.cur_col].token {
                     TokenType::Write => {
                         self.cur_col += 1;
-                        if discriminant(&line[self.cur_col].token)
+                        if discriminant(&self.lines[self.cur_row][self.cur_col].token)
                             == discriminant(&TokenType::Literal(String::new()))
-                            || discriminant(&line[self.cur_col].token)
+                            || discriminant(&self.lines[self.cur_row][self.cur_col].token)
                                 == discriminant(&TokenType::Symbol(String::new()))
                         {
-                            match &line[self.cur_col].token {
+                            match &self.lines[self.cur_row][self.cur_col].token {
                                 TokenType::Literal(data) => {
                                     let data = &self.literal_eval(data.to_string());
                                     print!("{}", data);
                                 }
+
                                 TokenType::Symbol(variable) => {
                                     if !&self.symbol_table.contains_key(variable) {
-                                        self.throw_error(&format!("Undefined Symbol  {}", variable));
+                                        self.throw_error(&format!(
+                                            "Undefined Symbol  {}",
+                                            variable
+                                        ));
                                     }
                                     let data = &self.symbol_table[variable];
                                     match data {
@@ -76,12 +82,15 @@ impl Executor {
                             self.throw_error("Expected a literal or symbol");
                         }
                     }
+
                     TokenType::Declaration => {
                         self.cur_col += 1;
-                        if discriminant(&line[self.cur_col].token)
+                        if discriminant(&self.lines[self.cur_row][self.cur_col].token)
                             == discriminant(&TokenType::Symbol(String::new()))
                         {
-                            if let TokenType::Symbol(data) = &line[self.cur_col].token {
+                            if let TokenType::Symbol(data) =
+                                &self.lines[self.cur_row][self.cur_col].token
+                            {
                                 if !&self.symbol_table.contains_key(data) {
                                     &self
                                         .symbol_table
@@ -92,29 +101,31 @@ impl Executor {
                             }
                         }
                     }
+
                     TokenType::Symbol(data) => {
                         //var = 1
                         if !&self.symbol_table.contains_key(data) {
                             self.throw_error(&format!("Undefined Symbol  {}", data));
                         }
                         self.cur_col += 1;
-                        if discriminant(&line[self.cur_col].token)
+                        if discriminant(&self.lines[self.cur_row][self.cur_col].token)
                             != discriminant(&TokenType::Assignment)
                         {
                             self.throw_error("Expected an assignment after symbol");
                         }
                         self.cur_col += 1;
-                        match &line[self.cur_col].token {
+                        match &self.lines[self.cur_row][self.cur_col].token {
                             TokenType::Literal(value) => {
                                 &self
                                     .symbol_table
                                     .insert(data.to_string(), DataTypes::String(value.to_string()));
                             }
+
                             TokenType::Number(_) | TokenType::Symbol(_) => {
                                 let mut y = self.cur_col;
                                 let mut expr = String::new();
                                 while y < length {
-                                    let token = &line[y].token;
+                                    let token = &self.lines[self.cur_row][y].token;
                                     let word = self.arithmetic(token);
                                     expr.push_str(&word);
                                     y += 1;
@@ -135,11 +146,114 @@ impl Executor {
                     //TODO
                     TokenType::If => {
                         self.cur_col += 1;
+                        //TODO: Wrap them into a function
+                        let operand1 = match &self.lines[self.cur_row][self.cur_col].token {
+                            TokenType::Symbol(variable) => variable,
+                            _ => {
+                                self.throw_error("Expected a symbol");
+                            }
+                        };
+                        if !&self.symbol_table.contains_key(operand1) {
+                            self.throw_error(&format!("Undefined Symbol  {}", operand1));
+                        }
+
+                        self.cur_col += 1;
+                        let operand2 = match &self.lines[self.cur_row][self.cur_col].token {
+                            TokenType::Symbol(variable) => variable,
+                            _ => {
+                                self.throw_error("Expected a symbol");
+                            }
+                        };
+                        if !&self.symbol_table.contains_key(operand2) {
+                            self.throw_error(&format!("Undefined Symbol  {}", operand2));
+                        }
+
+                        let operand1 = &self.symbol_table[operand1];
+                        let operand2 = &self.symbol_table[operand2];
+                        if discriminant(operand1) != discriminant(operand2) {
+                            self.throw_error("Incompatible types");
+                        }
+
+                        self.cur_col += 1;
+                        let success = match &self.lines[self.cur_row][self.cur_col].token {
+                            TokenType::EqualTo => {
+                                operand1 == operand2
+                            },
+                            TokenType::GreaterThan => {
+                                if let DataTypes::Integer(operand1) = operand1 {
+                                    if let DataTypes::Integer(operand2) = operand2 {
+                                        operand1 > operand2
+                                    } else {
+                                        self.throw_error("Only integers can be used for logical comparison")
+                                    }
+                                } else {
+                                    self.throw_error("Only integers can be used for logical comparison")
+                                } 
+                            },
+                            TokenType::LessThan => {
+                                if let DataTypes::Integer(operand1) = operand1 {
+                                    if let DataTypes::Integer(operand2) = operand2 {
+                                        operand1 < operand2
+                                    } else {
+                                        self.throw_error("Only integers can be used for logical comparison")
+                                    }
+                                } else {
+                                    self.throw_error("Only integers can be used for logical comparison")
+                                } 
+                            }
+                            e @ _=>{
+                                self.throw_error(&format!("Illegal operator {:?}",e));
+                            }
+                        };
+                        self.cur_col+=1;
+                        if discriminant(&self.lines[self.cur_row][self.cur_col].token) != discriminant(&TokenType::LeftBrace) {
+                            self.throw_error("Expected a `{`")
+                        }
+                        if self.cur_col+1 != length {
+                            self.throw_error("A block should start in new line after `{`")
+                        }
+
+                        if success {
+                            self.stack.push(&self.lines[self.cur_row][self.cur_col].token);
+                            //self.cur_row +=1;
+                            //self.cur_col = 0;
+                            //continue;
+                        } else {
+                            //skip if
+                            let mut level = 1;
+                            while level !=0 {
+                                self.cur_row += 1;
+                                self.cur_col = 0;
+                                while self.cur_col <  self.lines[self.cur_row].len(){
+                                    if discriminant(&TokenType::LeftBrace)  == discriminant(&self.lines[self.cur_row][0].token) {
+                                        level +=1;
+                                    } else if  discriminant(&TokenType::RightBrace)  == discriminant(&self.lines[self.cur_row][0].token) {
+                                        level -=1;
+                                    }
+                                    self.cur_col +=1;
+                                }
+                            }
+                            //self.cur_row+=1;
+                            break;
+                        }
+                        //println!("{:?} {:?}",operand1,operand2));
+                        //self.stack.push(&self.lines[self.cur_row][self.cur_col]);
                     }
-                    TokenType::Else => {
-                        self.throw_error("Else expression without If");
+
+                    TokenType::RightBrace => {
+                        if self.cur_col !=0 {
+                            self.throw_error("A block should end in new line with `}`")
+                        }
+                        if let Some(_) = self.stack.last() {
+                            self.stack.pop();
+                        } else {
+                            self.throw_error("Mismatched braces");
+                        }
                     }
-                    _ => self.throw_error(&format!("Unknown Token {:?}", line[self.cur_col].token)),
+                    _ => self.throw_error(&format!(
+                        "UnExpected Token {:?}",
+                        self.lines[self.cur_row][self.cur_col].token
+                    )),
                 }
                 self.cur_col += 1;
             }

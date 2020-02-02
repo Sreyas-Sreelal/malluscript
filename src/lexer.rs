@@ -9,7 +9,6 @@ pub enum TokenType {
     LeftBrace,
     RightBrace,
     If,
-    Else,
     //LOOP,
     Assignment,
     Plus,
@@ -17,12 +16,15 @@ pub enum TokenType {
     Product,
     Divide,
     Modulus,
+    GreaterThan,
+    LessThan,
+    EqualTo,
     Literal(String),
     Number(i32),
     Symbol(String),
+
 }
 
-#[derive(Debug)]
 pub struct Token {
     pub line: usize,
     pub offset: usize,
@@ -114,8 +116,14 @@ pub fn tokenize(name: &str) -> Vec<Vec<Token>> {
                                 "seriyano_mwone" => {
                                     tokens.push(Token::new(TokenType::If, lineno, offset))
                                 }
-                                "allel_polik" => {
-                                    tokens.push(Token::new(TokenType::Else, lineno, offset))
+                                "inekal_veluthane" => {
+                                    tokens.push(Token::new(TokenType::GreaterThan, lineno, offset))
+                                }
+                                "inekal_cheruthane" => {
+                                    tokens.push(Token::new(TokenType::LessThan, lineno, offset))
+                                }
+                                "um_same_aane" => {
+                                    tokens.push(Token::new(TokenType::EqualTo, lineno, offset))
                                 }
                                 _ => {
                                     tokens.push(Token::new(TokenType::Symbol(word), lineno, offset))

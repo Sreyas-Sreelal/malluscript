@@ -14,9 +14,15 @@ dhe_pidicho guhan
 dhe_pidicho "\n"
 
 guhan = 1
-jimit = 10
-koyi = guhan + jimit * 3
+jimit = 2
+seriyano_mwone guhan jimit inekal_cheruthane {
+dhe_pidicho "\n1"
 
-dhe_pidicho kdoyi
+guhan = 0
+    seriyano_mwone guhan jimit inekal_cheruthane {
+        dhe_pidicho "\n2"
+    }
+    dhe_pidicho "\n3"
+}
 dhe_pidicho "\n"
 
