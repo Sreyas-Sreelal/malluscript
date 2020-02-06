@@ -1,6 +1,7 @@
 use crate::lexer::{Token, TokenType};
 use meval::eval_str;
 use std::collections::HashMap;
+use std::io::{stdin, stdout, Write};
 use std::mem::discriminant;
 use std::process::exit;
 
@@ -50,6 +51,7 @@ impl Executor {
                                 TokenType::Literal(data) => {
                                     let data = &self.literal_eval(data.to_string());
                                     print!("{}", data);
+                                    let _ = stdout().flush();
                                 }
 
                                 TokenType::Symbol(variable) => {
@@ -64,9 +66,11 @@ impl Executor {
                                         DataTypes::String(value) => {
                                             let value = &self.literal_eval(value.to_string());
                                             print!("{}", value);
+                                            let _ = stdout().flush();
                                         }
                                         DataTypes::Integer(value) => {
                                             print!("{}", value);
+                                            let _ = stdout().flush();
                                         }
                                         DataTypes::Unknown => {
                                             self.throw_error(&format!(
@@ -103,7 +107,6 @@ impl Executor {
                             }
                         }
                     }
-
                     TokenType::Symbol(data) => {
                         //var = 1
                         if !&self.symbol_table.contains_key(data) {
@@ -121,6 +124,30 @@ impl Executor {
                                 &self
                                     .symbol_table
                                     .insert(data.to_string(), DataTypes::String(value.to_string()));
+                            }
+                            inputtype @ TokenType::InputString
+                            | inputtype @ TokenType::InputNumber => {
+                                self.cur_col += 1;
+                                if self.cur_col != length {
+                                    self.throw_error(&format!(
+                                        "UnExpected Token {:?}",
+                                        self.lines[self.cur_row][self.cur_col].token
+                                    ));
+                                }
+                                let mut input = String::new();
+                                stdin().read_line(&mut input).expect("Unable to read input");
+                                if discriminant(inputtype) == discriminant(&TokenType::InputString)
+                                {
+                                    &self
+                                        .symbol_table
+                                        .insert(data.to_string(), DataTypes::String(input));
+                                } else {
+                                    let input: i32 =
+                                        input.trim().parse().expect("Invalid number given as input");
+                                    &self
+                                        .symbol_table
+                                        .insert(data.to_string(), DataTypes::Integer(input));
+                                }
                             }
 
                             TokenType::Number(_) | TokenType::Symbol(_) | TokenType::Minus => {

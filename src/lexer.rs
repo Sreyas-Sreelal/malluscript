@@ -5,7 +5,8 @@ use std::io::{self, BufRead};
 pub enum TokenType {
     Declaration,
     Write,
-    Input,
+    InputString,
+    InputNumber,
     LeftBrace,
     RightBrace,
     If,
@@ -111,7 +112,10 @@ pub fn tokenize(name: &str) -> Vec<Vec<Token>> {
                                     tokens.push(Token::new(TokenType::Declaration, lineno, offset))
                                 }
                                 "address_thada" => {
-                                    tokens.push(Token::new(TokenType::Input, lineno, offset))
+                                    tokens.push(Token::new(TokenType::InputString, lineno, offset))
+                                }
+                                "number_thada" => {
+                                    tokens.push(Token::new(TokenType::InputNumber, lineno, offset))
                                 }
                                 "dhe_pidicho" => {
                                     tokens.push(Token::new(TokenType::Write, lineno, offset))
