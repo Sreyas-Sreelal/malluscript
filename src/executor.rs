@@ -123,7 +123,7 @@ impl Executor {
                                     .insert(data.to_string(), DataTypes::String(value.to_string()));
                             }
 
-                            TokenType::Number(_) | TokenType::Symbol(_) => {
+                            TokenType::Number(_) | TokenType::Symbol(_) | TokenType::Minus => {
                                 let mut y = self.cur_col;
                                 let mut expr = String::new();
                                 while y < length {

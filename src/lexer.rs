@@ -107,7 +107,7 @@ pub fn tokenize(name: &str) -> Vec<Vec<Token>> {
                             }
 
                             match word.as_str() {
-                                "ada_mwone" => {
+                                "pwoli_sadhanam" => {
                                     tokens.push(Token::new(TokenType::Declaration, lineno, offset))
                                 }
                                 "address_thada" => {
