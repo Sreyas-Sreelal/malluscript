@@ -5,7 +5,7 @@ use std::io::{stdin, stdout, Write};
 use std::mem::discriminant;
 use std::process::exit;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq,Clone)]
 pub enum DataTypes {
     String(String),
     Integer(i32),
@@ -306,32 +306,10 @@ impl Executor {
     }
 
     fn parse_logical_expr(&mut self) -> bool {
-        self.cur_col += 1;
-        //TODO: Wrap them into a function
-        let operand1 = match &self.lines[self.cur_row][self.cur_col].token {
-            TokenType::Symbol(variable) => variable,
-            _ => {
-                self.throw_error("Expected a symbol");
-            }
-        };
-        if !&self.symbol_table.contains_key(operand1) {
-            self.throw_error(&format!("Undefined Symbol  {}", operand1));
-        }
-
-        self.cur_col += 1;
-        let operand2 = match &self.lines[self.cur_row][self.cur_col].token {
-            TokenType::Symbol(variable) => variable,
-            _ => {
-                self.throw_error("Expected a symbol");
-            }
-        };
-        if !&self.symbol_table.contains_key(operand2) {
-            self.throw_error(&format!("Undefined Symbol  {}", operand2));
-        }
-
-        let operand1 = &self.symbol_table[operand1];
-        let operand2 = &self.symbol_table[operand2];
-        if discriminant(operand1) != discriminant(operand2) {
+        let operand1 = self.gen_operands();
+        let operand2 = self.gen_operands();
+        
+        if discriminant(&operand1) != discriminant(&operand2) {
             self.throw_error("Incompatible types");
         }
 
@@ -375,5 +353,26 @@ impl Executor {
             self.throw_error("A block should start in new line after `{`")
         }
         success
+    }
+
+    fn gen_operands(&mut self) -> DataTypes{
+        self.cur_col+=1;
+        match &self.lines[self.cur_row][self.cur_col].token {
+            TokenType::Symbol(variable) => {
+                if !&self.symbol_table.contains_key(variable) {
+                    self.throw_error(&format!("Undefined Symbol  {}", variable));
+                }
+                self.symbol_table[variable].clone()
+            }
+            TokenType::Literal(data) => {
+                DataTypes::String(data.to_string())
+            }
+            TokenType::Number(data) => {
+                DataTypes::Integer(*data)
+            }
+            _ => {
+                self.throw_error("Expected a symbol");
+            }
+        }
     }
 }
