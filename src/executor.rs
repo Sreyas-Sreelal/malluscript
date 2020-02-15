@@ -5,10 +5,10 @@ use std::io::{stdin, stdout, Write};
 use std::mem::discriminant;
 use std::process::exit;
 
-#[derive(Debug, PartialEq,Clone)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum DataTypes {
     String(String),
-    Integer(i32),
+    Integer(i64),
     Unknown,
 }
 
@@ -42,68 +42,53 @@ impl Executor {
                 match &self.lines[self.cur_row][self.cur_col].token {
                     TokenType::Write => {
                         self.cur_col += 1;
-                        if discriminant(&self.lines[self.cur_row][self.cur_col].token)
-                            == discriminant(&TokenType::Literal(String::new()))
-                            || discriminant(&self.lines[self.cur_row][self.cur_col].token)
-                                == discriminant(&TokenType::Symbol(String::new()))
-                        {
-                            match &self.lines[self.cur_row][self.cur_col].token {
-                                TokenType::Literal(data) => {
-                                    let data = &self.literal_eval(data.to_string());
-                                    print!("{}", data);
-                                    let _ = stdout().flush();
-                                }
+                        match &self.lines[self.cur_row][self.cur_col].token {
+                            TokenType::Literal(data) => {
+                                let data = &self.literal_eval(data.to_string());
+                                print!("{}", data);
+                                let _ = stdout().flush();
+                            }
 
-                                TokenType::Symbol(variable) => {
-                                    if !&self.symbol_table.contains_key(variable) {
+                            TokenType::Symbol(variable) => {
+                                if !&self.symbol_table.contains_key(variable) {
+                                    self.throw_error(&format!("Undefined Symbol  {}", variable));
+                                }
+                                let data = &self.symbol_table[variable];
+                                match data {
+                                    DataTypes::String(value) => {
+                                        let value = &self.literal_eval(value.to_string());
+                                        print!("{}", value);
+                                        let _ = stdout().flush();
+                                    }
+                                    DataTypes::Integer(value) => {
+                                        print!("{}", value);
+                                        let _ = stdout().flush();
+                                    }
+                                    DataTypes::Unknown => {
                                         self.throw_error(&format!(
-                                            "Undefined Symbol  {}",
+                                            "Use of uninitialized variable {}",
                                             variable
                                         ));
                                     }
-                                    let data = &self.symbol_table[variable];
-                                    match data {
-                                        DataTypes::String(value) => {
-                                            let value = &self.literal_eval(value.to_string());
-                                            print!("{}", value);
-                                            let _ = stdout().flush();
-                                        }
-                                        DataTypes::Integer(value) => {
-                                            print!("{}", value);
-                                            let _ = stdout().flush();
-                                        }
-                                        DataTypes::Unknown => {
-                                            self.throw_error(&format!(
-                                                "Use of uninitialized variable {}",
-                                                variable
-                                            ));
-                                        }
-                                    }
-                                }
-                                _ => {
-                                    self.throw_error("Invalid value");
                                 }
                             }
-                        } else {
-                            self.throw_error("Expected a literal or symbol");
+                            _ => {
+                                self.throw_error("Expected a symbol or variable");
+                            }
                         }
                     }
 
                     TokenType::Declaration => {
                         self.cur_col += 1;
-                        if discriminant(&self.lines[self.cur_row][self.cur_col].token)
-                            == discriminant(&TokenType::Symbol(String::new()))
+                        if let TokenType::Symbol(data) =
+                            &self.lines[self.cur_row][self.cur_col].token
                         {
-                            if let TokenType::Symbol(data) =
-                                &self.lines[self.cur_row][self.cur_col].token
-                            {
-                                if !&self.symbol_table.contains_key(data) {
-                                    &self
-                                        .symbol_table
-                                        .insert(data.to_string(), DataTypes::Unknown);
-                                } else {
-                                    self.throw_error(&format!("Duplicate Symbol {}", data));
-                                }
+                            if !&self.symbol_table.contains_key(data) {
+                                &self
+                                    .symbol_table
+                                    .insert(data.to_string(), DataTypes::Unknown);
+                            } else {
+                                self.throw_error(&format!("Duplicate Symbol {}", data));
                             }
                         }
                     }
@@ -113,12 +98,14 @@ impl Executor {
                             self.throw_error(&format!("Undefined Symbol  {}", data));
                         }
                         self.cur_col += 1;
+
                         if discriminant(&self.lines[self.cur_row][self.cur_col].token)
                             != discriminant(&TokenType::Assignment)
                         {
                             self.throw_error("Expected an assignment after symbol");
                         }
                         self.cur_col += 1;
+
                         match &self.lines[self.cur_row][self.cur_col].token {
                             TokenType::Literal(value) => {
                                 &self
@@ -142,8 +129,10 @@ impl Executor {
                                         .symbol_table
                                         .insert(data.to_string(), DataTypes::String(input));
                                 } else {
-                                    let input: i32 =
-                                        input.trim().parse().expect("Invalid number given as input");
+                                    let input: i64 = input
+                                        .trim()
+                                        .parse()
+                                        .expect("Invalid number given as input");
                                     &self
                                         .symbol_table
                                         .insert(data.to_string(), DataTypes::Integer(input));
@@ -161,7 +150,7 @@ impl Executor {
                                 }
                                 if let Ok(value) = eval_str(&expr) {
                                     self.symbol_table
-                                        .insert(data.to_string(), DataTypes::Integer(value as i32));
+                                        .insert(data.to_string(), DataTypes::Integer(value as i64));
                                     self.cur_col = y;
                                 } else {
                                     self.throw_error("Illegal expression");
@@ -308,7 +297,6 @@ impl Executor {
     fn parse_logical_expr(&mut self) -> bool {
         let operand1 = self.gen_operands();
         let operand2 = self.gen_operands();
-        
         if discriminant(&operand1) != discriminant(&operand2) {
             self.throw_error("Incompatible types");
         }
@@ -355,8 +343,8 @@ impl Executor {
         success
     }
 
-    fn gen_operands(&mut self) -> DataTypes{
-        self.cur_col+=1;
+    fn gen_operands(&mut self) -> DataTypes {
+        self.cur_col += 1;
         match &self.lines[self.cur_row][self.cur_col].token {
             TokenType::Symbol(variable) => {
                 if !&self.symbol_table.contains_key(variable) {
@@ -364,12 +352,8 @@ impl Executor {
                 }
                 self.symbol_table[variable].clone()
             }
-            TokenType::Literal(data) => {
-                DataTypes::String(data.to_string())
-            }
-            TokenType::Number(data) => {
-                DataTypes::Integer(*data)
-            }
+            TokenType::Literal(data) => DataTypes::String(data.to_string()),
+            TokenType::Number(data) => DataTypes::Integer(*data),
             _ => {
                 self.throw_error("Expected a symbol");
             }

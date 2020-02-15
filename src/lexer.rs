@@ -22,7 +22,7 @@ pub enum TokenType {
     EqualTo,
     NotEqual,
     Literal(String),
-    Number(i32),
+    Number(i64),
     Symbol(String),
 }
 
