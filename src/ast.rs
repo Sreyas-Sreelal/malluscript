@@ -15,6 +15,8 @@ pub enum Statement {
     Loop(Expression, Box<Statement>),
     Declaration(TokenType),
     Allocation(Expression),
+    WriteExpr(Expression),
+    WriteString(TokenType)
 }
 
 #[derive(Debug)]

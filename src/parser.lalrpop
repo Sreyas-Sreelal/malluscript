@@ -14,12 +14,14 @@ SourceUnitPart:SourceUnitPart = {
 
 Statement:Statement = {
     Declaration <id:Identifier> ";" => Statement::Declaration(id),
-    Alloc => Statement::Allocation(<>),
+    Assignment => Statement::Allocation(<>),
+    Write <e:Expression> => Statement::WriteExpr(e),
+    Write <s:StringLiteral> => Statement::WriteString(s)
 }
 
-Alloc:Expression = {
-    <l:Identifier> "=" <r:StringLiteral>  => Expression::StringAlloc(l,r),
-    <l:Identifier> "=" <r:Expression>  => Expression::Assignment(l,Box::new(r)),
+Assignment:Expression = {
+    <l:Identifier> "=" <r:StringLiteral> ";"  => Expression::StringAlloc(l,r),
+    <l:Identifier> "=" <r:Expression> ";" => Expression::Assignment(l,Box::new(r)),
 }
 
 Expression:Expression = {
@@ -40,7 +42,8 @@ Factor: Expression = {
 
 Term: Expression = {
     <v:Integer> => Expression::Integer(v),
-    <id:Identifier> => Expression::Symbol(id)
+    <id:Identifier> => Expression::Symbol(id),
+    "(" <Expression> ")"
 };
 
 extern {
@@ -58,5 +61,8 @@ extern {
         "-" => TokenType::Minus,
         "*" => TokenType::Product,
         "/" => TokenType::Divide,
+        "(" => TokenType::OpenParantheses,
+        ")" => TokenType::CloseParantheses,
+        Write => TokenType::Write,
     }
 }

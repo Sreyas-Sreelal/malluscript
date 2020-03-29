@@ -1,5 +1,5 @@
-use crate::ast::*;
 use crate::lexer::*;
+use crate::ast::*;
 #[allow(unused_extern_crates)]
 extern crate lalrpop_util as __lalrpop_util;
 #[allow(unused_imports)]
@@ -28,77 +28,93 @@ mod __parse__SourceUnit {
     }
     const __ACTION: &'static [i8] = &[
         // State 0
-        0, 0, 0, 0, 0, 0, 11, 12, 13, 0,
+        11, 0, 0, 0, 0, 0, 0, 0, 12, 13, 14, 0, 15,
         // State 1
-        0, 0, 0, 0, 0, 0, -16, -16, -16, 0,
+        -6, -6, 0, -6, -6, 0, -6, 0, -6, -6, -6, 0, -6,
         // State 2
-        0, -6, -6, 0, -6, 0, -6, -6, -6, 0,
+        -16, 0, 0, 0, 0, 0, 0, 0, -16, -16, -16, 0, -16,
         // State 3
-        0, 14, 15, 0, 16, 0, 0, 0, 0, 0,
+        0, 0, 0, 16, 17, 0, 18, 0, 0, 0, 0, 0, 0,
         // State 4
-        17, -5, -5, 18, -5, 0, -5, -5, -5, 0,
+        -3, -3, 19, -3, -3, 20, -3, 0, -3, -3, -3, 0, -3,
         // State 5
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 6
-        0, 0, 0, 0, 0, 0, -13, -13, -13, 0,
+        -13, 0, 0, 0, 0, 0, 0, 0, -13, -13, -13, 0, -13,
         // State 7
-        0, 0, 0, 0, 0, 0, 11, 12, 13, 0,
+        11, 0, 0, 0, 0, 0, 0, 0, 12, 13, 14, 0, 15,
         // State 8
-        0, 0, 0, 0, 0, 0, -12, -12, -12, 0,
+        -12, 0, 0, 0, 0, 0, 0, 0, -12, -12, -12, 0, -12,
         // State 9
-        -9, -9, -9, -9, -9, 0, -9, -9, -9, 0,
+        -9, -9, -9, -9, -9, -9, -9, 0, -9, -9, -9, 0, -9,
         // State 10
-        0, 0, 0, 0, 0, 0, 0, 20, 0, 0,
+        11, 0, 0, 0, 0, 0, 0, 0, 0, 23, 14, 0, 0,
         // State 11
-        -18, -18, -18, -18, -18, 21, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 24, 0, 0, 0,
         // State 12
-        -17, -17, -17, -17, -17, 0, -17, -17, -17, 0,
+        0, 0, -20, -20, -20, -20, -20, 25, 0, 0, 0, 0, 0,
         // State 13
-        0, 0, 0, 0, 0, 0, 0, 23, 13, 0,
+        -19, -19, -19, -19, -19, -19, -19, 0, -19, -19, -19, 0, -19,
         // State 14
-        0, 0, 0, 0, 0, 0, 0, 23, 13, 0,
+        11, 0, 0, 0, 0, 0, 0, 0, 0, 23, 14, 27, 0,
         // State 15
-        0, 0, 0, 0, 0, 0, -11, -11, -11, 0,
+        11, 0, 0, 0, 0, 0, 0, 0, 0, 23, 14, 0, 0,
         // State 16
-        0, 0, 0, 0, 0, 0, 0, 23, 13, 0,
+        11, 0, 0, 0, 0, 0, 0, 0, 0, 23, 14, 0, 0,
         // State 17
-        0, 0, 0, 0, 0, 0, 0, 23, 13, 0,
+        -11, 0, 0, 0, 0, 0, 0, 0, -11, -11, -11, 0, -11,
         // State 18
-        0, 0, 0, 0, 0, 0, -14, -14, -14, 0,
+        11, 0, 0, 0, 0, 0, 0, 0, 0, 23, 14, 0, 0,
         // State 19
-        0, 0, 0, 0, 27, 0, 0, 0, 0, 0,
+        11, 0, 0, 0, 0, 0, 0, 0, 0, 23, 14, 0, 0,
         // State 20
-        0, 0, 0, 0, 0, 0, 0, 23, 13, 29,
+        -14, 0, 0, 0, 0, 0, 0, 0, -14, -14, -14, 0, -14,
         // State 21
-        17, -3, -3, 18, -3, 0, -3, -3, -3, 0,
+        0, 32, 0, 16, 17, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 22
-        -18, -18, -18, -18, -18, 0, -18, -18, -18, 0,
+        -20, -20, -20, -20, -20, -20, -20, 0, -20, -20, -20, 0, -20,
         // State 23
-        17, -4, -4, 18, -4, 0, -4, -4, -4, 0,
+        0, 0, 0, 0, 0, 0, 33, 0, 0, 0, 0, 0, 0,
         // State 24
-        -7, -7, -7, -7, -7, 0, -7, -7, -7, 0,
+        11, 0, 0, 0, 0, 0, 0, 0, 0, 23, 14, 35, 0,
         // State 25
-        -8, -8, -8, -8, -8, 0, -8, -8, -8, 0,
+        -17, 0, 0, 16, 17, 0, 0, 0, -17, -17, -17, 0, -17,
         // State 26
-        0, 0, 0, 0, 0, 0, -15, -15, -15, 0,
+        -18, 0, 0, 0, 0, 0, 0, 0, -18, -18, -18, 0, -18,
         // State 27
-        0, 14, 15, 0, 0, 0, -2, -2, -2, 0,
+        -1, -1, 19, -1, -1, 20, -1, 0, -1, -1, -1, 0, -1,
         // State 28
-        0, 0, 0, 0, 0, 0, -1, -1, -1, 0,
+        -2, -2, 19, -2, -2, 20, -2, 0, -2, -2, -2, 0, -2,
+        // State 29
+        -7, -7, -7, -7, -7, -7, -7, 0, -7, -7, -7, 0, -7,
+        // State 30
+        -8, -8, -8, -8, -8, -8, -8, 0, -8, -8, -8, 0, -8,
+        // State 31
+        -21, -21, -21, -21, -21, -21, -21, 0, -21, -21, -21, 0, -21,
+        // State 32
+        -15, 0, 0, 0, 0, 0, 0, 0, -15, -15, -15, 0, -15,
+        // State 33
+        0, 0, 0, 16, 17, 0, 36, 0, 0, 0, 0, 0, 0,
+        // State 34
+        0, 0, 0, 0, 0, 0, 37, 0, 0, 0, 0, 0, 0,
+        // State 35
+        -5, 0, 0, 0, 0, 0, 0, 0, -5, -5, -5, 0, -5,
+        // State 36
+        -4, 0, 0, 0, 0, 0, 0, 0, -4, -4, -4, 0, -4,
     ];
     const __EOF_ACTION: &'static [i8] = &[
         // State 0
         0,
         // State 1
-        -16,
-        // State 2
         -6,
+        // State 2
+        -16,
         // State 3
         0,
         // State 4
-        -5,
+        -3,
         // State 5
-        -19,
+        -22,
         // State 6
         -13,
         // State 7
@@ -112,39 +128,55 @@ mod __parse__SourceUnit {
         // State 11
         0,
         // State 12
-        -17,
-        // State 13
         0,
+        // State 13
+        -19,
         // State 14
         0,
         // State 15
-        -11,
+        0,
         // State 16
         0,
         // State 17
-        0,
+        -11,
         // State 18
-        -14,
+        0,
         // State 19
         0,
         // State 20
-        0,
+        -14,
         // State 21
-        -3,
+        0,
         // State 22
-        -18,
+        -20,
         // State 23
-        -4,
+        0,
         // State 24
-        -7,
+        0,
         // State 25
-        -8,
+        -17,
         // State 26
-        -15,
+        -18,
         // State 27
-        -2,
-        // State 28
         -1,
+        // State 28
+        -2,
+        // State 29
+        -7,
+        // State 30
+        -8,
+        // State 31
+        -21,
+        // State 32
+        -15,
+        // State 33
+        0,
+        // State 34
+        0,
+        // State 35
+        -5,
+        // State 36
+        -4,
     ];
     const __GOTO: &'static [i8] = &[
         // State 0
@@ -162,33 +194,33 @@ mod __parse__SourceUnit {
         // State 6
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 7
-        2, 3, 4, 5, 0, 19, 0, 9, 10, 0,
+        2, 3, 4, 5, 0, 21, 0, 9, 10, 0,
         // State 8
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 9
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 10
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        2, 0, 22, 5, 0, 0, 0, 0, 10, 0,
         // State 11
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 12
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 13
-        0, 0, 0, 22, 0, 0, 0, 0, 10, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 14
-        0, 0, 0, 24, 0, 0, 0, 0, 10, 0,
+        2, 0, 26, 5, 0, 0, 0, 0, 10, 0,
         // State 15
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 28, 0, 0, 0, 0, 10, 0,
         // State 16
-        0, 0, 0, 0, 0, 0, 0, 0, 25, 0,
+        0, 0, 0, 29, 0, 0, 0, 0, 10, 0,
         // State 17
-        0, 0, 0, 0, 0, 0, 0, 0, 26, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 18
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 30, 0,
         // State 19
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 31, 0,
         // State 20
-        0, 3, 28, 5, 0, 0, 0, 0, 10, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 21
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 22
@@ -196,7 +228,7 @@ mod __parse__SourceUnit {
         // State 23
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 24
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        2, 0, 34, 5, 0, 0, 0, 0, 10, 0,
         // State 25
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 26
@@ -205,9 +237,27 @@ mod __parse__SourceUnit {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 28
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        // State 29
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        // State 30
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        // State 31
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        // State 32
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        // State 33
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        // State 34
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        // State 35
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        // State 36
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     ];
     fn __expected_tokens(__state: usize) -> Vec<::std::string::String> {
         const __TERMINAL: &'static [&'static str] = &[
+            r###""(""###,
+            r###"")""###,
             r###""*""###,
             r###""+""###,
             r###""-""###,
@@ -218,8 +268,9 @@ mod __parse__SourceUnit {
             r###"Identifier"###,
             r###"Integer"###,
             r###"StringLiteral"###,
+            r###"Write"###,
         ];
-        __ACTION[(__state * 10)..].iter().zip(__TERMINAL).filter_map(|(&state, terminal)| {
+        __ACTION[(__state * 13)..].iter().zip(__TERMINAL).filter_map(|(&state, terminal)| {
             if state == 0 {
                 None
             } else {
@@ -263,12 +314,12 @@ mod __parse__SourceUnit {
 
         #[inline]
         fn action(&self, state: i8, integer: usize) -> i8 {
-            __ACTION[(state as usize) * 10 + integer]
+            __ACTION[(state as usize) * 13 + integer]
         }
 
         #[inline]
         fn error_action(&self, state: i8) -> i8 {
-            __ACTION[(state as usize) * 10 + (10 - 1)]
+            __ACTION[(state as usize) * 13 + (13 - 1)]
         }
 
         #[inline]
@@ -329,16 +380,19 @@ mod __parse__SourceUnit {
     ) -> Option<usize>
     {
         match __token {
-            TokenType::Product if true => Some(0),
-            TokenType::Plus if true => Some(1),
-            TokenType::Minus if true => Some(2),
-            TokenType::Divide if true => Some(3),
-            TokenType::SemiColon if true => Some(4),
-            TokenType::Assignment if true => Some(5),
-            TokenType::Declaration if true => Some(6),
-            TokenType::Symbol(String) if true => Some(7),
-            TokenType::Number(i64) if true => Some(8),
-            TokenType::Literal(String) if true => Some(9),
+            TokenType::OpenParantheses if true => Some(0),
+            TokenType::CloseParantheses if true => Some(1),
+            TokenType::Product if true => Some(2),
+            TokenType::Plus if true => Some(3),
+            TokenType::Minus if true => Some(4),
+            TokenType::Divide if true => Some(5),
+            TokenType::SemiColon if true => Some(6),
+            TokenType::Assignment if true => Some(7),
+            TokenType::Declaration if true => Some(8),
+            TokenType::Symbol(String) if true => Some(9),
+            TokenType::Number(i64) if true => Some(10),
+            TokenType::Literal(String) if true => Some(11),
+            TokenType::Write if true => Some(12),
             _ => None,
         }
     }
@@ -350,7 +404,7 @@ mod __parse__SourceUnit {
     ) -> __Symbol<>
     {
         match __token_index {
-            0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 => __Symbol::Variant0(__token),
+            0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 => __Symbol::Variant0(__token),
             _ => unreachable!(),
         }
     }
@@ -450,6 +504,15 @@ mod __parse__SourceUnit {
                 __reduce17(__lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
             }
             18 => {
+                __reduce18(__lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+            }
+            19 => {
+                __reduce19(__lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+            }
+            20 => {
+                __reduce20(__lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+            }
+            21 => {
                 // __SourceUnit = SourceUnit => ActionFn(0);
                 let __sym0 = __pop_Variant2(__symbols);
                 let __start = __sym0.0.clone();
@@ -533,14 +596,14 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
-        // Alloc = Identifier, "=", StringLiteral => ActionFn(6);
+        // ArithExpression = Expression, "+", Factor => ActionFn(11);
         assert!(__symbols.len() >= 3);
-        let __sym2 = __pop_Variant0(__symbols);
+        let __sym2 = __pop_Variant1(__symbols);
         let __sym1 = __pop_Variant0(__symbols);
-        let __sym0 = __pop_Variant0(__symbols);
+        let __sym0 = __pop_Variant1(__symbols);
         let __start = __sym0.0.clone();
         let __end = __sym2.2.clone();
-        let __nt = super::__action6::<>(__sym0, __sym1, __sym2);
+        let __nt = super::__action11::<>(__sym0, __sym1, __sym2);
         __symbols.push((__start, __Symbol::Variant1(__nt), __end));
         (3, 0)
     }
@@ -551,14 +614,14 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
-        // Alloc = Identifier, "=", Expression => ActionFn(7);
+        // ArithExpression = Expression, "-", Factor => ActionFn(12);
         assert!(__symbols.len() >= 3);
         let __sym2 = __pop_Variant1(__symbols);
         let __sym1 = __pop_Variant0(__symbols);
-        let __sym0 = __pop_Variant0(__symbols);
+        let __sym0 = __pop_Variant1(__symbols);
         let __start = __sym0.0.clone();
         let __end = __sym2.2.clone();
-        let __nt = super::__action7::<>(__sym0, __sym1, __sym2);
+        let __nt = super::__action12::<>(__sym0, __sym1, __sym2);
         __symbols.push((__start, __Symbol::Variant1(__nt), __end));
         (3, 0)
     }
@@ -569,16 +632,13 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
-        // ArithExpression = Expression, "+", Factor => ActionFn(9);
-        assert!(__symbols.len() >= 3);
-        let __sym2 = __pop_Variant1(__symbols);
-        let __sym1 = __pop_Variant0(__symbols);
+        // ArithExpression = Factor => ActionFn(13);
         let __sym0 = __pop_Variant1(__symbols);
         let __start = __sym0.0.clone();
-        let __end = __sym2.2.clone();
-        let __nt = super::__action9::<>(__sym0, __sym1, __sym2);
+        let __end = __sym0.2.clone();
+        let __nt = super::__action13::<>(__sym0);
         __symbols.push((__start, __Symbol::Variant1(__nt), __end));
-        (3, 1)
+        (1, 0)
     }
     pub(crate) fn __reduce3<
     >(
@@ -587,16 +647,17 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
-        // ArithExpression = Expression, "-", Factor => ActionFn(10);
-        assert!(__symbols.len() >= 3);
-        let __sym2 = __pop_Variant1(__symbols);
+        // Assignment = Identifier, "=", StringLiteral, ";" => ActionFn(8);
+        assert!(__symbols.len() >= 4);
+        let __sym3 = __pop_Variant0(__symbols);
+        let __sym2 = __pop_Variant0(__symbols);
         let __sym1 = __pop_Variant0(__symbols);
-        let __sym0 = __pop_Variant1(__symbols);
+        let __sym0 = __pop_Variant0(__symbols);
         let __start = __sym0.0.clone();
-        let __end = __sym2.2.clone();
-        let __nt = super::__action10::<>(__sym0, __sym1, __sym2);
+        let __end = __sym3.2.clone();
+        let __nt = super::__action8::<>(__sym0, __sym1, __sym2, __sym3);
         __symbols.push((__start, __Symbol::Variant1(__nt), __end));
-        (3, 1)
+        (4, 1)
     }
     pub(crate) fn __reduce4<
     >(
@@ -605,13 +666,17 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
-        // ArithExpression = Factor => ActionFn(11);
-        let __sym0 = __pop_Variant1(__symbols);
+        // Assignment = Identifier, "=", Expression, ";" => ActionFn(9);
+        assert!(__symbols.len() >= 4);
+        let __sym3 = __pop_Variant0(__symbols);
+        let __sym2 = __pop_Variant1(__symbols);
+        let __sym1 = __pop_Variant0(__symbols);
+        let __sym0 = __pop_Variant0(__symbols);
         let __start = __sym0.0.clone();
-        let __end = __sym0.2.clone();
-        let __nt = super::__action11::<>(__sym0);
+        let __end = __sym3.2.clone();
+        let __nt = super::__action9::<>(__sym0, __sym1, __sym2, __sym3);
         __symbols.push((__start, __Symbol::Variant1(__nt), __end));
-        (1, 1)
+        (4, 1)
     }
     pub(crate) fn __reduce5<
     >(
@@ -620,11 +685,11 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
-        // Expression = ArithExpression => ActionFn(8);
+        // Expression = ArithExpression => ActionFn(10);
         let __sym0 = __pop_Variant1(__symbols);
         let __start = __sym0.0.clone();
         let __end = __sym0.2.clone();
-        let __nt = super::__action8::<>(__sym0);
+        let __nt = super::__action10::<>(__sym0);
         __symbols.push((__start, __Symbol::Variant1(__nt), __end));
         (1, 2)
     }
@@ -635,14 +700,14 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
-        // Factor = Factor, "*", Term => ActionFn(12);
+        // Factor = Factor, "*", Term => ActionFn(14);
         assert!(__symbols.len() >= 3);
         let __sym2 = __pop_Variant1(__symbols);
         let __sym1 = __pop_Variant0(__symbols);
         let __sym0 = __pop_Variant1(__symbols);
         let __start = __sym0.0.clone();
         let __end = __sym2.2.clone();
-        let __nt = super::__action12::<>(__sym0, __sym1, __sym2);
+        let __nt = super::__action14::<>(__sym0, __sym1, __sym2);
         __symbols.push((__start, __Symbol::Variant1(__nt), __end));
         (3, 3)
     }
@@ -653,14 +718,14 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
-        // Factor = Factor, "/", Term => ActionFn(13);
+        // Factor = Factor, "/", Term => ActionFn(15);
         assert!(__symbols.len() >= 3);
         let __sym2 = __pop_Variant1(__symbols);
         let __sym1 = __pop_Variant0(__symbols);
         let __sym0 = __pop_Variant1(__symbols);
         let __start = __sym0.0.clone();
         let __end = __sym2.2.clone();
-        let __nt = super::__action13::<>(__sym0, __sym1, __sym2);
+        let __nt = super::__action15::<>(__sym0, __sym1, __sym2);
         __symbols.push((__start, __Symbol::Variant1(__nt), __end));
         (3, 3)
     }
@@ -671,11 +736,11 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
-        // Factor = Term => ActionFn(14);
+        // Factor = Term => ActionFn(16);
         let __sym0 = __pop_Variant1(__symbols);
         let __start = __sym0.0.clone();
         let __end = __sym0.2.clone();
-        let __nt = super::__action14::<>(__sym0);
+        let __nt = super::__action16::<>(__sym0);
         __symbols.push((__start, __Symbol::Variant1(__nt), __end));
         (1, 3)
     }
@@ -733,11 +798,11 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
-        // SourceUnitPart+ = SourceUnitPart => ActionFn(17);
+        // SourceUnitPart+ = SourceUnitPart => ActionFn(20);
         let __sym0 = __pop_Variant3(__symbols);
         let __start = __sym0.0.clone();
         let __end = __sym0.2.clone();
-        let __nt = super::__action17::<>(__sym0);
+        let __nt = super::__action20::<>(__sym0);
         __symbols.push((__start, __Symbol::Variant4(__nt), __end));
         (1, 6)
     }
@@ -748,13 +813,13 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
-        // SourceUnitPart+ = SourceUnitPart+, SourceUnitPart => ActionFn(18);
+        // SourceUnitPart+ = SourceUnitPart+, SourceUnitPart => ActionFn(21);
         assert!(__symbols.len() >= 2);
         let __sym1 = __pop_Variant3(__symbols);
         let __sym0 = __pop_Variant4(__symbols);
         let __start = __sym0.0.clone();
         let __end = __sym1.2.clone();
-        let __nt = super::__action18::<>(__sym0, __sym1);
+        let __nt = super::__action21::<>(__sym0, __sym1);
         __symbols.push((__start, __Symbol::Variant4(__nt), __end));
         (2, 6)
     }
@@ -783,7 +848,7 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
-        // Statement = Alloc => ActionFn(5);
+        // Statement = Assignment => ActionFn(5);
         let __sym0 = __pop_Variant1(__symbols);
         let __start = __sym0.0.clone();
         let __end = __sym0.2.clone();
@@ -798,13 +863,15 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
-        // Term = Integer => ActionFn(15);
+        // Statement = Write, Expression => ActionFn(6);
+        assert!(__symbols.len() >= 2);
+        let __sym1 = __pop_Variant1(__symbols);
         let __sym0 = __pop_Variant0(__symbols);
         let __start = __sym0.0.clone();
-        let __end = __sym0.2.clone();
-        let __nt = super::__action15::<>(__sym0);
-        __symbols.push((__start, __Symbol::Variant1(__nt), __end));
-        (1, 8)
+        let __end = __sym1.2.clone();
+        let __nt = super::__action6::<>(__sym0, __sym1);
+        __symbols.push((__start, __Symbol::Variant5(__nt), __end));
+        (2, 7)
     }
     pub(crate) fn __reduce17<
     >(
@@ -813,150 +880,276 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
-        // Term = Identifier => ActionFn(16);
+        // Statement = Write, StringLiteral => ActionFn(7);
+        assert!(__symbols.len() >= 2);
+        let __sym1 = __pop_Variant0(__symbols);
+        let __sym0 = __pop_Variant0(__symbols);
+        let __start = __sym0.0.clone();
+        let __end = __sym1.2.clone();
+        let __nt = super::__action7::<>(__sym0, __sym1);
+        __symbols.push((__start, __Symbol::Variant5(__nt), __end));
+        (2, 7)
+    }
+    pub(crate) fn __reduce18<
+    >(
+        __lookahead_start: Option<&usize>,
+        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: ::std::marker::PhantomData<()>,
+    ) -> (usize, usize)
+    {
+        // Term = Integer => ActionFn(17);
         let __sym0 = __pop_Variant0(__symbols);
         let __start = __sym0.0.clone();
         let __end = __sym0.2.clone();
-        let __nt = super::__action16::<>(__sym0);
+        let __nt = super::__action17::<>(__sym0);
         __symbols.push((__start, __Symbol::Variant1(__nt), __end));
         (1, 8)
+    }
+    pub(crate) fn __reduce19<
+    >(
+        __lookahead_start: Option<&usize>,
+        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: ::std::marker::PhantomData<()>,
+    ) -> (usize, usize)
+    {
+        // Term = Identifier => ActionFn(18);
+        let __sym0 = __pop_Variant0(__symbols);
+        let __start = __sym0.0.clone();
+        let __end = __sym0.2.clone();
+        let __nt = super::__action18::<>(__sym0);
+        __symbols.push((__start, __Symbol::Variant1(__nt), __end));
+        (1, 8)
+    }
+    pub(crate) fn __reduce20<
+    >(
+        __lookahead_start: Option<&usize>,
+        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: ::std::marker::PhantomData<()>,
+    ) -> (usize, usize)
+    {
+        // Term = "(", Expression, ")" => ActionFn(19);
+        assert!(__symbols.len() >= 3);
+        let __sym2 = __pop_Variant0(__symbols);
+        let __sym1 = __pop_Variant1(__symbols);
+        let __sym0 = __pop_Variant0(__symbols);
+        let __start = __sym0.0.clone();
+        let __end = __sym2.2.clone();
+        let __nt = super::__action19::<>(__sym0, __sym1, __sym2);
+        __symbols.push((__start, __Symbol::Variant1(__nt), __end));
+        (3, 8)
     }
 }
 pub use self::__parse__SourceUnit::SourceUnitParser;
 
-fn __action0((_, __0, _): (usize, SourceUnit, usize)) -> SourceUnit {
+fn __action0<
+>(
+    (_, __0, _): (usize, SourceUnit, usize),
+) -> SourceUnit
+{
     __0
 }
 
-fn __action1((_, __0, _): (usize, ::std::vec::Vec<SourceUnitPart>, usize)) -> SourceUnit {
+fn __action1<
+>(
+    (_, __0, _): (usize, ::std::vec::Vec<SourceUnitPart>, usize),
+) -> SourceUnit
+{
     SourceUnit(__0)
 }
 
-fn __action2(
+fn __action2<
+>(
     (_, e, _): (usize, Expression, usize),
     (_, _, _): (usize, TokenType, usize),
-) -> SourceUnitPart {
+) -> SourceUnitPart
+{
     SourceUnitPart::Expression(e)
 }
 
-fn __action3((_, __0, _): (usize, Statement, usize)) -> SourceUnitPart {
+fn __action3<
+>(
+    (_, __0, _): (usize, Statement, usize),
+) -> SourceUnitPart
+{
     SourceUnitPart::Statement(__0)
 }
 
-fn __action4(
+fn __action4<
+>(
     (_, _, _): (usize, TokenType, usize),
     (_, id, _): (usize, TokenType, usize),
     (_, _, _): (usize, TokenType, usize),
-) -> Statement {
+) -> Statement
+{
     Statement::Declaration(id)
 }
 
-fn __action5((_, __0, _): (usize, Expression, usize)) -> Statement {
+fn __action5<
+>(
+    (_, __0, _): (usize, Expression, usize),
+) -> Statement
+{
     Statement::Allocation(__0)
 }
 
-fn __action6(
+fn __action6<
+>(
+    (_, _, _): (usize, TokenType, usize),
+    (_, e, _): (usize, Expression, usize),
+) -> Statement
+{
+    Statement::WriteExpr(e)
+}
+
+fn __action7<
+>(
+    (_, _, _): (usize, TokenType, usize),
+    (_, s, _): (usize, TokenType, usize),
+) -> Statement
+{
+    Statement::WriteString(s)
+}
+
+fn __action8<
+>(
     (_, l, _): (usize, TokenType, usize),
     (_, _, _): (usize, TokenType, usize),
     (_, r, _): (usize, TokenType, usize),
-) -> Expression {
-    Expression::StringAlloc(l, r)
+    (_, _, _): (usize, TokenType, usize),
+) -> Expression
+{
+    Expression::StringAlloc(l,r)
 }
 
-fn __action7(
+fn __action9<
+>(
     (_, l, _): (usize, TokenType, usize),
     (_, _, _): (usize, TokenType, usize),
     (_, r, _): (usize, Expression, usize),
-) -> Expression {
-    Expression::Assignment(l, Box::new(r))
+    (_, _, _): (usize, TokenType, usize),
+) -> Expression
+{
+    Expression::Assignment(l,Box::new(r))
 }
 
-fn __action8((_, __0, _): (usize, Expression, usize)) -> Expression {
+fn __action10<
+>(
+    (_, __0, _): (usize, Expression, usize),
+) -> Expression
+{
     __0
 }
 
-fn __action9(
+fn __action11<
+>(
     (_, l, _): (usize, Expression, usize),
     (_, _, _): (usize, TokenType, usize),
     (_, r, _): (usize, Expression, usize),
-) -> Expression {
-    Expression::Add(Box::new(l), Box::new(r))
+) -> Expression
+{
+    Expression::Add(Box::new(l),Box::new(r))
 }
 
-fn __action10(
+fn __action12<
+>(
     (_, l, _): (usize, Expression, usize),
     (_, _, _): (usize, TokenType, usize),
     (_, r, _): (usize, Expression, usize),
-) -> Expression {
-    Expression::Subtract(Box::new(l), Box::new(r))
+) -> Expression
+{
+    Expression::Subtract(Box::new(l),Box::new(r))
 }
 
-fn __action11((_, __0, _): (usize, Expression, usize)) -> Expression {
+fn __action13<
+>(
+    (_, __0, _): (usize, Expression, usize),
+) -> Expression
+{
     __0
 }
 
-fn __action12(
+fn __action14<
+>(
     (_, l, _): (usize, Expression, usize),
     (_, _, _): (usize, TokenType, usize),
     (_, r, _): (usize, Expression, usize),
-) -> Expression {
-    Expression::Multiply(Box::new(l), Box::new(r))
+) -> Expression
+{
+    Expression::Multiply(Box::new(l),Box::new(r))
 }
 
-fn __action13(
+fn __action15<
+>(
     (_, l, _): (usize, Expression, usize),
     (_, _, _): (usize, TokenType, usize),
     (_, r, _): (usize, Expression, usize),
-) -> Expression {
-    Expression::Divide(Box::new(l), Box::new(r))
+) -> Expression
+{
+    Expression::Divide(Box::new(l),Box::new(r))
 }
 
-fn __action14((_, __0, _): (usize, Expression, usize)) -> Expression {
+fn __action16<
+>(
+    (_, __0, _): (usize, Expression, usize),
+) -> Expression
+{
     __0
 }
 
-fn __action15((_, v, _): (usize, TokenType, usize)) -> Expression {
+fn __action17<
+>(
+    (_, v, _): (usize, TokenType, usize),
+) -> Expression
+{
     Expression::Integer(v)
 }
 
-fn __action16((_, id, _): (usize, TokenType, usize)) -> Expression {
+fn __action18<
+>(
+    (_, id, _): (usize, TokenType, usize),
+) -> Expression
+{
     Expression::Symbol(id)
 }
 
-fn __action17((_, __0, _): (usize, SourceUnitPart, usize)) -> ::std::vec::Vec<SourceUnitPart> {
+fn __action19<
+>(
+    (_, _, _): (usize, TokenType, usize),
+    (_, __0, _): (usize, Expression, usize),
+    (_, _, _): (usize, TokenType, usize),
+) -> Expression
+{
+    __0
+}
+
+fn __action20<
+>(
+    (_, __0, _): (usize, SourceUnitPart, usize),
+) -> ::std::vec::Vec<SourceUnitPart>
+{
     vec![__0]
 }
 
-fn __action18(
+fn __action21<
+>(
     (_, v, _): (usize, ::std::vec::Vec<SourceUnitPart>, usize),
     (_, e, _): (usize, SourceUnitPart, usize),
-) -> ::std::vec::Vec<SourceUnitPart> {
-    {
-        let mut v = v;
-        v.push(e);
-        v
-    }
+) -> ::std::vec::Vec<SourceUnitPart>
+{
+    { let mut v = v; v.push(e); v }
 }
 
-pub trait __ToTriple {
-    fn to_triple(
-        value: Self,
-    ) -> Result<(usize, TokenType, usize), __lalrpop_util::ParseError<usize, TokenType, LexicalError>>;
+pub trait __ToTriple<> {
+    fn to_triple(value: Self) -> Result<(usize,TokenType,usize), __lalrpop_util::ParseError<usize, TokenType, LexicalError>>;
 }
 
-impl __ToTriple for (usize, TokenType, usize) {
-    fn to_triple(
-        value: Self,
-    ) -> Result<(usize, TokenType, usize), __lalrpop_util::ParseError<usize, TokenType, LexicalError>>
-    {
+impl<> __ToTriple<> for (usize, TokenType, usize) {
+    fn to_triple(value: Self) -> Result<(usize,TokenType,usize), __lalrpop_util::ParseError<usize, TokenType, LexicalError>> {
         Ok(value)
     }
 }
-impl __ToTriple for Result<(usize, TokenType, usize), LexicalError> {
-    fn to_triple(
-        value: Self,
-    ) -> Result<(usize, TokenType, usize), __lalrpop_util::ParseError<usize, TokenType, LexicalError>>
-    {
+impl<> __ToTriple<> for Result<(usize, TokenType, usize), LexicalError> {
+    fn to_triple(value: Self) -> Result<(usize,TokenType,usize), __lalrpop_util::ParseError<usize, TokenType, LexicalError>> {
         match value {
             Ok(v) => Ok(v),
             Err(error) => Err(__lalrpop_util::ParseError::User { error }),
