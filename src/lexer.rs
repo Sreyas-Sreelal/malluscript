@@ -3,6 +3,7 @@
 ///
 use std::str::CharIndices;
 
+#[derive(Clone)]
 pub struct Lexer<'input> {
     chars: CharIndices<'input>,
 }
@@ -36,6 +37,8 @@ pub enum TokenType {
     EqualTo,
     NotEqual,
     SemiColon,
+    OpenParantheses,
+    CloseParantheses,
     Literal(String),
     Number(i64),
     Symbol(String),
@@ -54,7 +57,7 @@ impl<'input> Iterator for Lexer<'input> {
     fn next(&mut self) -> Option<Self::Item> {
         loop {
             match self.chars.next() {
-                Some((_, ' ')) => {
+                Some((_, ' ')) | Some((_,'\n')) => {
                     continue;
                 }
                 Some((i, '=')) => return Some(Ok((i, TokenType::Assignment, i))),
@@ -66,6 +69,8 @@ impl<'input> Iterator for Lexer<'input> {
                 Some((i, '/')) => return Some(Ok((i, TokenType::Divide, i))),
                 Some((i, '%')) => return Some(Ok((i, TokenType::Modulus, i))),
                 Some((i, ';')) => return Some(Ok((i, TokenType::SemiColon, i))),
+                Some((i, '(')) => return Some(Ok((i, TokenType::OpenParantheses, i))),
+                Some((i, ')')) => return Some(Ok((i, TokenType::CloseParantheses, i))),
                 Some((i, '"')) => {
                     let l = i;
                     let mut word = String::new();
