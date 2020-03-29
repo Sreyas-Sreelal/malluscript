@@ -1,4 +1,5 @@
 pwoli_sadhanam guhan;
-guhan = a+b*c
+guhan = (a+b)*(c-d)+2;
 dhe_pidicho "Hello World!\n"
 dhe_pidicho guhan
+pwoli_sadhanam guhan;
