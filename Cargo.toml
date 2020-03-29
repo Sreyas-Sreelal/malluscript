@@ -3,6 +3,11 @@ name = "guhiki"
 version = "0.1.0"
 authors = ["SyS <sreyassreelal@gmail.com>"]
 edition = "2018"
+build = "build.rs" 
 
 [dependencies]
-meval = "0.2"
+lalrpop-util = "0.18.1"
+regex = "1"
+
+[build-dependencies]
+lalrpop = "0.18"

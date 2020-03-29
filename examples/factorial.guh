@@ -1,13 +1,13 @@
-pwoli_sadhanam num
-pwoli_sadhanam factorial
-dhe_pidicho "Input number:"
-num = number_thada
-factorial = 1
+pwoli_sadhanam num;
+pwoli_sadhanam factorial;
+dhe_pidicho "Input number:";
+num = number_thada;
+factorial = -1;
 repeat_adi num 0 um_same_alle {
-    factorial = factorial * num
-    num = num -1
+    factorial = factorial * num;
+    num = num -1;
 }
 
-dhe_pidicho "Factoral is :"
-dhe_pidicho factorial
-dhe_pidicho "\n"
+dhe_pidicho "Factoral is :";
+dhe_pidicho factorial;
+pwoli_sadhanam dm 

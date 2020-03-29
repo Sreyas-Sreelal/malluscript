@@ -1,0 +1,62 @@
+use crate::lexer::*;
+use crate::ast::*;
+
+grammar;
+
+pub SourceUnit:SourceUnit = {
+    SourceUnitPart+ => SourceUnit(<>)
+}
+
+SourceUnitPart:SourceUnitPart = {
+    <e:Expression> ";"=> SourceUnitPart::Expression(e),
+    Statement => SourceUnitPart::Statement(<>),
+}
+
+Statement:Statement = {
+    Declaration <id:Identifier> ";" => Statement::Declaration(id),
+    Alloc => Statement::Allocation(<>),
+}
+
+Alloc:Expression = {
+    <l:Identifier> "=" <r:StringLiteral>  => Expression::StringAlloc(l,r),
+    <l:Identifier> "=" <r:Expression>  => Expression::Assignment(l,Box::new(r)),
+}
+
+Expression:Expression = {
+    ArithExpression
+}
+
+ArithExpression: Expression = {
+    <l:Expression> "+" <r:Factor> => Expression::Add(Box::new(l),Box::new(r)),
+    <l:Expression> "-" <r:Factor> => Expression::Subtract(Box::new(l),Box::new(r)),
+    Factor,
+}
+
+Factor: Expression = {
+    <l:Factor> "*" <r:Term> => Expression::Multiply(Box::new(l),Box::new(r)),
+    <l:Factor> "/" <r:Term> => Expression::Divide(Box::new(l),Box::new(r)),
+    Term,
+};
+
+Term: Expression = {
+    <v:Integer> => Expression::Integer(v),
+    <id:Identifier> => Expression::Symbol(id)
+};
+
+extern {
+    type Location = usize;
+    type Error = LexicalError;
+
+    enum TokenType {
+        Identifier => TokenType::Symbol(String),
+        ";" => TokenType::SemiColon,
+        Declaration => TokenType::Declaration,
+        "=" => TokenType::Assignment,
+        Integer => TokenType::Number(i64),
+        StringLiteral => TokenType::Literal(String),
+        "+" => TokenType::Plus,
+        "-" => TokenType::Minus,
+        "*" => TokenType::Product,
+        "/" => TokenType::Divide,
+    }
+}

@@ -1,3 +1,6 @@
+///
+/// TODO:Need to rewrite completely 
+/// 
 use crate::lexer::{Token, TokenType};
 use meval::eval_str;
 use std::collections::HashMap;
@@ -14,7 +17,7 @@ pub enum DataTypes {
 
 pub struct Executor {
     symbol_table: HashMap<String, DataTypes>,
-    lines: Vec<Vec<Token>>,
+    lines: Vec<Token>,
     cur_row: usize,
     cur_col: usize,
     stack: Vec<TokenType>,
@@ -22,7 +25,7 @@ pub struct Executor {
 }
 
 impl Executor {
-    pub fn new(lines: Vec<Vec<Token>>) -> Self {
+    pub fn new(lines: Vec<Token>) -> Self {
         Executor {
             symbol_table: HashMap::new(),
             lines,
@@ -33,6 +36,7 @@ impl Executor {
         }
     }
 
+    /*
     pub fn execute(&mut self) {
         let lines = self.lines.len();
         while self.cur_row < lines {
@@ -282,7 +286,7 @@ impl Executor {
                 self.throw_error("Illegal expression");
             }
         }
-    }
+    }*/
 
     fn throw_error(&self, msg: &str) -> ! {
         println!(

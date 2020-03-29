@@ -1,4 +1,4 @@
-pwoli_sadhanam guhan
-guhan = "ikka"
+pwoli_sadhanam guhan;
+guhan = a+b*c
 dhe_pidicho "Hello World!\n"
 dhe_pidicho guhan
