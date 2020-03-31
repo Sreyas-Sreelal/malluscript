@@ -119,7 +119,7 @@ impl<'input> Iterator for Lexer<'input> {
                     let mut word = String::new();
                     word.push(c);
                     while let Some((_, c)) = self.chars.clone().peekable().peek() {
-                        if c == &' ' || c == &';' {
+                        if c == &' ' || c == &';' || c == &'+' || c == &'-' || c == &'*' || c == &'/'  {
                             break;
                         }
                         word.push(*c);
