@@ -1,5 +1,14 @@
 pwoli_sadhanam guhan;
+pwoli_sadhanam a;
+pwoli_sadhanam b;
+pwoli_sadhanam c;
+pwoli_sadhanam d;
+a = 100+2;
+b = 20;
+c = 5;
+d = 3;
+
 guhan = (a+b)*(c-d)+2;
-dhe_pidicho "Hello World!\n"
-dhe_pidicho guhan
-pwoli_sadhanam guhan;
+dhe_pidicho "Hello World!\n";
+dhe_pidicho guhan-240;
+dhe_pidicho "\n";
