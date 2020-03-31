@@ -30,13 +30,13 @@ mod __parse__SourceUnit {
         // State 0
         11, 0, 0, 0, 0, 0, 0, 0, 12, 13, 14, 0, 15,
         // State 1
-        -6, -6, 0, -6, -6, 0, -6, 0, -6, -6, -6, 0, -6,
+        0, -6, 0, -6, -6, 0, -6, 0, 0, 0, 0, 0, 0,
         // State 2
         -16, 0, 0, 0, 0, 0, 0, 0, -16, -16, -16, 0, -16,
         // State 3
         0, 0, 0, 16, 17, 0, 18, 0, 0, 0, 0, 0, 0,
         // State 4
-        -3, -3, 19, -3, -3, 20, -3, 0, -3, -3, -3, 0, -3,
+        0, -3, 19, -3, -3, 20, -3, 0, 0, 0, 0, 0, 0,
         // State 5
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 6
@@ -46,7 +46,7 @@ mod __parse__SourceUnit {
         // State 8
         -12, 0, 0, 0, 0, 0, 0, 0, -12, -12, -12, 0, -12,
         // State 9
-        -9, -9, -9, -9, -9, -9, -9, 0, -9, -9, -9, 0, -9,
+        0, -9, -9, -9, -9, -9, -9, 0, 0, 0, 0, 0, 0,
         // State 10
         11, 0, 0, 0, 0, 0, 0, 0, 0, 23, 14, 0, 0,
         // State 11
@@ -54,7 +54,7 @@ mod __parse__SourceUnit {
         // State 12
         0, 0, -20, -20, -20, -20, -20, 25, 0, 0, 0, 0, 0,
         // State 13
-        -19, -19, -19, -19, -19, -19, -19, 0, -19, -19, -19, 0, -19,
+        0, -19, -19, -19, -19, -19, -19, 0, 0, 0, 0, 0, 0,
         // State 14
         11, 0, 0, 0, 0, 0, 0, 0, 0, 23, 14, 27, 0,
         // State 15
@@ -72,47 +72,51 @@ mod __parse__SourceUnit {
         // State 21
         0, 32, 0, 16, 17, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 22
-        -20, -20, -20, -20, -20, -20, -20, 0, -20, -20, -20, 0, -20,
+        0, -20, -20, -20, -20, -20, -20, 0, 0, 0, 0, 0, 0,
         // State 23
         0, 0, 0, 0, 0, 0, 33, 0, 0, 0, 0, 0, 0,
         // State 24
         11, 0, 0, 0, 0, 0, 0, 0, 0, 23, 14, 35, 0,
         // State 25
-        -17, 0, 0, 16, 17, 0, 0, 0, -17, -17, -17, 0, -17,
+        0, 0, 0, 16, 17, 0, 36, 0, 0, 0, 0, 0, 0,
         // State 26
-        -18, 0, 0, 0, 0, 0, 0, 0, -18, -18, -18, 0, -18,
+        0, 0, 0, 0, 0, 0, 37, 0, 0, 0, 0, 0, 0,
         // State 27
-        -1, -1, 19, -1, -1, 20, -1, 0, -1, -1, -1, 0, -1,
+        0, -1, 19, -1, -1, 20, -1, 0, 0, 0, 0, 0, 0,
         // State 28
-        -2, -2, 19, -2, -2, 20, -2, 0, -2, -2, -2, 0, -2,
+        0, -2, 19, -2, -2, 20, -2, 0, 0, 0, 0, 0, 0,
         // State 29
-        -7, -7, -7, -7, -7, -7, -7, 0, -7, -7, -7, 0, -7,
+        0, -7, -7, -7, -7, -7, -7, 0, 0, 0, 0, 0, 0,
         // State 30
-        -8, -8, -8, -8, -8, -8, -8, 0, -8, -8, -8, 0, -8,
+        0, -8, -8, -8, -8, -8, -8, 0, 0, 0, 0, 0, 0,
         // State 31
-        -21, -21, -21, -21, -21, -21, -21, 0, -21, -21, -21, 0, -21,
+        0, -21, -21, -21, -21, -21, -21, 0, 0, 0, 0, 0, 0,
         // State 32
         -15, 0, 0, 0, 0, 0, 0, 0, -15, -15, -15, 0, -15,
         // State 33
-        0, 0, 0, 16, 17, 0, 36, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 16, 17, 0, 38, 0, 0, 0, 0, 0, 0,
         // State 34
-        0, 0, 0, 0, 0, 0, 37, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 39, 0, 0, 0, 0, 0, 0,
         // State 35
-        -5, 0, 0, 0, 0, 0, 0, 0, -5, -5, -5, 0, -5,
+        -17, 0, 0, 0, 0, 0, 0, 0, -17, -17, -17, 0, -17,
         // State 36
+        -18, 0, 0, 0, 0, 0, 0, 0, -18, -18, -18, 0, -18,
+        // State 37
+        -5, 0, 0, 0, 0, 0, 0, 0, -5, -5, -5, 0, -5,
+        // State 38
         -4, 0, 0, 0, 0, 0, 0, 0, -4, -4, -4, 0, -4,
     ];
     const __EOF_ACTION: &'static [i8] = &[
         // State 0
         0,
         // State 1
-        -6,
+        0,
         // State 2
         -16,
         // State 3
         0,
         // State 4
-        -3,
+        0,
         // State 5
         -22,
         // State 6
@@ -122,7 +126,7 @@ mod __parse__SourceUnit {
         // State 8
         -12,
         // State 9
-        -9,
+        0,
         // State 10
         0,
         // State 11
@@ -130,7 +134,7 @@ mod __parse__SourceUnit {
         // State 12
         0,
         // State 13
-        -19,
+        0,
         // State 14
         0,
         // State 15
@@ -148,25 +152,25 @@ mod __parse__SourceUnit {
         // State 21
         0,
         // State 22
-        -20,
+        0,
         // State 23
         0,
         // State 24
         0,
         // State 25
-        -17,
+        0,
         // State 26
-        -18,
+        0,
         // State 27
-        -1,
+        0,
         // State 28
-        -2,
+        0,
         // State 29
-        -7,
+        0,
         // State 30
-        -8,
+        0,
         // State 31
-        -21,
+        0,
         // State 32
         -15,
         // State 33
@@ -174,8 +178,12 @@ mod __parse__SourceUnit {
         // State 34
         0,
         // State 35
-        -5,
+        -17,
         // State 36
+        -18,
+        // State 37
+        -5,
+        // State 38
         -4,
     ];
     const __GOTO: &'static [i8] = &[
@@ -252,6 +260,10 @@ mod __parse__SourceUnit {
         // State 35
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 36
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        // State 37
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        // State 38
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     ];
     fn __expected_tokens(__state: usize) -> Vec<::std::string::String> {
@@ -863,15 +875,16 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
-        // Statement = Write, Expression => ActionFn(6);
-        assert!(__symbols.len() >= 2);
+        // Statement = Write, Expression, ";" => ActionFn(6);
+        assert!(__symbols.len() >= 3);
+        let __sym2 = __pop_Variant0(__symbols);
         let __sym1 = __pop_Variant1(__symbols);
         let __sym0 = __pop_Variant0(__symbols);
         let __start = __sym0.0.clone();
-        let __end = __sym1.2.clone();
-        let __nt = super::__action6::<>(__sym0, __sym1);
+        let __end = __sym2.2.clone();
+        let __nt = super::__action6::<>(__sym0, __sym1, __sym2);
         __symbols.push((__start, __Symbol::Variant5(__nt), __end));
-        (2, 7)
+        (3, 7)
     }
     pub(crate) fn __reduce17<
     >(
@@ -880,15 +893,16 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
-        // Statement = Write, StringLiteral => ActionFn(7);
-        assert!(__symbols.len() >= 2);
+        // Statement = Write, StringLiteral, ";" => ActionFn(7);
+        assert!(__symbols.len() >= 3);
+        let __sym2 = __pop_Variant0(__symbols);
         let __sym1 = __pop_Variant0(__symbols);
         let __sym0 = __pop_Variant0(__symbols);
         let __start = __sym0.0.clone();
-        let __end = __sym1.2.clone();
-        let __nt = super::__action7::<>(__sym0, __sym1);
+        let __end = __sym2.2.clone();
+        let __nt = super::__action7::<>(__sym0, __sym1, __sym2);
         __symbols.push((__start, __Symbol::Variant5(__nt), __end));
-        (2, 7)
+        (3, 7)
     }
     pub(crate) fn __reduce18<
     >(
@@ -996,6 +1010,7 @@ fn __action6<
 >(
     (_, _, _): (usize, TokenType, usize),
     (_, e, _): (usize, Expression, usize),
+    (_, _, _): (usize, TokenType, usize),
 ) -> Statement
 {
     Statement::WriteExpr(e)
@@ -1005,6 +1020,7 @@ fn __action7<
 >(
     (_, _, _): (usize, TokenType, usize),
     (_, s, _): (usize, TokenType, usize),
+    (_, _, _): (usize, TokenType, usize),
 ) -> Statement
 {
     Statement::WriteString(s)

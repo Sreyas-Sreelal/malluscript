@@ -15,8 +15,8 @@ SourceUnitPart:SourceUnitPart = {
 Statement:Statement = {
     Declaration <id:Identifier> ";" => Statement::Declaration(id),
     Assignment => Statement::Allocation(<>),
-    Write <e:Expression> => Statement::WriteExpr(e),
-    Write <s:StringLiteral> => Statement::WriteString(s)
+    Write <e:Expression> ";" => Statement::WriteExpr(e),
+    Write <s:StringLiteral> ";" => Statement::WriteString(s)
 }
 
 Assignment:Expression = {
