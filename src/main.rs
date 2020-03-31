@@ -18,7 +18,9 @@ fn main() {
             file.read_to_string(&mut contents).expect("Something went wrong in reading contents of file");
             println!("{}",contents);
             let mut exec = executor::Executor::new();
-            exec.execute(parser::SourceUnitParser::new().parse(lexer::Lexer::new(&contents)).unwrap());
+            let parsed = parser::SourceUnitParser::new().parse(lexer::Lexer::new(&contents)).unwrap();
+            //println!("{:?}",parsed);
+            exec.execute(parsed);
         } else {
             println!(
                 "Invalid file format {:?} expected .guh",
