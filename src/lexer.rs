@@ -26,7 +26,7 @@ pub enum TokenType {
     RightBrace,
     If,
     Else,
-    LOOP,
+    Loop,
     Assignment,
     Plus,
     Minus,
@@ -58,7 +58,7 @@ impl<'input> Iterator for Lexer<'input> {
     fn next(&mut self) -> Option<Self::Item> {
         loop {
             match self.chars.next() {
-                Some((_, ' ')) | Some((_,'\n')) => {
+                Some((_, ' ')) | Some((_, '\n')) => {
                     continue;
                 }
                 Some((i, '=')) => return Some(Ok((i, TokenType::Assignment, i))),
@@ -108,7 +108,7 @@ impl<'input> Iterator for Lexer<'input> {
                         "dhe_pidicho" => return Some(Ok((i, TokenType::Write, i))),
                         "seriyano_mwone" => return Some(Ok((i, TokenType::If, i))),
                         "seri_allel" => return Some(Ok((i, TokenType::Else, i))),
-                        "repeat_adi" => return Some(Ok((i, TokenType::LOOP, i))),
+                        "repeat_adi" => return Some(Ok((i, TokenType::Loop, i))),
                         "inekal_veluthane" => return Some(Ok((i, TokenType::GreaterThan, i))),
                         "um_same_alle" => return Some(Ok((i, TokenType::NotEqual, i))),
                         "inekal_cheruthane" => return Some(Ok((i, TokenType::LessThan, i))),
@@ -121,7 +121,13 @@ impl<'input> Iterator for Lexer<'input> {
                     let mut word = String::new();
                     word.push(c);
                     while let Some((_, c)) = self.chars.clone().peekable().peek() {
-                        if c == &' ' || c == &';' || c == &'+' || c == &'-' || c == &'*' || c == &'/'  {
+                        if c == &' '
+                            || c == &';'
+                            || c == &'+'
+                            || c == &'-'
+                            || c == &'*'
+                            || c == &'/'
+                        {
                             break;
                         }
                         word.push(*c);
