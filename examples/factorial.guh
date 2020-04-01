@@ -10,4 +10,4 @@ repeat_adi num 0 um_same_alle {
 
 dhe_pidicho "Factoral is :";
 dhe_pidicho factorial;
-pwoli_sadhanam dm 
+pwoli_sadhanam dm;
