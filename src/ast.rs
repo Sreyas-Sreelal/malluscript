@@ -11,7 +11,7 @@ pub enum SourceUnitPart {
 
 #[derive(Debug)]
 pub enum Statement {
-    Conditional(Expression, Box<Statement>, Option<Box<Statement>>),
+    Conditional(Expression, SourceUnit, Option<SourceUnit>),
     Loop(Expression, Box<Statement>),
     Declaration(TokenType),
     Allocation(Expression),
@@ -28,6 +28,10 @@ pub enum Expression {
     Subtract(Box<Expression>, Box<Expression>),
     Multiply(Box<Expression>, Box<Expression>),
     Divide(Box<Expression>, Box<Expression>),
+    Equals(Box<Expression>,Box<Expression>),
+    GreaterThan(Box<Expression>,Box<Expression>),
+    LessThan(Box<Expression>,Box<Expression>),
+    NotEquals(Box<Expression>,Box<Expression>),
     Integer(TokenType),
     Symbol(TokenType),
 }
