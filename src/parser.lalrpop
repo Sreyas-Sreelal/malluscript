@@ -8,7 +8,7 @@ pub SourceUnit:SourceUnit = {
 }
 
 SourceUnitPart:SourceUnitPart = {
-    <e:Expression> ";"=> SourceUnitPart::Expression(e),
+    <e:Expression>=> SourceUnitPart::Expression(e),
     Statement => SourceUnitPart::Statement(<>),
 }
 
@@ -16,7 +16,9 @@ Statement:Statement = {
     Declaration <id:Identifier> ";" => Statement::Declaration(id),
     Assignment => Statement::Allocation(<>),
     Write <e:Expression> ";" => Statement::WriteExpr(e),
-    Write <s:StringLiteral> ";" => Statement::WriteString(s)
+    Write <s:StringLiteral> ";" => Statement::WriteString(s),
+    If <condition:Conditional> "{" <s:SourceUnit> "}" => Statement::Conditional(condition,s,None),
+    If <condition:Conditional> "{" <s:SourceUnit> "}" Else "{" <f:SourceUnit> "}" => Statement::Conditional(condition,s,Some(f)),
 }
 
 Assignment:Expression = {
@@ -24,8 +26,15 @@ Assignment:Expression = {
     <l:Identifier> "=" <r:Expression> ";" => Expression::Assignment(l,Box::new(r)),
 }
 
+Conditional:Expression = {
+    <l:Expression>  <r:Expression> "==" => Expression::Equals(Box::new(l),Box::new(r)),
+    <l:Expression>  <r:Expression> "!="  => Expression::NotEquals(Box::new(l),Box::new(r)),
+    <l:Expression>  <r:Expression> ">" => Expression::GreaterThan(Box::new(l),Box::new(r)),
+    <l:Expression>  <r:Expression> "<"  => Expression::LessThan(Box::new(l),Box::new(r)),
+}
+
 Expression:Expression = {
-    ArithExpression
+    ArithExpression 
 }
 
 ArithExpression: Expression = {
@@ -64,5 +73,14 @@ extern {
         "(" => TokenType::OpenParantheses,
         ")" => TokenType::CloseParantheses,
         Write => TokenType::Write,
+        If => TokenType::If,
+        Else => TokenType::Else,
+        ">" => TokenType::GreaterThan,
+        "<" => TokenType::LessThan,
+        "==" => TokenType::EqualTo,
+        "!=" => TokenType::NotEqual,
+        "{" => TokenType::LeftBrace,
+        "}" => TokenType::RightBrace,
+        
     }
 }
