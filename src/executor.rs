@@ -1,8 +1,5 @@
 use crate::ast::*;
-///
-/// TODO:Need to rewrite completely
-///
-use crate::lexer::{TokenType};
+use crate::lexer::TokenType;
 use std::collections::HashMap;
 use std::io::{stdin, stdout, Write};
 use std::mem::discriminant;
@@ -32,9 +29,9 @@ impl Executor {
         }
     }
 
-    pub fn execute(&mut self, unit: SourceUnit) {
-        for x in unit.0 {
-            if let SourceUnitPart::Statement(stmt) = x { 
+    pub fn execute(&mut self, unit: &SourceUnit) {
+        for x in &unit.0 {
+            if let SourceUnitPart::Statement(stmt) = x {
                 match stmt {
                     Statement::Declaration(symbol) => {
                         if let TokenType::Symbol(name) = symbol {
@@ -46,15 +43,22 @@ impl Executor {
                                 panic!("Symbol {} already defiined", name)
                             }
                         }
-                    },
-                    Statement::Conditional(expr,truebody,falsebody) => {
+                    }
+                    Statement::Conditional(expr, truebody, falsebody) => {
                         let truth = (self.eval_arithmetic_logic_expression(expr).unwrap()) != 0;
                         if truth {
-                            self.execute(truebody);
+                            self.execute(&truebody);
                         } else {
                             if let Some(body) = falsebody {
-                                self.execute(body);
+                                self.execute(&body);
                             }
+                        }
+                    }
+                    Statement::Loop(expr,body) => {
+                        let mut truth = (self.eval_arithmetic_logic_expression(expr).unwrap()) != 0;
+                        while truth {
+                            self.execute(&body);
+                            truth = (self.eval_arithmetic_logic_expression(expr).unwrap()) != 0;
                         }
                     }
                     Statement::WriteExpr(expr) => {
@@ -62,23 +66,28 @@ impl Executor {
                     }
                     Statement::WriteString(token) => {
                         if let TokenType::Literal(string) = token {
-                            println!("{}",string);
+                            println!("{}", string);
                         }
                     }
                     Statement::Allocation(expr) => match expr {
-                        Expression::Assignment(l,r) => {
-                            if let  TokenType::Symbol(identifier) = l {
-                                if !self.symbol_table.contains_key(&identifier) {
-                                    panic!("Undefined symbol {}",identifier);
+                        Expression::Assignment(l, r) => {
+                            if let TokenType::Symbol(identifier) = l {
+                                if !self.symbol_table.contains_key(identifier) {
+                                    panic!("Undefined symbol {}", identifier);
                                 }
                                 //if let literal = Expression::
-                                self.symbol_table.insert(identifier,DataTypes::Integer(self.eval_arithmetic_logic_expression(*r).unwrap()));
-                                //println!("{:?}",self.symbol_table);
+                                self.symbol_table.insert(
+                                    identifier.to_string(),
+                                    DataTypes::Integer(
+                                        self.eval_arithmetic_logic_expression(&**r).unwrap(),
+                                    ),
+                                );
+                            //println!("{:?}",self.symbol_table);
                             } else {
                                 panic!("Invalid left assignment operator expected a symbol")
                             }
                         }
-                        _=> {
+                        _ => {
                             //println!("somethinf elese {:?}", e);
                         }
                     },
@@ -88,31 +97,40 @@ impl Executor {
         }
     }
 
-    
-    fn eval_arithmetic_logic_expression(&self,expr:Expression) -> Result<i64,&'static str> {
+    fn eval_arithmetic_logic_expression(&self, expr: &Expression) -> Result<i64, &'static str> {
         match expr {
-            Expression::Add(l,r) => Ok(self.eval_arithmetic_logic_expression(*l).unwrap() + self.eval_arithmetic_logic_expression(*r).unwrap()),
-            Expression::Multiply(l,r) => Ok(self.eval_arithmetic_logic_expression(*l).unwrap() * self.eval_arithmetic_logic_expression(*r).unwrap()),
-            Expression::Subtract(l,r) => Ok(self.eval_arithmetic_logic_expression(*l).unwrap() - self.eval_arithmetic_logic_expression(*r).unwrap()),
-            Expression::Divide(l,r) => Ok(self.eval_arithmetic_logic_expression(*l).unwrap() / self.eval_arithmetic_logic_expression(*r).unwrap()),
-            Expression::Equals(l,r) => Ok((self.eval_arithmetic_logic_expression(*l).unwrap() == self.eval_arithmetic_logic_expression(*r).unwrap())as i64),
-            Expression::NotEquals(l,r) => Ok((self.eval_arithmetic_logic_expression(*l).unwrap() != self.eval_arithmetic_logic_expression(*r).unwrap())as i64),
-            Expression::GreaterThan(l,r) => Ok((self.eval_arithmetic_logic_expression(*l).unwrap() > self.eval_arithmetic_logic_expression(*r).unwrap())as i64),
-            Expression::LessThan(l,r) => Ok((self.eval_arithmetic_logic_expression(*l).unwrap() < self.eval_arithmetic_logic_expression(*r).unwrap())as i64),
-            Expression::Integer(l) => {
-                match l {
-                    TokenType::Number(number) => {
-                        Ok(number)
-                    }
-                    _ => Err("Invalid constant")
-                }
+            Expression::Add(l, r) => Ok(self.eval_arithmetic_logic_expression(&**l).unwrap()
+                + self.eval_arithmetic_logic_expression(&**r).unwrap()),
+            Expression::Multiply(l, r) => Ok(self.eval_arithmetic_logic_expression(&**l).unwrap()
+                * self.eval_arithmetic_logic_expression(&**r).unwrap()),
+            Expression::Subtract(l, r) => Ok(self.eval_arithmetic_logic_expression(&**l).unwrap()
+                - self.eval_arithmetic_logic_expression(&**r).unwrap()),
+            Expression::Divide(l, r) => Ok(self.eval_arithmetic_logic_expression(&**l).unwrap()
+                / self.eval_arithmetic_logic_expression(&**r).unwrap()),
+            Expression::Equals(l, r) => Ok((self.eval_arithmetic_logic_expression(&**l).unwrap()
+                == self.eval_arithmetic_logic_expression(&**r).unwrap())
+                as i64),
+            Expression::NotEquals(l, r) => Ok((self.eval_arithmetic_logic_expression(&**l).unwrap()
+                != self.eval_arithmetic_logic_expression(&**r).unwrap())
+                as i64),
+            Expression::GreaterThan(l, r) => {
+                Ok((self.eval_arithmetic_logic_expression(&**l).unwrap()
+                    > self.eval_arithmetic_logic_expression(&**r).unwrap()) as i64)
             }
+            Expression::LessThan(l, r) => Ok((self.eval_arithmetic_logic_expression(&**l).unwrap()
+                < self.eval_arithmetic_logic_expression(&**r).unwrap())
+                as i64),
+            Expression::Integer(l) => match l {
+                TokenType::Number(number) => Ok(*number),
+                _ => Err("Invalid constant"),
+            },
             Expression::Symbol(token) => {
                 if let TokenType::Symbol(identifier) = token {
-                    if !self.symbol_table.contains_key(&identifier) {
-                        panic!("Undefined symbol {}",identifier);
+                    if !self.symbol_table.contains_key(identifier) {
+                        panic!("Undefined symbol {}", identifier);
                     }
-                    if let DataTypes::Integer(number) = self.symbol_table.get(&identifier).unwrap() {
+                    if let DataTypes::Integer(number) = self.symbol_table.get(identifier).unwrap()
+                    {
                         Ok(*number)
                     } else {
                         Err("Invalid constant in expression")
@@ -121,7 +139,7 @@ impl Executor {
                     Err("Invalid constant in expression")
                 }
             }
-            _ => Err("Invalid constant in expression")
+            _ => Err("Invalid constant in expression"),
         }
     }
 }
