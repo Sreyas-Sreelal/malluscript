@@ -8,6 +8,18 @@ b = 20;
 c = 5;
 d = 3;
 
+seriyano_mwone a 102 um_same_aane {
+    dhe_pidicho "a zero aane";
+    dhe_pidicho "nextcheck";
+    seriyano_mwone a 102 um_same_alle {
+        dhe_pidicho "a zero alle";
+    } seri_allel {
+        dhe_pidicho "a zero aane";
+    }
+} seri_allel {
+    dhe_pidicho "a zero alle";
+}
+
 guhan = (a+b)*(c-d)+2;
 dhe_pidicho "Hello World!\n";
 dhe_pidicho guhan-240;
