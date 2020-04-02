@@ -14,7 +14,8 @@ pub enum Statement {
     Conditional(Expression, SourceUnit, Option<SourceUnit>),
     Loop(Expression, SourceUnit),
     Declaration(TokenType),
-    Allocation(Expression),
+    Assignment(TokenType, Expression),
+    StringAlloc(TokenType, TokenType),
     WriteExpr(Expression),
     WriteString(TokenType),
 }
@@ -22,12 +23,12 @@ pub enum Statement {
 #[derive(Debug)]
 pub enum Expression {
     Empty,
-    Assignment(TokenType, Box<Expression>),
-    StringAlloc(TokenType, TokenType),
+    
     Add(Box<Expression>, Box<Expression>),
     Subtract(Box<Expression>, Box<Expression>),
     Multiply(Box<Expression>, Box<Expression>),
     Divide(Box<Expression>, Box<Expression>),
+    UnaryMinus(Box<Expression>),
     Equals(Box<Expression>, Box<Expression>),
     GreaterThan(Box<Expression>, Box<Expression>),
     LessThan(Box<Expression>, Box<Expression>),
