@@ -5,55 +5,56 @@ grammar;
 
 pub SourceUnit:SourceUnit = {
     SourceUnitPart+ => SourceUnit(<>)
-}
+};
 
 SourceUnitPart:SourceUnitPart = {
-    <e:Expression> => SourceUnitPart::Expression(e),
     Statement => SourceUnitPart::Statement(<>),
-}
+};
 
 Statement:Statement = {
     Declaration <id:Identifier> ";" => Statement::Declaration(id),
-    Assignment => Statement::Allocation(<>),
+    <l:Identifier> "=" <r:StringLiteral> ";" => Statement::StringAlloc(l,r),
+    <l:Identifier> "=" <r:Expression> ";" => Statement::Assignment(l,r),
     Write <e:Expression> ";" => Statement::WriteExpr(e),
     Write <s:StringLiteral> ";" => Statement::WriteString(s),
     If <condition:Conditional> "{" <s:SourceUnit> "}" => Statement::Conditional(condition,s,None),
     If <condition:Conditional> "{" <s:SourceUnit> "}" Else "{" <f:SourceUnit> "}" => Statement::Conditional(condition,s,Some(f)),
     Loop <condition:Conditional> "{" <s:SourceUnit> "}" => Statement::Loop(condition,s)
-}
+};
 
-Assignment:Expression = {
-    <l:Identifier> "=" <r:StringLiteral> ";" => Expression::StringAlloc(l,r),
-    <l:Identifier> "=" <r:Expression> ";" => Expression::Assignment(l,Box::new(r)),
+Expression:Expression = {
+    ArithExpression
 }
 
 Conditional:Expression = {
-    <l:Expression>  <r:Expression> "==" => Expression::Equals(Box::new(l),Box::new(r)),
-    <l:Expression>  <r:Expression> "!=" => Expression::NotEquals(Box::new(l),Box::new(r)),
-    <l:Expression>  <r:Expression> ">" => Expression::GreaterThan(Box::new(l),Box::new(r)),
-    <l:Expression>  <r:Expression> "<" => Expression::LessThan(Box::new(l),Box::new(r)),
-}
-
-Expression:Expression = {
-    ArithExpression 
-}
+    <l:Conditional>  <r:Conditional> "==" => Expression::Equals(Box::new(l),Box::new(r)),
+    <l:Conditional>  <r:Conditional> "!=" => Expression::NotEquals(Box::new(l),Box::new(r)),
+    <l:Conditional>  <r:Conditional> ">" => Expression::GreaterThan(Box::new(l),Box::new(r)),
+    <l:Conditional>  <r:Conditional> "<" => Expression::LessThan(Box::new(l),Box::new(r)),
+    Term,
+};
 
 ArithExpression: Expression = {
-    <l:Expression> "+" <r:Factor> => Expression::Add(Box::new(l),Box::new(r)),
-    <l:Expression> "-" <r:Factor> => Expression::Subtract(Box::new(l),Box::new(r)),
+    <l:ArithExpression> "+" <r:Factor> => Expression::Add(Box::new(l),Box::new(r)),
+    <l:ArithExpression> "-" <r:Factor> => Expression::Subtract(Box::new(l),Box::new(r)),
     Factor,
-}
+};
 
 Factor: Expression = {
-    <l:Factor> "*" <r:Term> => Expression::Multiply(Box::new(l),Box::new(r)),
-    <l:Factor> "/" <r:Term> => Expression::Divide(Box::new(l),Box::new(r)),
-    Term,
+    <l:Factor> "*" <r:Unary> => Expression::Multiply(Box::new(l),Box::new(r)),
+    <l:Factor> "/" <r:Unary> => Expression::Divide(Box::new(l),Box::new(r)),
+    Unary,
+};
+
+Unary:Expression = {
+    "-" <r:Unary> => Expression::UnaryMinus(Box::new(r)),
+    Term
 };
 
 Term: Expression = {
     <v:Integer> => Expression::Integer(v),
     <id:Identifier> => Expression::Symbol(id),
-    "(" <Expression> ")"
+    "(" <e:Expression> ")" => e
 };
 
 extern {

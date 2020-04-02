@@ -69,28 +69,23 @@ impl Executor {
                             println!("{}", string);
                         }
                     }
-                    Statement::Allocation(expr) => match expr {
-                        Expression::Assignment(l, r) => {
-                            if let TokenType::Symbol(identifier) = l {
-                                if !self.symbol_table.contains_key(identifier) {
-                                    panic!("Undefined symbol {}", identifier);
-                                }
-                                //if let literal = Expression::
-                                self.symbol_table.insert(
-                                    identifier.to_string(),
-                                    DataTypes::Integer(
-                                        self.eval_arithmetic_logic_expression(&**r).unwrap(),
-                                    ),
-                                );
-                            //println!("{:?}",self.symbol_table);
-                            } else {
-                                panic!("Invalid left assignment operator expected a symbol")
+                    Statement::Assignment(l, r) =>{
+                        if let TokenType::Symbol(identifier) = l {
+                            if !self.symbol_table.contains_key(identifier) {
+                                panic!("Undefined symbol {}", identifier);
                             }
+                            //if let literal = Expression::
+                            self.symbol_table.insert(
+                                identifier.to_string(),
+                                DataTypes::Integer(
+                                    self.eval_arithmetic_logic_expression(&*r).unwrap(),
+                                ),
+                            );
+                        //println!("{:?}",self.symbol_table);
+                        } else {
+                            panic!("Invalid left assignment operator expected a symbol")
                         }
-                        _ => {
-                            //println!("somethinf elese {:?}", e);
-                        }
-                    },
+                    }
                     _ => {}
                 }
             }
@@ -107,6 +102,9 @@ impl Executor {
                 - self.eval_arithmetic_logic_expression(&**r).unwrap()),
             Expression::Divide(l, r) => Ok(self.eval_arithmetic_logic_expression(&**l).unwrap()
                 / self.eval_arithmetic_logic_expression(&**r).unwrap()),
+            Expression::UnaryMinus(r) => {
+                Ok(-1*self.eval_arithmetic_logic_expression(&**r).unwrap())
+            }
             Expression::Equals(l, r) => Ok((self.eval_arithmetic_logic_expression(&**l).unwrap()
                 == self.eval_arithmetic_logic_expression(&**r).unwrap())
                 as i64),
