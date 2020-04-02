@@ -3,7 +3,7 @@ use crate::lexer::TokenType;
 use std::collections::HashMap;
 use std::fmt;
 
-#[derive(Debug, PartialEq, Clone,Eq,PartialOrd)]
+#[derive(Debug, PartialEq, Clone, Eq, PartialOrd)]
 pub enum DataTypes {
     String(String),
     Integer(i64),
@@ -23,46 +23,46 @@ impl fmt::Display for DataTypes {
 
 impl std::ops::Add for DataTypes {
     type Output = Self;
-    fn add(self,rhs:DataTypes) -> Self {
-        match (rhs,self) {
-            (DataTypes::Integer(r),DataTypes::Integer(l)) => DataTypes::Integer(r+l),
-            _ => panic!("Unhandled addition of datatypes")
+    fn add(self, rhs: DataTypes) -> Self {
+        match (rhs, self) {
+            (DataTypes::Integer(r), DataTypes::Integer(l)) => DataTypes::Integer(r + l),
+            _ => panic!("Unhandled addition of datatypes"),
         }
     }
 }
 
 impl From<bool> for DataTypes {
-    fn from(orginal:bool) -> Self{
+    fn from(orginal: bool) -> Self {
         DataTypes::Bool(orginal)
     }
 }
 
 impl std::ops::Sub for DataTypes {
     type Output = Self;
-    fn sub(self,rhs:DataTypes) -> Self {
-        match (rhs,self) {
-            (DataTypes::Integer(r),DataTypes::Integer(l)) => DataTypes::Integer(r-l),
-            _ => panic!("Unhandled subraction of datatypes")
+    fn sub(self, rhs: DataTypes) -> Self {
+        match (rhs, self) {
+            (DataTypes::Integer(r), DataTypes::Integer(l)) => DataTypes::Integer(r - l),
+            _ => panic!("Unhandled subraction of datatypes"),
         }
     }
 }
 
 impl std::ops::Mul for DataTypes {
     type Output = Self;
-    fn mul(self,rhs:DataTypes) -> Self {
-        match (rhs,self) {
-            (DataTypes::Integer(r),DataTypes::Integer(l)) => DataTypes::Integer(r*l),
-            _ => panic!("Unhandled multiplication of datatypes")
+    fn mul(self, rhs: DataTypes) -> Self {
+        match (rhs, self) {
+            (DataTypes::Integer(r), DataTypes::Integer(l)) => DataTypes::Integer(r * l),
+            _ => panic!("Unhandled multiplication of datatypes"),
         }
     }
 }
 
 impl std::ops::Div for DataTypes {
     type Output = Self;
-    fn div(self,rhs:DataTypes) -> Self {
-        match (rhs,self) {
-            (DataTypes::Integer(r),DataTypes::Integer(l)) => DataTypes::Integer(r/l),
-            _ => panic!("Unhandled division of datatypes")
+    fn div(self, rhs: DataTypes) -> Self {
+        match (rhs, self) {
+            (DataTypes::Integer(r), DataTypes::Integer(l)) => DataTypes::Integer(r / l),
+            _ => panic!("Unhandled division of datatypes"),
         }
     }
 }
@@ -94,7 +94,8 @@ impl Executor {
                     }
                 }
                 Statement::Conditional(expr, truebody, falsebody) => {
-                    let truth = (self.eval_arithmetic_logic_expression(expr).unwrap()) != DataTypes::Integer(0);
+                    let truth = (self.eval_arithmetic_logic_expression(expr).unwrap())
+                        != DataTypes::Integer(0);
                     if truth {
                         self.execute(&truebody);
                     } else {
@@ -104,10 +105,12 @@ impl Executor {
                     }
                 }
                 Statement::Loop(expr, body) => {
-                    let mut truth = (self.eval_arithmetic_logic_expression(expr).unwrap()) != DataTypes::Integer(0);
+                    let mut truth = (self.eval_arithmetic_logic_expression(expr).unwrap())
+                        != DataTypes::Integer(0);
                     while truth {
                         self.execute(&body);
-                        truth = (self.eval_arithmetic_logic_expression(expr).unwrap()) != DataTypes::Integer(0);
+                        truth = (self.eval_arithmetic_logic_expression(expr).unwrap())
+                            != DataTypes::Integer(0);
                     }
                 }
                 Statement::WriteExpr(expr) => {
@@ -150,7 +153,10 @@ impl Executor {
         }
     }
 
-    fn eval_arithmetic_logic_expression(&self, expr: &Expression) -> Result<DataTypes, &'static str> {
+    fn eval_arithmetic_logic_expression(
+        &self,
+        expr: &Expression,
+    ) -> Result<DataTypes, &'static str> {
         match expr {
             Expression::Add(l, r) => Ok(self.eval_arithmetic_logic_expression(&**l).unwrap()
                 + self.eval_arithmetic_logic_expression(&**r).unwrap()),
@@ -163,22 +169,23 @@ impl Executor {
             Expression::UnaryMinus(r) => {
                 Ok(DataTypes::Integer(-1) * self.eval_arithmetic_logic_expression(&**r).unwrap())
             }
-            Expression::Equals(l, r) => Ok(DataTypes::Bool(self.eval_arithmetic_logic_expression(&**l).unwrap()
-                == self.eval_arithmetic_logic_expression(&**r).unwrap())),
-            Expression::NotEquals(l, r) => Ok(
-                    DataTypes::Bool(self.eval_arithmetic_logic_expression(&**l).unwrap()
-                    != self.eval_arithmetic_logic_expression(&**r).unwrap()
-                )),
-            
-            Expression::GreaterThan(l, r) => 
-            Ok(
-                DataTypes::Bool(self.eval_arithmetic_logic_expression(&**l).unwrap()
-                > self.eval_arithmetic_logic_expression(&**r).unwrap()
+            Expression::Equals(l, r) => Ok(DataTypes::Bool(
+                self.eval_arithmetic_logic_expression(&**l).unwrap()
+                    == self.eval_arithmetic_logic_expression(&**r).unwrap(),
             )),
-            
-            Expression::LessThan(l, r) =>  Ok(
-                DataTypes::Bool(self.eval_arithmetic_logic_expression(&**l).unwrap()
-                < self.eval_arithmetic_logic_expression(&**r).unwrap()
+            Expression::NotEquals(l, r) => Ok(DataTypes::Bool(
+                self.eval_arithmetic_logic_expression(&**l).unwrap()
+                    != self.eval_arithmetic_logic_expression(&**r).unwrap(),
+            )),
+
+            Expression::GreaterThan(l, r) => Ok(DataTypes::Bool(
+                self.eval_arithmetic_logic_expression(&**l).unwrap()
+                    > self.eval_arithmetic_logic_expression(&**r).unwrap(),
+            )),
+
+            Expression::LessThan(l, r) => Ok(DataTypes::Bool(
+                self.eval_arithmetic_logic_expression(&**l).unwrap()
+                    < self.eval_arithmetic_logic_expression(&**r).unwrap(),
             )),
             Expression::Integer(l) => match l {
                 TokenType::Number(number) => Ok(DataTypes::Integer(*number)),
@@ -189,17 +196,12 @@ impl Executor {
                     if !self.symbol_table.contains_key(identifier) {
                         panic!("Undefined symbol {}", identifier);
                     }
-                    match  self.symbol_table.get(identifier).unwrap() {
-                        DataTypes::Integer(number) => {
-                            Ok(DataTypes::Integer(*number))
-                        }
-                        DataTypes::String(data)  => {
-                            Ok(DataTypes::String(data.to_string()))
-                        }
-                        _ => Err("Invalid constant in expression")
-                        
+                    match self.symbol_table.get(identifier).unwrap() {
+                        DataTypes::Integer(number) => Ok(DataTypes::Integer(*number)),
+                        DataTypes::String(data) => Ok(DataTypes::String(data.to_string())),
+                        _ => Err("Invalid constant in expression"),
                     }
-                }  else {
+                } else {
                     Err("Invalid constant in expression")
                 }
             }
