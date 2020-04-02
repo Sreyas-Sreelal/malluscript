@@ -3,12 +3,12 @@ pwoli_sadhanam a;
 pwoli_sadhanam b;
 pwoli_sadhanam c;
 pwoli_sadhanam d;
-a = 100+2;
+a = 100+3;
 b = 20;
 c = 5;
 d = 3;
 
-seriyano_mwone a 102 um_same_aane {
+seriyano_mwone 102 a um_same_aane {
     dhe_pidicho "a zero aane";
     dhe_pidicho "nextcheck";
     seriyano_mwone a 102 um_same_alle {
