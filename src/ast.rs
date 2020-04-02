@@ -23,7 +23,7 @@ pub enum Statement {
 #[derive(Debug)]
 pub enum Expression {
     Empty,
-    
+
     Add(Box<Expression>, Box<Expression>),
     Subtract(Box<Expression>, Box<Expression>),
     Multiply(Box<Expression>, Box<Expression>),

@@ -54,7 +54,7 @@ impl Executor {
                             }
                         }
                     }
-                    Statement::Loop(expr,body) => {
+                    Statement::Loop(expr, body) => {
                         let mut truth = (self.eval_arithmetic_logic_expression(expr).unwrap()) != 0;
                         while truth {
                             self.execute(&body);
@@ -69,7 +69,7 @@ impl Executor {
                             println!("{}", string);
                         }
                     }
-                    Statement::Assignment(l, r) =>{
+                    Statement::Assignment(l, r) => {
                         if let TokenType::Symbol(identifier) = l {
                             if !self.symbol_table.contains_key(identifier) {
                                 panic!("Undefined symbol {}", identifier);
@@ -103,17 +103,20 @@ impl Executor {
             Expression::Divide(l, r) => Ok(self.eval_arithmetic_logic_expression(&**l).unwrap()
                 / self.eval_arithmetic_logic_expression(&**r).unwrap()),
             Expression::UnaryMinus(r) => {
-                Ok(-1*self.eval_arithmetic_logic_expression(&**r).unwrap())
+                Ok(-1 * self.eval_arithmetic_logic_expression(&**r).unwrap())
             }
             Expression::Equals(l, r) => Ok((self.eval_arithmetic_logic_expression(&**l).unwrap()
                 == self.eval_arithmetic_logic_expression(&**r).unwrap())
                 as i64),
-            Expression::NotEquals(l, r) => Ok((self.eval_arithmetic_logic_expression(&**l).unwrap()
-                != self.eval_arithmetic_logic_expression(&**r).unwrap())
-                as i64),
+            Expression::NotEquals(l, r) => {
+                Ok((self.eval_arithmetic_logic_expression(&**l).unwrap()
+                    != self.eval_arithmetic_logic_expression(&**r).unwrap())
+                    as i64)
+            }
             Expression::GreaterThan(l, r) => {
                 Ok((self.eval_arithmetic_logic_expression(&**l).unwrap()
-                    > self.eval_arithmetic_logic_expression(&**r).unwrap()) as i64)
+                    > self.eval_arithmetic_logic_expression(&**r).unwrap())
+                    as i64)
             }
             Expression::LessThan(l, r) => Ok((self.eval_arithmetic_logic_expression(&**l).unwrap()
                 < self.eval_arithmetic_logic_expression(&**r).unwrap())
@@ -127,8 +130,7 @@ impl Executor {
                     if !self.symbol_table.contains_key(identifier) {
                         panic!("Undefined symbol {}", identifier);
                     }
-                    if let DataTypes::Integer(number) = self.symbol_table.get(identifier).unwrap()
-                    {
+                    if let DataTypes::Integer(number) = self.symbol_table.get(identifier).unwrap() {
                         Ok(*number)
                     } else {
                         Err("Invalid constant in expression")
