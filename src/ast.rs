@@ -5,7 +5,6 @@ pub struct SourceUnit(pub Vec<SourceUnitPart>);
 
 #[derive(Debug)]
 pub enum SourceUnitPart {
-    Expression(Expression),
     Statement(Statement),
 }
 
@@ -22,7 +21,7 @@ pub enum Statement {
 
 #[derive(Debug)]
 pub enum Expression {
-    Empty,
+//    Empty,
 
     Add(Box<Expression>, Box<Expression>),
     Subtract(Box<Expression>, Box<Expression>),
