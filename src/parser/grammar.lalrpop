@@ -14,10 +14,8 @@ SourceUnitPart:SourceUnitPart = {
 
 Statement:Statement = {
     Declaration <id:Identifier> ";" => Statement::Declaration(id),
-    <l:Identifier> "=" <r:StringLiteral> ";" => Statement::StringAlloc(l,r),
     <l:Identifier> "=" <r:Expression> ";" => Statement::Assignment(l,r),
-    Write <e:Expression> ";" => Statement::WriteExpr(e),
-    Write <s:StringLiteral> ";" => Statement::WriteString(s),
+    Write <e:Expression> ";" => Statement::Write(e),
     If <condition:Conditional> "{" <s:SourceUnit> "}" => Statement::Conditional(condition,s,None),
     If <condition:Conditional> "{" <s:SourceUnit> "}" Else "{" <f:SourceUnit> "}" => Statement::Conditional(condition,s,Some(f)),
     Loop <condition:Conditional> "{" <s:SourceUnit> "}" => Statement::Loop(condition,s)
@@ -55,6 +53,7 @@ Unary:Expression = {
 Term: Expression = {
     <v:Integer> => Expression::Integer(v),
     <id:Identifier> => Expression::Symbol(id),
+    <string:StringLiteral> => Expression::StringLiteral(string),
     "(" <e:Expression> ")" => e
 };
 

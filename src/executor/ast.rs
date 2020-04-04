@@ -14,9 +14,7 @@ pub enum Statement {
     Loop(Expression, SourceUnit),
     Declaration(TokenType),
     Assignment(TokenType, Expression),
-    StringAlloc(TokenType, TokenType),
-    WriteExpr(Expression),
-    WriteString(TokenType),
+    Write(Expression),
 }
 
 #[derive(Debug)]
@@ -33,4 +31,5 @@ pub enum Expression {
     NotEquals(Box<Expression>, Box<Expression>),
     Integer(TokenType),
     Symbol(TokenType),
+    StringLiteral(TokenType)
 }

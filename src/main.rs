@@ -20,7 +20,7 @@ fn main() {
             let tokens = lexer::Lexer::new(&contents);
             //println!("{:?}",tokens);
             let parsed = parser::SourceUnitParser::new().parse(tokens).unwrap();
-            println!("{:?}",parsed);
+            //println!("{:?}",parsed);
             exec.execute(&parsed);
         } else {
             println!(

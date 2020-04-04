@@ -50,13 +50,8 @@ impl Executor {
                         truth = to_bool(self.eval_arithmetic_logic_expression(expr).unwrap());
                     }
                 }
-                Statement::WriteExpr(expr) => {
+                Statement::Write(expr) => {
                     print!("{}", self.eval_arithmetic_logic_expression(expr).unwrap());
-                }
-                Statement::WriteString(token) => {
-                    if let TokenType::Literal(string) = token {
-                        println!("{}", string);
-                    }
                 }
                 Statement::Assignment(l, r) => {
                     if let TokenType::Symbol(identifier) = l {
@@ -67,21 +62,6 @@ impl Executor {
                             identifier.to_string(),
                             self.eval_arithmetic_logic_expression(&*r).unwrap(),
                         );
-                    } else {
-                        panic!("Invalid left assignment operator expected a symbol")
-                    }
-                }
-                Statement::StringAlloc(l, r) => {
-                    if let TokenType::Symbol(identifier) = l {
-                        if !self.symbol_table.contains_key(identifier) {
-                            panic!("Undefined symbol {}", identifier);
-                        }
-                        if let TokenType::Literal(data) = r {
-                            self.symbol_table.insert(
-                                identifier.to_string(),
-                                DataTypes::String(data.to_string()),
-                            );
-                        }
                     } else {
                         panic!("Invalid left assignment operator expected a symbol")
                     }
@@ -140,6 +120,13 @@ impl Executor {
                     }
                 } else {
                     Err("Invalid constant in expression")
+                }
+            }
+            Expression::StringLiteral(literal) => {
+                if let TokenType::Literal(value) = literal {
+                    Ok(DataTypes::String(value.to_string()))
+                } else {
+                    Err("Unrecognized expression")
                 }
             }
         }
