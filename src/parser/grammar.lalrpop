@@ -1,5 +1,6 @@
-use crate::lexer::*;
-use crate::ast::*;
+use crate::lexer::tokens::*;
+use crate::lexer::LexicalError;
+use crate::executor::ast::*;
 
 grammar;
 

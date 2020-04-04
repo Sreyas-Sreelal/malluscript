@@ -1,5 +1,8 @@
-use crate::ast::*;
-use crate::lexer::*;
+// auto-generated: "lalrpop 0.18.1"
+// sha256: 436afc3db1a3d5d61be0ef6a8c6b53e39bdea9b7e4273c5b216ff653ff145
+use crate::lexer::tokens::*;
+use crate::lexer::LexicalError;
+use crate::executor::ast::*;
 #[allow(unused_extern_crates)]
 extern crate lalrpop_util as __lalrpop_util;
 #[allow(unused_imports)]
@@ -9,8 +12,9 @@ use self::__lalrpop_util::state_machine as __state_machine;
 mod __parse__SourceUnit {
     #![allow(non_snake_case, non_camel_case_types, unused_mut, unused_variables, unused_imports, unused_parens)]
 
-    use crate::lexer::*;
-    use crate::ast::*;
+    use crate::lexer::tokens::*;
+    use crate::lexer::LexicalError;
+    use crate::executor::ast::*;
     #[allow(unused_extern_crates)]
     extern crate lalrpop_util as __lalrpop_util;
     #[allow(unused_imports)]
@@ -1268,71 +1272,96 @@ mod __parse__SourceUnit {
 }
 pub use self::__parse__SourceUnit::SourceUnitParser;
 
-fn __action0((_, __0, _): (usize, SourceUnit, usize)) -> SourceUnit {
+fn __action0<
+>(
+    (_, __0, _): (usize, SourceUnit, usize),
+) -> SourceUnit
+{
     __0
 }
 
-fn __action1((_, __0, _): (usize, ::std::vec::Vec<SourceUnitPart>, usize)) -> SourceUnit {
+fn __action1<
+>(
+    (_, __0, _): (usize, ::std::vec::Vec<SourceUnitPart>, usize),
+) -> SourceUnit
+{
     SourceUnit(__0)
 }
 
-fn __action2((_, __0, _): (usize, Statement, usize)) -> SourceUnitPart {
+fn __action2<
+>(
+    (_, __0, _): (usize, Statement, usize),
+) -> SourceUnitPart
+{
     SourceUnitPart::Statement(__0)
 }
 
-fn __action3(
+fn __action3<
+>(
     (_, _, _): (usize, TokenType, usize),
     (_, id, _): (usize, TokenType, usize),
     (_, _, _): (usize, TokenType, usize),
-) -> Statement {
+) -> Statement
+{
     Statement::Declaration(id)
 }
 
-fn __action4(
+fn __action4<
+>(
     (_, l, _): (usize, TokenType, usize),
     (_, _, _): (usize, TokenType, usize),
     (_, r, _): (usize, TokenType, usize),
     (_, _, _): (usize, TokenType, usize),
-) -> Statement {
-    Statement::StringAlloc(l, r)
+) -> Statement
+{
+    Statement::StringAlloc(l,r)
 }
 
-fn __action5(
+fn __action5<
+>(
     (_, l, _): (usize, TokenType, usize),
     (_, _, _): (usize, TokenType, usize),
     (_, r, _): (usize, Expression, usize),
     (_, _, _): (usize, TokenType, usize),
-) -> Statement {
-    Statement::Assignment(l, r)
+) -> Statement
+{
+    Statement::Assignment(l,r)
 }
 
-fn __action6(
+fn __action6<
+>(
     (_, _, _): (usize, TokenType, usize),
     (_, e, _): (usize, Expression, usize),
     (_, _, _): (usize, TokenType, usize),
-) -> Statement {
+) -> Statement
+{
     Statement::WriteExpr(e)
 }
 
-fn __action7(
+fn __action7<
+>(
     (_, _, _): (usize, TokenType, usize),
     (_, s, _): (usize, TokenType, usize),
     (_, _, _): (usize, TokenType, usize),
-) -> Statement {
+) -> Statement
+{
     Statement::WriteString(s)
 }
 
-fn __action8(
+fn __action8<
+>(
     (_, _, _): (usize, TokenType, usize),
     (_, condition, _): (usize, Expression, usize),
     (_, _, _): (usize, TokenType, usize),
     (_, s, _): (usize, SourceUnit, usize),
     (_, _, _): (usize, TokenType, usize),
-) -> Statement {
-    Statement::Conditional(condition, s, None)
+) -> Statement
+{
+    Statement::Conditional(condition,s,None)
 }
 
-fn __action9(
+fn __action9<
+>(
     (_, _, _): (usize, TokenType, usize),
     (_, condition, _): (usize, Expression, usize),
     (_, _, _): (usize, TokenType, usize),
@@ -1342,161 +1371,206 @@ fn __action9(
     (_, _, _): (usize, TokenType, usize),
     (_, f, _): (usize, SourceUnit, usize),
     (_, _, _): (usize, TokenType, usize),
-) -> Statement {
-    Statement::Conditional(condition, s, Some(f))
+) -> Statement
+{
+    Statement::Conditional(condition,s,Some(f))
 }
 
-fn __action10(
+fn __action10<
+>(
     (_, _, _): (usize, TokenType, usize),
     (_, condition, _): (usize, Expression, usize),
     (_, _, _): (usize, TokenType, usize),
     (_, s, _): (usize, SourceUnit, usize),
     (_, _, _): (usize, TokenType, usize),
-) -> Statement {
-    Statement::Loop(condition, s)
+) -> Statement
+{
+    Statement::Loop(condition,s)
 }
 
-fn __action11((_, __0, _): (usize, Expression, usize)) -> Expression {
+fn __action11<
+>(
+    (_, __0, _): (usize, Expression, usize),
+) -> Expression
+{
     __0
 }
 
-fn __action12(
+fn __action12<
+>(
     (_, l, _): (usize, Expression, usize),
     (_, r, _): (usize, Expression, usize),
     (_, _, _): (usize, TokenType, usize),
-) -> Expression {
-    Expression::Equals(Box::new(l), Box::new(r))
+) -> Expression
+{
+    Expression::Equals(Box::new(l),Box::new(r))
 }
 
-fn __action13(
+fn __action13<
+>(
     (_, l, _): (usize, Expression, usize),
     (_, r, _): (usize, Expression, usize),
     (_, _, _): (usize, TokenType, usize),
-) -> Expression {
-    Expression::NotEquals(Box::new(l), Box::new(r))
+) -> Expression
+{
+    Expression::NotEquals(Box::new(l),Box::new(r))
 }
 
-fn __action14(
+fn __action14<
+>(
     (_, l, _): (usize, Expression, usize),
     (_, r, _): (usize, Expression, usize),
     (_, _, _): (usize, TokenType, usize),
-) -> Expression {
-    Expression::GreaterThan(Box::new(l), Box::new(r))
+) -> Expression
+{
+    Expression::GreaterThan(Box::new(l),Box::new(r))
 }
 
-fn __action15(
+fn __action15<
+>(
     (_, l, _): (usize, Expression, usize),
     (_, r, _): (usize, Expression, usize),
     (_, _, _): (usize, TokenType, usize),
-) -> Expression {
-    Expression::LessThan(Box::new(l), Box::new(r))
+) -> Expression
+{
+    Expression::LessThan(Box::new(l),Box::new(r))
 }
 
-fn __action16((_, __0, _): (usize, Expression, usize)) -> Expression {
+fn __action16<
+>(
+    (_, __0, _): (usize, Expression, usize),
+) -> Expression
+{
     __0
 }
 
-fn __action17(
+fn __action17<
+>(
     (_, l, _): (usize, Expression, usize),
     (_, _, _): (usize, TokenType, usize),
     (_, r, _): (usize, Expression, usize),
-) -> Expression {
-    Expression::Add(Box::new(l), Box::new(r))
+) -> Expression
+{
+    Expression::Add(Box::new(l),Box::new(r))
 }
 
-fn __action18(
+fn __action18<
+>(
     (_, l, _): (usize, Expression, usize),
     (_, _, _): (usize, TokenType, usize),
     (_, r, _): (usize, Expression, usize),
-) -> Expression {
-    Expression::Subtract(Box::new(l), Box::new(r))
+) -> Expression
+{
+    Expression::Subtract(Box::new(l),Box::new(r))
 }
 
-fn __action19((_, __0, _): (usize, Expression, usize)) -> Expression {
+fn __action19<
+>(
+    (_, __0, _): (usize, Expression, usize),
+) -> Expression
+{
     __0
 }
 
-fn __action20(
+fn __action20<
+>(
     (_, l, _): (usize, Expression, usize),
     (_, _, _): (usize, TokenType, usize),
     (_, r, _): (usize, Expression, usize),
-) -> Expression {
-    Expression::Multiply(Box::new(l), Box::new(r))
+) -> Expression
+{
+    Expression::Multiply(Box::new(l),Box::new(r))
 }
 
-fn __action21(
+fn __action21<
+>(
     (_, l, _): (usize, Expression, usize),
     (_, _, _): (usize, TokenType, usize),
     (_, r, _): (usize, Expression, usize),
-) -> Expression {
-    Expression::Divide(Box::new(l), Box::new(r))
+) -> Expression
+{
+    Expression::Divide(Box::new(l),Box::new(r))
 }
 
-fn __action22((_, __0, _): (usize, Expression, usize)) -> Expression {
+fn __action22<
+>(
+    (_, __0, _): (usize, Expression, usize),
+) -> Expression
+{
     __0
 }
 
-fn __action23(
+fn __action23<
+>(
     (_, _, _): (usize, TokenType, usize),
     (_, r, _): (usize, Expression, usize),
-) -> Expression {
+) -> Expression
+{
     Expression::UnaryMinus(Box::new(r))
 }
 
-fn __action24((_, __0, _): (usize, Expression, usize)) -> Expression {
+fn __action24<
+>(
+    (_, __0, _): (usize, Expression, usize),
+) -> Expression
+{
     __0
 }
 
-fn __action25((_, v, _): (usize, TokenType, usize)) -> Expression {
+fn __action25<
+>(
+    (_, v, _): (usize, TokenType, usize),
+) -> Expression
+{
     Expression::Integer(v)
 }
 
-fn __action26((_, id, _): (usize, TokenType, usize)) -> Expression {
+fn __action26<
+>(
+    (_, id, _): (usize, TokenType, usize),
+) -> Expression
+{
     Expression::Symbol(id)
 }
 
-fn __action27(
+fn __action27<
+>(
     (_, _, _): (usize, TokenType, usize),
     (_, e, _): (usize, Expression, usize),
     (_, _, _): (usize, TokenType, usize),
-) -> Expression {
+) -> Expression
+{
     e
 }
 
-fn __action28((_, __0, _): (usize, SourceUnitPart, usize)) -> ::std::vec::Vec<SourceUnitPart> {
+fn __action28<
+>(
+    (_, __0, _): (usize, SourceUnitPart, usize),
+) -> ::std::vec::Vec<SourceUnitPart>
+{
     vec![__0]
 }
 
-fn __action29(
+fn __action29<
+>(
     (_, v, _): (usize, ::std::vec::Vec<SourceUnitPart>, usize),
     (_, e, _): (usize, SourceUnitPart, usize),
-) -> ::std::vec::Vec<SourceUnitPart> {
-    {
-        let mut v = v;
-        v.push(e);
-        v
-    }
+) -> ::std::vec::Vec<SourceUnitPart>
+{
+    { let mut v = v; v.push(e); v }
 }
 
-pub trait __ToTriple {
-    fn to_triple(
-        value: Self,
-    ) -> Result<(usize, TokenType, usize), __lalrpop_util::ParseError<usize, TokenType, LexicalError>>;
+pub trait __ToTriple<> {
+    fn to_triple(value: Self) -> Result<(usize,TokenType,usize), __lalrpop_util::ParseError<usize, TokenType, LexicalError>>;
 }
 
-impl __ToTriple for (usize, TokenType, usize) {
-    fn to_triple(
-        value: Self,
-    ) -> Result<(usize, TokenType, usize), __lalrpop_util::ParseError<usize, TokenType, LexicalError>>
-    {
+impl<> __ToTriple<> for (usize, TokenType, usize) {
+    fn to_triple(value: Self) -> Result<(usize,TokenType,usize), __lalrpop_util::ParseError<usize, TokenType, LexicalError>> {
         Ok(value)
     }
 }
-impl __ToTriple for Result<(usize, TokenType, usize), LexicalError> {
-    fn to_triple(
-        value: Self,
-    ) -> Result<(usize, TokenType, usize), __lalrpop_util::ParseError<usize, TokenType, LexicalError>>
-    {
+impl<> __ToTriple<> for Result<(usize, TokenType, usize), LexicalError> {
+    fn to_triple(value: Self) -> Result<(usize,TokenType,usize), __lalrpop_util::ParseError<usize, TokenType, LexicalError>> {
         match value {
             Ok(v) => Ok(v),
             Err(error) => Err(__lalrpop_util::ParseError::User { error }),

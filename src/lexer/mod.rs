@@ -1,48 +1,33 @@
 ///
 /// Guhiki Lexer
 ///
+mod keywords;
+pub mod tokens;
+use keywords::Keywords;
+use tokens::TokenType;
 use std::str::CharIndices;
 
 #[derive(Clone)]
 pub struct Lexer<'input> {
     chars: CharIndices<'input>,
+    keywords:Keywords
 }
 
 impl<'input> Lexer<'input> {
     pub fn new(input: &'input str) -> Self {
         Lexer {
             chars: input.char_indices(),
+            keywords:Keywords::new()
         }
     }
-}
+    
+    fn is_operator(&self,c:&char) -> bool {
+        c == &' ' || c == &';'|| c == &'+'|| c == &'-'|| c == &'*'|| c == &'/'
+    }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub enum TokenType {
-    Declaration,
-    Write,
-    InputString,
-    InputNumber,
-    LeftBrace,
-    RightBrace,
-    If,
-    Else,
-    Loop,
-    Assignment,
-    Plus,
-    Minus,
-    Product,
-    Divide,
-    Modulus,
-    GreaterThan,
-    LessThan,
-    EqualTo,
-    NotEqual,
-    SemiColon,
-    OpenParantheses,
-    CloseParantheses,
-    Literal(String),
-    Number(i64),
-    Symbol(String),
+    fn is_valid_name(&self,c:&char) -> bool {
+        c.is_ascii_alphanumeric() || c == &'_'
+    }
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -93,7 +78,7 @@ impl<'input> Iterator for Lexer<'input> {
                     let mut word = String::new();
                     word.push(c);
                     while let Some((_, c)) = self.chars.clone().peekable().peek() {
-                        if c.is_ascii_alphanumeric() || c == &'_' {
+                        if self.is_valid_name(c) {
                             word.push(*c);
                             self.chars.next();
                         } else {
@@ -101,33 +86,19 @@ impl<'input> Iterator for Lexer<'input> {
                         }
                     }
 
-                    match word.as_str() {
-                        "pwoli_sadhanam" => return Some(Ok((i, TokenType::Declaration, i))),
-                        "address_thada" => return Some(Ok((i, TokenType::InputString, i))),
-                        "number_thada" => return Some(Ok((i, TokenType::InputNumber, i))),
-                        "dhe_pidicho" => return Some(Ok((i, TokenType::Write, i))),
-                        "seriyano_mwone" => return Some(Ok((i, TokenType::If, i))),
-                        "seri_allel" => return Some(Ok((i, TokenType::Else, i))),
-                        "repeat_adi" => return Some(Ok((i, TokenType::Loop, i))),
-                        "inekal_veluthane" => return Some(Ok((i, TokenType::GreaterThan, i))),
-                        "um_same_alle" => return Some(Ok((i, TokenType::NotEqual, i))),
-                        "inekal_cheruthane" => return Some(Ok((i, TokenType::LessThan, i))),
-                        "um_same_aane" => return Some(Ok((i, TokenType::EqualTo, i))),
-                        _ => return Some(Ok((i, TokenType::Symbol(word), i))),
+                    if let Some(keyword) = &self.keywords.list.get(word.as_str()) {
+                        return Some(Ok((i,(**keyword).clone(),i)));
+                    } else {
+                        return Some(Ok((i, TokenType::Symbol(word), i)));
                     }
+                    
                 }
 
                 Some((i, c)) if c.is_digit(10) => {
                     let mut word = String::new();
                     word.push(c);
                     while let Some((_, c)) = self.chars.clone().peekable().peek() {
-                        if c == &' '
-                            || c == &';'
-                            || c == &'+'
-                            || c == &'-'
-                            || c == &'*'
-                            || c == &'/'
-                        {
+                        if self.is_operator(c){
                             break;
                         }
                         word.push(*c);
@@ -147,4 +118,7 @@ impl<'input> Iterator for Lexer<'input> {
             }
         }
     }
+
+    
 }
+

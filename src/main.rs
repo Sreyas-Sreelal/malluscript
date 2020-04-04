@@ -1,8 +1,6 @@
-//mod executor;
-mod ast;
-mod executor;
 mod lexer;
 mod parser;
+mod executor;
 
 use std::env;
 use std::fs::File;

@@ -1,4 +1,4 @@
-use crate::lexer::TokenType;
+use crate::lexer::tokens::TokenType;
 
 #[derive(Debug)]
 pub struct SourceUnit(pub Vec<SourceUnitPart>);
