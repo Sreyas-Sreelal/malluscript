@@ -2,9 +2,13 @@ pwoli_sadhanam num;
 pwoli_sadhanam factorial;
 dhe_pidicho "Input number:";
 num = 5;
-factorial = 5;
-num = factorial -1;
+factorial = 1;
 dhe_pidicho num;
+
+repeat_adi 0 num um_same_alle {
+    factorial = factorial * num;
+    num = num -1;
+}
 
 dhe_pidicho "Factoral is :";
 dhe_pidicho factorial;
