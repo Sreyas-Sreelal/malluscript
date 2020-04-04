@@ -1,37 +1,37 @@
 use crate::lexer::tokens::TokenType;
 
 #[derive(Debug)]
-pub struct SourceUnit(pub Vec<SourceUnitPart>);
+pub struct SourceUnit<'input>(pub Vec<SourceUnitPart<'input>>);
 
 #[derive(Debug)]
-pub enum SourceUnitPart {
-    Statement(Statement),
+pub enum SourceUnitPart<'input> {
+    Statement(Statement<'input>),
 }
 
 #[derive(Debug)]
-pub enum Statement {
-    Conditional(Expression, SourceUnit, Option<SourceUnit>),
-    Loop(Expression, SourceUnit),
-    Declaration(TokenType),
-    Assignment(TokenType, Expression),
-    Write(Expression),
+pub enum Statement<'input> {
+    Conditional(Expression<'input>, SourceUnit<'input>, Option<SourceUnit<'input>>),
+    Loop(Expression<'input>, SourceUnit<'input>),
+    Declaration(Expression<'input>),
+    Assignment( Expression<'input>, Expression<'input>),
+    Write(Expression<'input>),
 }
 
 #[derive(Debug)]
-pub enum Expression {
+pub enum Expression<'input> {
     //    Empty,
-    Add(Box<Expression>, Box<Expression>),
-    Subtract(Box<Expression>, Box<Expression>),
-    Multiply(Box<Expression>, Box<Expression>),
-    Divide(Box<Expression>, Box<Expression>),
-    UnaryMinus(Box<Expression>),
-    Equals(Box<Expression>, Box<Expression>),
-    GreaterThan(Box<Expression>, Box<Expression>),
-    LessThan(Box<Expression>, Box<Expression>),
-    NotEquals(Box<Expression>, Box<Expression>),
-    Integer(TokenType),
-    Symbol(TokenType),
-    StringLiteral(TokenType),
-    InputString(TokenType),
-    InputNumber(TokenType)
+    Add(Box<Expression<'input>>, Box<Expression<'input>>),
+    Subtract(Box<Expression<'input>>, Box<Expression<'input>>),
+    Multiply(Box<Expression<'input>>, Box<Expression<'input>>),
+    Divide(Box<Expression<'input>>, Box<Expression<'input>>),
+    UnaryMinus(Box<Expression<'input>>),
+    Equals(Box<Expression<'input>>, Box<Expression<'input>>),
+    GreaterThan(Box<Expression<'input>>, Box<Expression<'input>>),
+    LessThan(Box<Expression<'input>>, Box<Expression<'input>>),
+    NotEquals(Box<Expression<'input>>, Box<Expression<'input>>),
+    Integer(TokenType<'input>),
+    Symbol(&'input str),
+    StringLiteral(&'input str),
+    InputString,
+    InputNumber
 }

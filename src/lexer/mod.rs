@@ -10,14 +10,16 @@ use std::str::CharIndices;
 #[derive(Clone)]
 pub struct Lexer<'input> {
     chars: CharIndices<'input>,
-    keywords:Keywords
+    keywords:Keywords<'input> ,
+    src:&'input str,
 }
 
 impl<'input> Lexer<'input> {
     pub fn new(input: &'input str) -> Self {
         Lexer {
             chars: input.char_indices(),
-            keywords:Keywords::new()
+            keywords:Keywords::new(),
+            src:input,
         }
     }
     
@@ -28,11 +30,6 @@ impl<'input> Lexer<'input> {
     fn is_valid_name(&self,c:&char) -> bool {
         c.is_ascii_alphanumeric() || c == &'_'
     }
-
-    fn literal_eval(&self,data: String) -> String {
-        data.replace("\\n", "\n")
-    }
-
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -43,7 +40,7 @@ pub enum LexicalError {
 pub type Spanned<TokenType, Loc, Error> = Result<(Loc, TokenType, Loc), Error>;
 
 impl<'input> Iterator for Lexer<'input> {
-    type Item = Spanned<TokenType, usize, LexicalError>;
+    type Item = Spanned<TokenType<'input> , usize, LexicalError>;
 
     fn next(&mut self) -> Option<Self::Item> {
         loop {
@@ -63,39 +60,40 @@ impl<'input> Iterator for Lexer<'input> {
                 Some((i, '(')) => return Some(Ok((i, TokenType::OpenParantheses, i))),
                 Some((i, ')')) => return Some(Ok((i, TokenType::CloseParantheses, i))),
                 Some((i, '"')) => {
-                    let l = i;
-                    let mut word = String::new();
+                    let (start, mut end) = (i+1,0);
                     let mut ch = ' ';
                     while let Some((_, c)) = self.chars.next() {
                         ch = c;
                         if c == '"' {
                             break;
                         }
-                        word.push(c);
+                        end +=1;
                     }
+                    end = start+end;
                     if ch != '"' {
-                        panic!("Invalid Literal Closing Quotation Not Found at {}:{}", l, i)
+                        panic!("Invalid Literal Closing Quotation Not Found at {}:{}", end, i)
                     }
-                    
-                    return Some(Ok((i, TokenType::Literal(self.literal_eval(word)), i)));
+                    //println!("literal {}",&self.src[i..i+length+1]);
+                    return Some(Ok((i, TokenType::Literal(&self.src[start..end]), i)));
                 }
 
                 Some((i, c)) if c.is_alphabetic() => {
-                    let mut word = String::new();
-                    word.push(c);
+                    let (start, mut end) = (i,0);
+
                     while let Some((_, c)) = self.chars.clone().peekable().peek() {
                         if self.is_valid_name(c) {
-                            word.push(*c);
+                            end += 1;
                             self.chars.next();
                         } else {
                             break;
                         }
                     }
-
-                    if let Some(keyword) = &self.keywords.list.get(word.as_str()) {
+                    end = start+end;
+                    //println!("check symbol keyword{}",&self.src[i..i+length+1]);
+                    if let Some(keyword) = &self.keywords.list.get(&self.src[start..end+1]) {
                         return Some(Ok((i,(**keyword).clone(),i)));
                     } else {
-                        return Some(Ok((i, TokenType::Symbol(word), i)));
+                        return Some(Ok((i, TokenType::Symbol(&self.src[start..end+1]), i)));
                     }
                     
                 }

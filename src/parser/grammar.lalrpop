@@ -2,30 +2,30 @@ use crate::lexer::tokens::*;
 use crate::lexer::LexicalError;
 use crate::executor::ast::*;
 
-grammar;
+grammar<'input>(input: &'input str);
 
-pub SourceUnit:SourceUnit = {
+pub SourceUnit:SourceUnit<'input> = {
     SourceUnitPart+ => SourceUnit(<>)
 };
 
-SourceUnitPart:SourceUnitPart = {
+SourceUnitPart:SourceUnitPart<'input> = {
     Statement => SourceUnitPart::Statement(<>),
 };
 
-Statement:Statement = {
-    Declaration <id:Identifier> ";" => Statement::Declaration(id),
-    <l:Identifier> "=" <r:Expression> ";" => Statement::Assignment(l,r),
+Statement:Statement<'input> = {
+    Declaration <id:Expression> ";" => Statement::Declaration(id),
+    <l:Expression> "=" <r:Expression> ";" => Statement::Assignment(l,r),
     Write <e:Expression> ";" => Statement::Write(e),
     If <condition:Conditional> "{" <s:SourceUnit> "}" => Statement::Conditional(condition,s,None),
     If <condition:Conditional> "{" <s:SourceUnit> "}" Else "{" <f:SourceUnit> "}" => Statement::Conditional(condition,s,Some(f)),
     Loop <condition:Conditional> "{" <s:SourceUnit> "}" => Statement::Loop(condition,s)
 };
 
-Expression:Expression = {
+Expression:Expression<'input>= {
     ArithExpression
 }
 
-Conditional:Expression = {
+Conditional:Expression<'input> = {
     <l:Conditional>  <r:Conditional> "==" => Expression::Equals(Box::new(l),Box::new(r)),
     <l:Conditional>  <r:Conditional> "!=" => Expression::NotEquals(Box::new(l),Box::new(r)),
     <l:Conditional>  <r:Conditional> ">" => Expression::GreaterThan(Box::new(l),Box::new(r)),
@@ -33,29 +33,29 @@ Conditional:Expression = {
     Term,
 };
 
-ArithExpression: Expression = {
+ArithExpression: Expression<'input> = {
     <l:ArithExpression> "+" <r:Factor> => Expression::Add(Box::new(l),Box::new(r)),
     <l:ArithExpression> "-" <r:Factor> => Expression::Subtract(Box::new(l),Box::new(r)),
     Factor,
 };
 
-Factor: Expression = {
+Factor: Expression<'input>= {
     <l:Factor> "*" <r:Unary> => Expression::Multiply(Box::new(l),Box::new(r)),
     <l:Factor> "/" <r:Unary> => Expression::Divide(Box::new(l),Box::new(r)),
     Unary,
 };
 
-Unary:Expression = {
+Unary:Expression<'input> = {
     "-" <r:Unary> => Expression::UnaryMinus(Box::new(r)),
     Term
 };
 
-Term: Expression = {
+Term: Expression<'input>= {
     <v:Integer> => Expression::Integer(v),
     <id:Identifier> => Expression::Symbol(id),
     <string:StringLiteral> => Expression::StringLiteral(string),
-    <input:InputNumber> => Expression::InputNumber(input),
-    <input:InputString> => Expression::InputString(input),
+    <InputNumber> => Expression::InputNumber,
+    <InputString> => Expression::InputString,
     "(" <e:Expression> ")" => e
 };
 
@@ -63,13 +63,13 @@ extern {
     type Location = usize;
     type Error = LexicalError;
 
-    enum TokenType {
-        Identifier => TokenType::Symbol(String),
+    enum TokenType<'input> {
+        Identifier => TokenType::Symbol(<&'input str>),
         ";" => TokenType::SemiColon,
         Declaration => TokenType::Declaration,
         "=" => TokenType::Assignment,
         Integer => TokenType::Number(i64),
-        StringLiteral => TokenType::Literal(String),
+        StringLiteral => TokenType::Literal(<&'input str>),
         "+" => TokenType::Plus,
         "-" => TokenType::Minus,
         "*" => TokenType::Product,

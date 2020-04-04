@@ -11,7 +11,7 @@ pub enum DataTypes {
 impl fmt::Display for DataTypes {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match &self {
-            DataTypes::String(s) => write!(f, "{}", s),
+            DataTypes::String(s) => write!(f, "{}", literal_eval(s)),
             DataTypes::Integer(i) => write!(f, "{}", i),
             _ => write!(f, "<Garbage:UnintialisedMemorySpace>"),
         }
@@ -72,4 +72,8 @@ pub fn to_bool(data:DataTypes) -> bool {
             panic!("illegal datatype conversion")
         }
     }
+}
+
+fn literal_eval(data: &str) -> String {
+    data.replace("\\n", "\n")
 }

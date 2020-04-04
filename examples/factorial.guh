@@ -1,9 +1,8 @@
 pwoli_sadhanam num;
 pwoli_sadhanam factorial;
 dhe_pidicho "Input number:";
-num = 5;
+num = number_thada;
 factorial = 1;
-dhe_pidicho num;
 
 repeat_adi 0 num um_same_alle {
     factorial = factorial * num;
@@ -12,4 +11,4 @@ repeat_adi 0 num um_same_alle {
 
 dhe_pidicho "Factoral is :";
 dhe_pidicho factorial;
-pwoli_sadhanam dm;
+dhe_pidicho "\n";

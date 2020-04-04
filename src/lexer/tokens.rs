@@ -1,5 +1,5 @@
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub enum TokenType {
+pub enum TokenType<'input> {
     Declaration,
     Write,
     InputString,
@@ -22,7 +22,7 @@ pub enum TokenType {
     SemiColon,
     OpenParantheses,
     CloseParantheses,
-    Literal(String),
+    Literal(&'input str),
     Number(i64),
-    Symbol(String),
+    Symbol(&'input str),
 }

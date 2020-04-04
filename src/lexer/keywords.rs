@@ -1,10 +1,10 @@
 use std::collections::HashMap;
 use crate::lexer::tokens::TokenType;
 #[derive(Clone)]
-pub struct Keywords {
-    pub list:HashMap<&'static str,TokenType> 
+pub struct Keywords<'input>  {
+    pub list:HashMap<&'static str,TokenType<'input> > 
 }
-impl Keywords {
+impl<'input>  Keywords<'input>  {
     pub fn new() -> Self { 
         let mut list = HashMap::new();
         list.insert("pwoli_sadhanam", TokenType::Declaration);

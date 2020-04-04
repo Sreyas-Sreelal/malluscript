@@ -19,7 +19,7 @@ fn main() {
             let mut exec = executor::Executor::new();
             let tokens = lexer::Lexer::new(&contents);
             //println!("{:?}",tokens);
-            let parsed = parser::SourceUnitParser::new().parse(tokens).unwrap();
+            let parsed = parser::SourceUnitParser::new().parse(&contents,tokens).unwrap();
             //println!("{:?}",parsed);
             exec.execute(&parsed);
         } else {

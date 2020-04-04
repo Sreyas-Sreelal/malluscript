@@ -24,14 +24,16 @@ impl Executor {
             let SourceUnitPart::Statement(stmt) = x;
             match stmt {
                 Statement::Declaration(symbol) => {
-                    if let TokenType::Symbol(name) = symbol {
+                    if let Expression::Symbol(name) = symbol {
                         if !self
                             .symbol_table
-                            .insert(name.clone(), DataTypes::Unknown)
+                            .insert(name.to_string(), DataTypes::Unknown)
                             .is_none()
                         {
                             panic!("Symbol {} already defiined", name)
                         }
+                    } else {
+                        panic!("Invalid declaration statement!")
                     }
                 }
                 Statement::Conditional(expr, truebody, falsebody) => {
@@ -56,8 +58,8 @@ impl Executor {
                     let _ = stdout().flush();
                 }
                 Statement::Assignment(l, r) => {
-                    if let TokenType::Symbol(identifier) = l {
-                        if !self.symbol_table.contains_key(identifier) {
+                    if let Expression::Symbol(identifier) = l {
+                        if !self.symbol_table.contains_key(&identifier.to_string()) {
                             panic!("Undefined symbol {}", identifier);
                         }
                         self.symbol_table.insert(
@@ -110,37 +112,32 @@ impl Executor {
                 TokenType::Number(number) => Ok(DataTypes::Integer(*number)),
                 _ => Err("Invalid constant"),
             },
-            Expression::Symbol(token) => {
-                if let TokenType::Symbol(identifier) = token {
-                    if !self.symbol_table.contains_key(identifier) {
-                        panic!("Undefined symbol {}", identifier);
-                    }
-                    match self.symbol_table.get(identifier).unwrap() {
-                        DataTypes::Integer(number) => Ok(DataTypes::Integer(*number)),
-                        DataTypes::String(data) => Ok(DataTypes::String(data.to_string())),
-                        _ => Err("Invalid constant in expression"),
-                    }
-                } else {
-                    Err("Invalid constant in expression")
+            Expression::Symbol(identifier) => {
+                if !self.symbol_table.contains_key(&identifier.to_string()) {
+                    panic!("Undefined symbol {}", identifier);
                 }
-            }
-            Expression::StringLiteral(literal) => {
-                if let TokenType::Literal(value) = literal {
-                    Ok(DataTypes::String(value.to_string()))
-                } else {
-                    Err("Unrecognized expression")
+                match self.symbol_table.get(&identifier.to_string()).unwrap() {
+                    DataTypes::Integer(number) => Ok(DataTypes::Integer(*number)),
+                    DataTypes::String(data) => Ok(DataTypes::String(data.to_string())),
+                    _ => Err("Invalid constant in expression"),
                 }
+                
             }
-            Expression::InputNumber(_) => {
+            Expression::StringLiteral(value) => {
+                Ok(DataTypes::String(value.to_string()))
+            }
+            Expression::InputNumber => {
                 let mut input = String::new();
                 stdin().read_line(&mut input).expect("Unable to read input");
                 Ok(DataTypes::Integer(input.trim().parse().expect("Invalid integer input")))
             }
-            Expression::InputString(_) => {
+            Expression::InputString => {
                 let mut input = String::new();
                 stdin().read_line(&mut input).expect("Unable to read input");
                 Ok(DataTypes::String(input))
             }
         }
     }
+
+    
 }
