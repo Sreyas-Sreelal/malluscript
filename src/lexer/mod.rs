@@ -28,6 +28,11 @@ impl<'input> Lexer<'input> {
     fn is_valid_name(&self,c:&char) -> bool {
         c.is_ascii_alphanumeric() || c == &'_'
     }
+
+    fn literal_eval(&self,data: String) -> String {
+        data.replace("\\n", "\n")
+    }
+
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -71,7 +76,8 @@ impl<'input> Iterator for Lexer<'input> {
                     if ch != '"' {
                         panic!("Invalid Literal Closing Quotation Not Found at {}:{}", l, i)
                     }
-                    return Some(Ok((i, TokenType::Literal(word), i)));
+                    
+                    return Some(Ok((i, TokenType::Literal(self.literal_eval(word)), i)));
                 }
 
                 Some((i, c)) if c.is_alphabetic() => {
@@ -118,7 +124,6 @@ impl<'input> Iterator for Lexer<'input> {
             }
         }
     }
-
     
 }
 
