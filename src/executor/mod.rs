@@ -3,6 +3,7 @@ mod datatype;
 
 use ast::*;
 use std::collections::HashMap;
+use std::io::{stdin, stdout, Write};
 
 use crate::lexer::tokens::TokenType;
 use crate::executor::datatype::{DataTypes,to_bool};
@@ -52,6 +53,7 @@ impl Executor {
                 }
                 Statement::Write(expr) => {
                     print!("{}", self.eval_arithmetic_logic_expression(expr).unwrap());
+                    let _ = stdout().flush();
                 }
                 Statement::Assignment(l, r) => {
                     if let TokenType::Symbol(identifier) = l {
@@ -128,6 +130,16 @@ impl Executor {
                 } else {
                     Err("Unrecognized expression")
                 }
+            }
+            Expression::InputNumber(_) => {
+                let mut input = String::new();
+                stdin().read_line(&mut input).expect("Unable to read input");
+                Ok(DataTypes::Integer(input.trim().parse().expect("Invalid integer input")))
+            }
+            Expression::InputString(_) => {
+                let mut input = String::new();
+                stdin().read_line(&mut input).expect("Unable to read input");
+                Ok(DataTypes::String(input))
             }
         }
     }

@@ -31,5 +31,7 @@ pub enum Expression {
     NotEquals(Box<Expression>, Box<Expression>),
     Integer(TokenType),
     Symbol(TokenType),
-    StringLiteral(TokenType)
+    StringLiteral(TokenType),
+    InputString(TokenType),
+    InputNumber(TokenType)
 }
