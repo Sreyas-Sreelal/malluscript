@@ -5,7 +5,7 @@ use ast::*;
 use std::collections::HashMap;
 
 use crate::lexer::tokens::TokenType;
-use crate::executor::datatype::DataTypes;
+use crate::executor::datatype::{DataTypes,to_bool};
 
 pub struct Executor {
     symbol_table: HashMap<String, DataTypes>,
@@ -34,8 +34,7 @@ impl Executor {
                     }
                 }
                 Statement::Conditional(expr, truebody, falsebody) => {
-                    let truth = (self.eval_arithmetic_logic_expression(expr).unwrap())
-                        != DataTypes::Integer(0);
+                    let truth = to_bool(self.eval_arithmetic_logic_expression(expr).unwrap());
                     if truth {
                         self.execute(&truebody);
                     } else {
@@ -45,12 +44,10 @@ impl Executor {
                     }
                 }
                 Statement::Loop(expr, body) => {
-                    let mut truth = (self.eval_arithmetic_logic_expression(expr).unwrap())
-                        != DataTypes::Integer(0);
+                    let mut truth = to_bool(self.eval_arithmetic_logic_expression(expr).unwrap());
                     while truth {
                         self.execute(&body);
-                        truth = (self.eval_arithmetic_logic_expression(expr).unwrap())
-                            != DataTypes::Integer(0);
+                        truth = to_bool(self.eval_arithmetic_logic_expression(expr).unwrap());
                     }
                 }
                 Statement::WriteExpr(expr) => {
