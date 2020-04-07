@@ -4,6 +4,9 @@ use crate::lexer::Lexer;
 pub use grammar::SourceUnitParser;
 use lalrpop_util::ParseError;
 
+#[cfg(test)]
+mod test;
+
 pub fn parse<'a>(src: &'a str, tokens: Lexer<'a>) -> ast::SourceUnit<'a> {
     match grammar::SourceUnitParser::new().parse(&src, tokens) {
         Ok(parsed) => parsed,

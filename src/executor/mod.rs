@@ -2,6 +2,9 @@ pub mod ast;
 mod datatype;
 mod error;
 
+#[cfg(test)]
+mod test;
+
 use ast::*;
 use error::RunTimeErrors;
 use std::collections::HashMap;

@@ -1,14 +1,14 @@
 use crate::lexer::tokens::TokenType;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct SourceUnit<'input>(pub Vec<SourceUnitPart<'input>>);
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum SourceUnitPart<'input> {
     Statement(Statement<'input>),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Statement<'input> {
     Conditional(
         (usize, usize),
@@ -22,7 +22,7 @@ pub enum Statement<'input> {
     Write((usize, usize), Expression<'input>),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Expression<'input> {
     //    Empty,
     Add(
