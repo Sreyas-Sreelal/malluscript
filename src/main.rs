@@ -19,21 +19,15 @@ fn main() {
             let mut exec = executor::Executor::new();
             let tokens = lexer::Lexer::new(&contents);
             //println!("{:?}",tokens);
-            match parser::SourceUnitParser::new().parse(&contents, tokens) {
-                Ok(parsed) => {
-                    if let Err(message) = exec.execute(&parsed) {
-                        println!("\n**[Execution Failed]**");
-                        println!(
-                            "{}\n^^^^{}",
-                            &contents[(message.0).0..(message.0).1 + 1].trim(),
-                            message.1
-                        );
-                    }
-                }
-                Err(err) => {
-                    println!("{:?}", err);
-                }
-            };
+            let parsed = parser::parse(&contents, tokens);
+            if let Err(message) = exec.execute(&parsed) {
+                println!("\n**[Execution Failed]**");
+                println!(
+                    "{}\n^^^^{}",
+                    &contents[(message.0).0..(message.0).1 + 1].trim(),
+                    message.1
+                );
+            }
         //println!("{:?}",parsed);
         } else {
             println!(
