@@ -1,8 +1,11 @@
+mod error;
 ///
 /// Guhiki Lexer
 ///
 mod keywords;
 pub mod tokens;
+
+pub use error::LexicalError;
 use keywords::Keywords;
 use std::str::CharIndices;
 use tokens::TokenType;
@@ -24,16 +27,13 @@ impl<'input> Lexer<'input> {
     }
 
     fn is_operator(&self, c: &char) -> bool {
-        c == &' ' || c == &';' || c == &'+' || c == &'-' || c == &'*' || c == &'/'
+        c == &' ' || c == &';' || c == &'+' || c == &'-' || c == &'*' || c == &'/' || c == &'\n'
     }
 
     fn is_valid_name(&self, c: &char) -> bool {
         c.is_ascii_alphanumeric() || c == &'_'
     }
 }
-
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub enum LexicalError {}
 
 pub type Spanned<TokenType, Loc, Error> = Result<(Loc, TokenType, Loc), Error>;
 
@@ -69,10 +69,11 @@ impl<'input> Iterator for Lexer<'input> {
                     }
                     end = start + end;
                     if ch != '"' {
-                        panic!(
-                            "Invalid Literal Closing Quotation Not Found at {}:{}",
-                            end, i
-                        )
+                        return Some(Err(LexicalError::InvalidStringLiteral(i, end)));
+                        //panic!(
+                        //    "Invalid Literal Closing Quotation Not Found at {}:{}",
+                        //    end, i
+                        //)
                     }
                     //println!("literal {}",&self.src[i..i+length+1]);
                     return Some(Ok((i, TokenType::Literal(&self.src[start..end]), end)));
@@ -112,11 +113,15 @@ impl<'input> Iterator for Lexer<'input> {
                     if let Ok(number) = word.parse() {
                         return Some(Ok((i, TokenType::Number(number), i + word.len())));
                     } else {
-                        panic!("Invalid literal {} at {}", word, i);
+                        return Some(Err(LexicalError::InvalidIntegerConstant(
+                            i,
+                            i + word.len(),
+                            word,
+                        )));
                     }
                 }
-                Some((i, c)) => {
-                    panic!("Oh no unknown token {} at {} ", c, i);
+                Some((i, _)) => {
+                    return Some(Err(LexicalError::UnknownToken(i, i + 1)));
                 }
                 None => return None,
             }
