@@ -10,28 +10,65 @@ pub enum SourceUnitPart<'input> {
 
 #[derive(Debug)]
 pub enum Statement<'input> {
-    Conditional(Expression<'input>, SourceUnit<'input>, Option<SourceUnit<'input>>),
-    Loop(Expression<'input>, SourceUnit<'input>),
-    Declaration(Expression<'input>),
-    Assignment( Expression<'input>, Expression<'input>),
-    Write(Expression<'input>),
+    Conditional(
+        (usize, usize),
+        Expression<'input>,
+        SourceUnit<'input>,
+        Option<SourceUnit<'input>>,
+    ),
+    Loop((usize, usize), Expression<'input>, SourceUnit<'input>),
+    Declaration((usize, usize), Expression<'input>),
+    Assignment((usize, usize), Expression<'input>, Expression<'input>),
+    Write((usize, usize), Expression<'input>),
 }
 
 #[derive(Debug)]
 pub enum Expression<'input> {
     //    Empty,
-    Add(Box<Expression<'input>>, Box<Expression<'input>>),
-    Subtract(Box<Expression<'input>>, Box<Expression<'input>>),
-    Multiply(Box<Expression<'input>>, Box<Expression<'input>>),
-    Divide(Box<Expression<'input>>, Box<Expression<'input>>),
-    UnaryMinus(Box<Expression<'input>>),
-    Equals(Box<Expression<'input>>, Box<Expression<'input>>),
-    GreaterThan(Box<Expression<'input>>, Box<Expression<'input>>),
-    LessThan(Box<Expression<'input>>, Box<Expression<'input>>),
-    NotEquals(Box<Expression<'input>>, Box<Expression<'input>>),
-    Integer(TokenType<'input>),
-    Symbol(&'input str),
-    StringLiteral(&'input str),
-    InputString,
-    InputNumber
+    Add(
+        (usize, usize),
+        Box<Expression<'input>>,
+        Box<Expression<'input>>,
+    ),
+    Subtract(
+        (usize, usize),
+        Box<Expression<'input>>,
+        Box<Expression<'input>>,
+    ),
+    Multiply(
+        (usize, usize),
+        Box<Expression<'input>>,
+        Box<Expression<'input>>,
+    ),
+    Divide(
+        (usize, usize),
+        Box<Expression<'input>>,
+        Box<Expression<'input>>,
+    ),
+    UnaryMinus((usize, usize), Box<Expression<'input>>),
+    Equals(
+        (usize, usize),
+        Box<Expression<'input>>,
+        Box<Expression<'input>>,
+    ),
+    GreaterThan(
+        (usize, usize),
+        Box<Expression<'input>>,
+        Box<Expression<'input>>,
+    ),
+    LessThan(
+        (usize, usize),
+        Box<Expression<'input>>,
+        Box<Expression<'input>>,
+    ),
+    NotEquals(
+        (usize, usize),
+        Box<Expression<'input>>,
+        Box<Expression<'input>>,
+    ),
+    Integer((usize, usize), TokenType<'input>),
+    Symbol((usize, usize), &'input str),
+    StringLiteral((usize, usize), &'input str),
+    InputString((usize, usize)),
+    InputNumber((usize, usize)),
 }

@@ -4,43 +4,41 @@
 mod keywords;
 pub mod tokens;
 use keywords::Keywords;
-use tokens::TokenType;
 use std::str::CharIndices;
+use tokens::TokenType;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Lexer<'input> {
     chars: CharIndices<'input>,
-    keywords:Keywords<'input> ,
-    src:&'input str,
+    keywords: Keywords<'input>,
+    src: &'input str,
 }
 
 impl<'input> Lexer<'input> {
     pub fn new(input: &'input str) -> Self {
         Lexer {
             chars: input.char_indices(),
-            keywords:Keywords::new(),
-            src:input,
+            keywords: Keywords::new(),
+            src: input,
         }
     }
-    
-    fn is_operator(&self,c:&char) -> bool {
-        c == &' ' || c == &';'|| c == &'+'|| c == &'-'|| c == &'*'|| c == &'/'
+
+    fn is_operator(&self, c: &char) -> bool {
+        c == &' ' || c == &';' || c == &'+' || c == &'-' || c == &'*' || c == &'/'
     }
 
-    fn is_valid_name(&self,c:&char) -> bool {
+    fn is_valid_name(&self, c: &char) -> bool {
         c.is_ascii_alphanumeric() || c == &'_'
     }
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub enum LexicalError {
-    //TODO:add custom lexical errors instead of panicking
-}
+pub enum LexicalError {}
 
 pub type Spanned<TokenType, Loc, Error> = Result<(Loc, TokenType, Loc), Error>;
 
 impl<'input> Iterator for Lexer<'input> {
-    type Item = Spanned<TokenType<'input> , usize, LexicalError>;
+    type Item = Spanned<TokenType<'input>, usize, LexicalError>;
 
     fn next(&mut self) -> Option<Self::Item> {
         loop {
@@ -48,37 +46,40 @@ impl<'input> Iterator for Lexer<'input> {
                 Some((_, ' ')) | Some((_, '\n')) => {
                     continue;
                 }
-                Some((i, '=')) => return Some(Ok((i, TokenType::Assignment, i))),
-                Some((i, '{')) => return Some(Ok((i, TokenType::LeftBrace, i))),
-                Some((i, '}')) => return Some(Ok((i, TokenType::RightBrace, i))),
-                Some((i, '+')) => return Some(Ok((i, TokenType::Plus, i))),
-                Some((i, '-')) => return Some(Ok((i, TokenType::Minus, i))),
-                Some((i, '*')) => return Some(Ok((i, TokenType::Product, i))),
-                Some((i, '/')) => return Some(Ok((i, TokenType::Divide, i))),
-                Some((i, '%')) => return Some(Ok((i, TokenType::Modulus, i))),
-                Some((i, ';')) => return Some(Ok((i, TokenType::SemiColon, i))),
-                Some((i, '(')) => return Some(Ok((i, TokenType::OpenParantheses, i))),
-                Some((i, ')')) => return Some(Ok((i, TokenType::CloseParantheses, i))),
+                Some((i, '=')) => return Some(Ok((i, TokenType::Assignment, i + 1))),
+                Some((i, '{')) => return Some(Ok((i, TokenType::LeftBrace, i + 1))),
+                Some((i, '}')) => return Some(Ok((i, TokenType::RightBrace, i + 1))),
+                Some((i, '+')) => return Some(Ok((i, TokenType::Plus, i + 1))),
+                Some((i, '-')) => return Some(Ok((i, TokenType::Minus, i + 1))),
+                Some((i, '*')) => return Some(Ok((i, TokenType::Product, i + 1))),
+                Some((i, '/')) => return Some(Ok((i, TokenType::Divide, i + 1))),
+                Some((i, '%')) => return Some(Ok((i, TokenType::Modulus, i + 1))),
+                Some((i, ';')) => return Some(Ok((i, TokenType::SemiColon, i + 1))),
+                Some((i, '(')) => return Some(Ok((i, TokenType::OpenParantheses, i + 1))),
+                Some((i, ')')) => return Some(Ok((i, TokenType::CloseParantheses, i + 1))),
                 Some((i, '"')) => {
-                    let (start, mut end) = (i+1,0);
+                    let (start, mut end) = (i + 1, 0);
                     let mut ch = ' ';
                     while let Some((_, c)) = self.chars.next() {
                         ch = c;
                         if c == '"' {
                             break;
                         }
-                        end +=1;
+                        end += 1;
                     }
-                    end = start+end;
+                    end = start + end;
                     if ch != '"' {
-                        panic!("Invalid Literal Closing Quotation Not Found at {}:{}", end, i)
+                        panic!(
+                            "Invalid Literal Closing Quotation Not Found at {}:{}",
+                            end, i
+                        )
                     }
                     //println!("literal {}",&self.src[i..i+length+1]);
-                    return Some(Ok((i, TokenType::Literal(&self.src[start..end]), i)));
+                    return Some(Ok((i, TokenType::Literal(&self.src[start..end]), end)));
                 }
 
                 Some((i, c)) if c.is_alphabetic() => {
-                    let (start, mut end) = (i,0);
+                    let (start, mut end) = (i, 0);
 
                     while let Some((_, c)) = self.chars.clone().peekable().peek() {
                         if self.is_valid_name(c) {
@@ -88,21 +89,20 @@ impl<'input> Iterator for Lexer<'input> {
                             break;
                         }
                     }
-                    end = start+end;
+                    end = start + end;
                     //println!("check symbol keyword{}",&self.src[i..i+length+1]);
-                    if let Some(keyword) = &self.keywords.list.get(&self.src[start..end+1]) {
-                        return Some(Ok((i,(**keyword).clone(),i)));
+                    if let Some(keyword) = &self.keywords.list.get(&self.src[start..end + 1]) {
+                        return Some(Ok((i, (**keyword).clone(), end)));
                     } else {
-                        return Some(Ok((i, TokenType::Symbol(&self.src[start..end+1]), i)));
+                        return Some(Ok((i, TokenType::Symbol(&self.src[start..end + 1]), end)));
                     }
-                    
                 }
 
                 Some((i, c)) if c.is_digit(10) => {
                     let mut word = String::new();
                     word.push(c);
                     while let Some((_, c)) = self.chars.clone().peekable().peek() {
-                        if self.is_operator(c){
+                        if self.is_operator(c) {
                             break;
                         }
                         word.push(*c);
@@ -110,7 +110,7 @@ impl<'input> Iterator for Lexer<'input> {
                     }
 
                     if let Ok(number) = word.parse() {
-                        return Some(Ok((i, TokenType::Number(number), i)));
+                        return Some(Ok((i, TokenType::Number(number), i + word.len())));
                     } else {
                         panic!("Invalid literal {} at {}", word, i);
                     }
@@ -122,6 +122,4 @@ impl<'input> Iterator for Lexer<'input> {
             }
         }
     }
-    
 }
-

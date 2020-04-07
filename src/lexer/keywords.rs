@@ -1,11 +1,11 @@
-use std::collections::HashMap;
 use crate::lexer::tokens::TokenType;
-#[derive(Clone)]
-pub struct Keywords<'input>  {
-    pub list:HashMap<&'static str,TokenType<'input> > 
+use std::collections::HashMap;
+#[derive(Clone, Debug)]
+pub struct Keywords<'input> {
+    pub list: HashMap<&'static str, TokenType<'input>>,
 }
-impl<'input>  Keywords<'input>  {
-    pub fn new() -> Self { 
+impl<'input> Keywords<'input> {
+    pub fn new() -> Self {
         let mut list = HashMap::new();
         list.insert("pwoli_sadhanam", TokenType::Declaration);
         list.insert("address_thada", TokenType::InputString);
@@ -18,8 +18,6 @@ impl<'input>  Keywords<'input>  {
         list.insert("um_same_alle", TokenType::NotEqual);
         list.insert("inekal_cheruthane", TokenType::LessThan);
         list.insert("um_same_aane", TokenType::EqualTo);
-        Self {
-            list
-        }
+        Self { list }
     }
 }

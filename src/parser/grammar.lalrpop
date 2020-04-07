@@ -13,12 +13,12 @@ SourceUnitPart:SourceUnitPart<'input> = {
 };
 
 Statement:Statement<'input> = {
-    Declaration <id:Expression> ";" => Statement::Declaration(id),
-    <l:Expression> "=" <r:Expression> ";" => Statement::Assignment(l,r),
-    Write <e:Expression> ";" => Statement::Write(e),
-    If <condition:Conditional> "{" <s:SourceUnit> "}" => Statement::Conditional(condition,s,None),
-    If <condition:Conditional> "{" <s:SourceUnit> "}" Else "{" <f:SourceUnit> "}" => Statement::Conditional(condition,s,Some(f)),
-    Loop <condition:Conditional> "{" <s:SourceUnit> "}" => Statement::Loop(condition,s)
+    <a:@L> Declaration <id:Expression> ";" <b:@R> => Statement::Declaration((a,b),id),
+    <a:@L> <l:Expression> "=" <r:Expression> ";" <b:@R> => Statement::Assignment((a,b),l,r),
+    <a:@L> Write <e:Expression> ";" <b:@R> => Statement::Write((a,b),e),
+    <a:@L> If <condition:Conditional> "{" <s:SourceUnit> "}" <b:@R> => Statement::Conditional((a,b),condition,s,None),
+    <a:@L> If <condition:Conditional> "{" <s:SourceUnit> "}" Else "{" <f:SourceUnit> "}" <b:@R> => Statement::Conditional((a,b),condition,s,Some(f)),
+    <a:@L> Loop <condition:Conditional> "{" <s:SourceUnit> "}" <b:@R> => Statement::Loop((a,b),condition,s)
 };
 
 Expression:Expression<'input>= {
@@ -26,36 +26,36 @@ Expression:Expression<'input>= {
 }
 
 Conditional:Expression<'input> = {
-    <l:Conditional>  <r:Conditional> "==" => Expression::Equals(Box::new(l),Box::new(r)),
-    <l:Conditional>  <r:Conditional> "!=" => Expression::NotEquals(Box::new(l),Box::new(r)),
-    <l:Conditional>  <r:Conditional> ">" => Expression::GreaterThan(Box::new(l),Box::new(r)),
-    <l:Conditional>  <r:Conditional> "<" => Expression::LessThan(Box::new(l),Box::new(r)),
+    <l:Conditional>  <r:Conditional> <a:@L> "==" <b:@R> => Expression::Equals((a,b),Box::new(l),Box::new(r)),
+    <l:Conditional>  <r:Conditional> <a:@L> "!=" <b:@R>  => Expression::NotEquals((a,b),Box::new(l),Box::new(r)),
+    <l:Conditional>  <r:Conditional> <a:@L> ">" <b:@R> => Expression::GreaterThan((a,b),Box::new(l),Box::new(r)),
+    <l:Conditional>  <r:Conditional> <a:@L> "<" <b:@R> => Expression::LessThan((a,b),Box::new(l),Box::new(r)),
     Term,
 };
 
 ArithExpression: Expression<'input> = {
-    <l:ArithExpression> "+" <r:Factor> => Expression::Add(Box::new(l),Box::new(r)),
-    <l:ArithExpression> "-" <r:Factor> => Expression::Subtract(Box::new(l),Box::new(r)),
+    <l:ArithExpression> <a:@L> "+" <b:@R> <r:Factor> => Expression::Add((a,b),Box::new(l),Box::new(r)),
+    <l:ArithExpression> <a:@L> "-" <b:@R> <r:Factor> => Expression::Subtract((a,b),Box::new(l),Box::new(r)),
     Factor,
 };
 
 Factor: Expression<'input>= {
-    <l:Factor> "*" <r:Unary> => Expression::Multiply(Box::new(l),Box::new(r)),
-    <l:Factor> "/" <r:Unary> => Expression::Divide(Box::new(l),Box::new(r)),
+    <l:Factor> <a:@L> "*" <b:@R> <r:Unary> => Expression::Multiply((a,b),Box::new(l),Box::new(r)),
+    <l:Factor> <a:@L> "/" <b:@R> <r:Unary> => Expression::Divide((a,b),Box::new(l),Box::new(r)),
     Unary,
 };
 
 Unary:Expression<'input> = {
-    "-" <r:Unary> => Expression::UnaryMinus(Box::new(r)),
+    <a:@L> "-" <b:@R> <r:Unary> => Expression::UnaryMinus((a,b),Box::new(r)),
     Term
 };
 
 Term: Expression<'input>= {
-    <v:Integer> => Expression::Integer(v),
-    <id:Identifier> => Expression::Symbol(id),
-    <string:StringLiteral> => Expression::StringLiteral(string),
-    <InputNumber> => Expression::InputNumber,
-    <InputString> => Expression::InputString,
+    <a:@L> <v:Integer> <b:@R> => Expression::Integer((a,b),v),
+    <a:@L> <id:Identifier> <b:@R> => Expression::Symbol((a,b),id),
+    <a:@L> <string:StringLiteral> <b:@R> => Expression::StringLiteral((a,b),string),
+    <a:@L> <d:InputNumber> <b:@R> => Expression::InputNumber((a,b)),
+    <a:@L> <d:InputString> <b:@R> => Expression::InputString((a,b)),
     "(" <e:Expression> ")" => e
 };
 

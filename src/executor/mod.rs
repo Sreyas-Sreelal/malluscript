@@ -1,12 +1,14 @@
 pub mod ast;
 mod datatype;
+mod error;
 
 use ast::*;
+use error::RunTimeErrors;
 use std::collections::HashMap;
 use std::io::{stdin, stdout, Write};
 
+use crate::executor::datatype::{to_bool, DataTypes};
 use crate::lexer::tokens::TokenType;
-use crate::executor::datatype::{DataTypes,to_bool};
 
 pub struct Executor {
     symbol_table: HashMap<String, DataTypes>,
@@ -19,125 +21,155 @@ impl Executor {
         }
     }
 
-    pub fn execute(&mut self, unit: &SourceUnit) {
+    pub fn execute(
+        &mut self,
+        unit: &SourceUnit,
+    ) -> Result<(), ((usize, usize), error::RunTimeErrors)> {
         for x in &unit.0 {
             let SourceUnitPart::Statement(stmt) = x;
             match stmt {
-                Statement::Declaration(symbol) => {
-                    if let Expression::Symbol(name) = symbol {
+                Statement::Declaration((p, q), symbol) => {
+                    if let Expression::Symbol((_a, _b), name) = symbol {
                         if !self
                             .symbol_table
                             .insert(name.to_string(), DataTypes::Unknown)
                             .is_none()
                         {
-                            panic!("Symbol {} already defiined", name)
+                            return Err((
+                                (*p, *q),
+                                RunTimeErrors::SymbolAlreadyDefined(name.to_string()),
+                            ));
                         }
-                    } else {
-                        panic!("Invalid declaration statement!")
                     }
                 }
-                Statement::Conditional(expr, truebody, falsebody) => {
-                    let truth = to_bool(self.eval_arithmetic_logic_expression(expr).unwrap());
+
+                Statement::Conditional((_p, _q), expr, truebody, falsebody) => {
+                    let truth = to_bool(self.eval_arithmetic_logic_expression(expr)?);
                     if truth {
-                        self.execute(&truebody);
+                        self.execute(&truebody)?;
                     } else {
                         if let Some(body) = falsebody {
-                            self.execute(&body);
+                            self.execute(&body)?;
                         }
                     }
                 }
-                Statement::Loop(expr, body) => {
-                    let mut truth = to_bool(self.eval_arithmetic_logic_expression(expr).unwrap());
+
+                Statement::Loop((_p, _q), expr, body) => {
+                    let mut truth = to_bool(self.eval_arithmetic_logic_expression(expr)?);
                     while truth {
-                        self.execute(&body);
-                        truth = to_bool(self.eval_arithmetic_logic_expression(expr).unwrap());
+                        self.execute(&body)?;
+                        truth = to_bool(self.eval_arithmetic_logic_expression(expr)?);
                     }
                 }
-                Statement::Write(expr) => {
-                    print!("{}", self.eval_arithmetic_logic_expression(expr).unwrap());
+
+                Statement::Write((_p, _q), expr) => {
+                    print!("{}", self.eval_arithmetic_logic_expression(expr)?);
                     let _ = stdout().flush();
                 }
-                Statement::Assignment(l, r) => {
-                    if let Expression::Symbol(identifier) = l {
+
+                Statement::Assignment((p, q), l, r) => {
+                    if let Expression::Symbol((_a, _b), identifier) = l {
                         if !self.symbol_table.contains_key(&identifier.to_string()) {
-                            panic!("Undefined symbol {}", identifier);
+                            return Err((
+                                (*p, *q),
+                                RunTimeErrors::UndefinedSymbol(identifier.to_string()),
+                            ));
                         }
                         self.symbol_table.insert(
                             identifier.to_string(),
-                            self.eval_arithmetic_logic_expression(&*r).unwrap(),
+                            self.eval_arithmetic_logic_expression(&*r)?,
                         );
                     } else {
-                        panic!("Invalid left assignment operator expected a symbol")
+                        return Err(((*p, *q), RunTimeErrors::InvalidAssignment));
                     }
                 }
             }
         }
+        Ok(())
     }
 
     fn eval_arithmetic_logic_expression(
         &self,
         expr: &Expression,
-    ) -> Result<DataTypes, &'static str> {
+    ) -> Result<DataTypes, ((usize, usize), RunTimeErrors)> {
         match expr {
-            Expression::Add(l, r) => Ok(self.eval_arithmetic_logic_expression(&**l).unwrap()
-                + self.eval_arithmetic_logic_expression(&**r).unwrap()),
-            Expression::Multiply(l, r) => Ok(self.eval_arithmetic_logic_expression(&**l).unwrap()
-                * self.eval_arithmetic_logic_expression(&**r).unwrap()),
-            Expression::Subtract(l, r) => Ok(self.eval_arithmetic_logic_expression(&**l).unwrap()
-                - self.eval_arithmetic_logic_expression(&**r).unwrap()),
-            Expression::Divide(l, r) => Ok(self.eval_arithmetic_logic_expression(&**l).unwrap()
-                / self.eval_arithmetic_logic_expression(&**r).unwrap()),
-            Expression::UnaryMinus(r) => {
-                Ok(DataTypes::Integer(-1) * self.eval_arithmetic_logic_expression(&**r).unwrap())
+            Expression::Add((_a, _b), l, r) => Ok(self.eval_arithmetic_logic_expression(&**l)?
+                + self.eval_arithmetic_logic_expression(&**r)?),
+
+            Expression::Multiply((_a, _b), l, r) => Ok(self
+                .eval_arithmetic_logic_expression(&**l)?
+                * self.eval_arithmetic_logic_expression(&**r)?),
+
+            Expression::Subtract((_a, _b), l, r) => Ok(self
+                .eval_arithmetic_logic_expression(&**l)?
+                - self.eval_arithmetic_logic_expression(&**r)?),
+
+            Expression::Divide((_a, _b), l, r) => Ok(self
+                .eval_arithmetic_logic_expression(&**l)?
+                / self.eval_arithmetic_logic_expression(&**r)?),
+
+            Expression::UnaryMinus((_a, _b), r) => {
+                Ok(DataTypes::Integer(-1) * self.eval_arithmetic_logic_expression(&**r)?)
             }
-            Expression::Equals(l, r) => Ok(DataTypes::Bool(
-                self.eval_arithmetic_logic_expression(&**l).unwrap()
-                    == self.eval_arithmetic_logic_expression(&**r).unwrap(),
-            )),
-            Expression::NotEquals(l, r) => Ok(DataTypes::Bool(
-                self.eval_arithmetic_logic_expression(&**l).unwrap()
-                    != self.eval_arithmetic_logic_expression(&**r).unwrap(),
+
+            Expression::Equals((_a, _b), l, r) => Ok(DataTypes::Bool(
+                self.eval_arithmetic_logic_expression(&**l)?
+                    == self.eval_arithmetic_logic_expression(&**r)?,
             )),
 
-            Expression::GreaterThan(l, r) => Ok(DataTypes::Bool(
-                self.eval_arithmetic_logic_expression(&**l).unwrap()
-                    > self.eval_arithmetic_logic_expression(&**r).unwrap(),
+            Expression::NotEquals((_a, _b), l, r) => Ok(DataTypes::Bool(
+                self.eval_arithmetic_logic_expression(&**l)?
+                    != self.eval_arithmetic_logic_expression(&**r)?,
             )),
 
-            Expression::LessThan(l, r) => Ok(DataTypes::Bool(
-                self.eval_arithmetic_logic_expression(&**l).unwrap()
-                    < self.eval_arithmetic_logic_expression(&**r).unwrap(),
+            Expression::GreaterThan((_a, _b), l, r) => Ok(DataTypes::Bool(
+                self.eval_arithmetic_logic_expression(&**l)?
+                    > self.eval_arithmetic_logic_expression(&**r)?,
             )),
-            Expression::Integer(l) => match l {
+
+            Expression::LessThan((_a, _b), l, r) => Ok(DataTypes::Bool(
+                self.eval_arithmetic_logic_expression(&**l)?
+                    < self.eval_arithmetic_logic_expression(&**r)?,
+            )),
+
+            Expression::Integer((a, b), l) => match l {
                 TokenType::Number(number) => Ok(DataTypes::Integer(*number)),
-                _ => Err("Invalid constant"),
+                _ => Err(((*a, *b), RunTimeErrors::InvalidExpression)),
             },
-            Expression::Symbol(identifier) => {
-                if !self.symbol_table.contains_key(&identifier.to_string()) {
-                    panic!("Undefined symbol {}", identifier);
+
+            Expression::Symbol((a, b), identifier) => {
+                let identifier = identifier.to_string();
+                if !self.symbol_table.contains_key(&identifier) {
+                    return Err(((*a, *b), RunTimeErrors::UndefinedSymbol(identifier)));
                 }
-                match self.symbol_table.get(&identifier.to_string()).unwrap() {
+                match self.symbol_table.get(&identifier).unwrap() {
                     DataTypes::Integer(number) => Ok(DataTypes::Integer(*number)),
                     DataTypes::String(data) => Ok(DataTypes::String(data.to_string())),
-                    _ => Err("Invalid constant in expression"),
+                    _ => Err(((*a, *b), RunTimeErrors::UnInitialzedData(identifier))),
                 }
-                
             }
-            Expression::StringLiteral(value) => {
-                Ok(DataTypes::String(value.to_string()))
-            }
-            Expression::InputNumber => {
+
+            Expression::StringLiteral((_a, _b), value) => Ok(DataTypes::String(value.to_string())),
+
+            Expression::InputNumber((a, b)) => {
                 let mut input = String::new();
-                stdin().read_line(&mut input).expect("Unable to read input");
-                Ok(DataTypes::Integer(input.trim().parse().expect("Invalid integer input")))
+
+                if let Err(_) = stdin().read_line(&mut input) {
+                    return Err(((*a, *b), RunTimeErrors::ErrorReadingStdin));
+                }
+
+                if let Ok(data) = input.trim().parse() {
+                    Ok(DataTypes::Integer(data))
+                } else {
+                    Err(((*a, *b), RunTimeErrors::InvalidNumberInput))
+                }
             }
-            Expression::InputString => {
+
+            Expression::InputString((_a, _b)) => {
                 let mut input = String::new();
                 stdin().read_line(&mut input).expect("Unable to read input");
                 Ok(DataTypes::String(input))
             }
         }
     }
-
-    
 }

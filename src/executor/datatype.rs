@@ -1,3 +1,4 @@
+use crate::executor::error::{raise_error, RunTimeErrors};
 use std::fmt;
 
 #[derive(Debug, PartialEq, Clone, Eq, PartialOrd)]
@@ -22,8 +23,8 @@ impl std::ops::Add for DataTypes {
     type Output = Self;
     fn add(self, rhs: DataTypes) -> Self {
         match (self, rhs) {
-            (DataTypes::Integer(l), DataTypes::Integer(r)) => DataTypes::Integer(l+ r),
-            _ => panic!("Unhandled addition of datatypes"),
+            (DataTypes::Integer(l), DataTypes::Integer(r)) => DataTypes::Integer(l + r),
+            _ => raise_error(RunTimeErrors::IncompatibleOperation),
         }
     }
 }
@@ -37,9 +38,9 @@ impl From<bool> for DataTypes {
 impl std::ops::Sub for DataTypes {
     type Output = Self;
     fn sub(self, rhs: DataTypes) -> Self {
-        match (self,rhs) {
+        match (self, rhs) {
             (DataTypes::Integer(l), DataTypes::Integer(r)) => DataTypes::Integer(l - r),
-            _ => panic!("Unhandled subraction of datatypes"),
+            _ => raise_error(RunTimeErrors::IncompatibleOperation),
         }
     }
 }
@@ -47,9 +48,9 @@ impl std::ops::Sub for DataTypes {
 impl std::ops::Mul for DataTypes {
     type Output = Self;
     fn mul(self, rhs: DataTypes) -> Self {
-        match (self,rhs) {
+        match (self, rhs) {
             (DataTypes::Integer(l), DataTypes::Integer(r)) => DataTypes::Integer(l * r),
-            _ => panic!("Unhandled multiplication of datatypes"),
+            _ => raise_error(RunTimeErrors::IncompatibleOperation),
         }
     }
 }
@@ -58,19 +59,23 @@ impl std::ops::Div for DataTypes {
     type Output = Self;
     fn div(self, rhs: DataTypes) -> Self {
         match (rhs, self) {
-            (DataTypes::Integer(r), DataTypes::Integer(l)) => DataTypes::Integer(l / r),
-            _ => panic!("Unhandled division of datatypes"),
+            (DataTypes::Integer(r), DataTypes::Integer(l)) => {
+                if r != 0 {
+                    DataTypes::Integer(l / r)
+                } else {
+                    raise_error(RunTimeErrors::DivisionByZero);
+                }
+            }
+            _ => raise_error(RunTimeErrors::IncompatibleOperation),
         }
     }
 }
 
-pub fn to_bool(data:DataTypes) -> bool {
+pub fn to_bool(data: DataTypes) -> bool {
     match data {
         DataTypes::Bool(value) => return value,
-        DataTypes::Integer(value) => return value !=0,
-        _ => {
-            panic!("illegal datatype conversion")
-        }
+        DataTypes::Integer(value) => return value != 0,
+        _ => panic!("illegal datatype conversion"),
     }
 }
 

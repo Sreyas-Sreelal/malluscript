@@ -1,8 +1,8 @@
 // auto-generated: "lalrpop 0.18.1"
-// sha256: 905560c5a85e6e3bd418733f55949296bbaf1e8e7af61e3bdae9bbb4d7243
+// sha256: 5d53a5883a3309767d7296649e674e0704551d5f2cae0b554b3a22f7cad27d
+use crate::executor::ast::*;
 use crate::lexer::tokens::*;
 use crate::lexer::LexicalError;
-use crate::executor::ast::*;
 #[allow(unused_extern_crates)]
 extern crate lalrpop_util as __lalrpop_util;
 #[allow(unused_imports)]
@@ -25,33 +25,34 @@ mod __parse__SourceUnit {
      {
         Variant0(TokenType<'input>),
         Variant1(&'input str),
-        Variant2(Expression<'input>),
-        Variant3(SourceUnit<'input>),
-        Variant4(SourceUnitPart<'input>),
-        Variant5(::std::vec::Vec<SourceUnitPart<'input>>),
-        Variant6(Statement<'input>),
+        Variant2(usize),
+        Variant3(Expression<'input>),
+        Variant4(SourceUnit<'input>),
+        Variant5(SourceUnitPart<'input>),
+        Variant6(::std::vec::Vec<SourceUnitPart<'input>>),
+        Variant7(Statement<'input>),
     }
     const __ACTION: &'static [i8] = &[
         // State 0
         0, 11, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 14, 15, 16, 17, 18, 19, 20, 21,
         // State 1
-        0, 0, -9, 0, 22, 23, 0, -9, 0, -9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, -11, 0, 22, 23, 0, -11, 0, -11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 2
         0, 0, 0, 0, 0, 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 3
-        0, 0, -3, 25, -3, -3, 26, -3, 0, -3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, -5, 25, -5, -5, 26, -5, 0, -5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 4
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 5
-        0, -15, 0, 0, 0, -15, 0, 0, 0, 0, 0, 0, 0, -15, -15, 0, -15, -15, -15, -15, -15, -15, -15, -15,
+        0, -17, 0, 0, 0, -17, 0, 0, 0, 0, 0, 0, 0, -17, -17, 0, -17, -17, -17, -17, -17, -17, -17, -17,
         // State 6
-        0, 11, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, -13, 13, 0, 14, 15, 16, 17, 18, 19, 20, 21,
+        0, 11, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, -15, 13, 0, 14, 15, 16, 17, 18, 19, 20, 21,
         // State 7
-        0, -14, 0, 0, 0, -14, 0, 0, 0, 0, 0, 0, 0, -14, -14, 0, -14, -14, -14, -14, -14, -14, -14, -14,
+        0, -16, 0, 0, 0, -16, 0, 0, 0, 0, 0, 0, 0, -16, -16, 0, -16, -16, -16, -16, -16, -16, -16, -16,
         // State 8
-        0, 0, -30, -30, -30, -30, -30, -30, 0, -30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, -32, -32, -32, -32, -32, -32, 0, -32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 9
-        0, 0, -12, -12, -12, -12, -12, -12, 0, -12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, -14, -14, -14, -14, -14, -14, 0, -14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 10
         0, 11, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 0, 16, 17, 18, 0, 20, 0,
         // State 11
@@ -59,19 +60,19 @@ mod __parse__SourceUnit {
         // State 12
         0, 11, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 0, 16, 17, 18, 0, 20, 0,
         // State 13
-        -24, -24, -24, -24, -24, -24, -24, -24, -24, -24, -24, -24, -24, 0, 0, 0, -24, 0, -24, -24, -24, 0, -24, 0,
+        -26, -26, -26, -26, -26, -26, -26, -26, -26, -26, -26, -26, -26, 0, 0, 0, -26, 0, -26, -26, -26, 0, -26, 0,
         // State 14
         0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 0, 16, 17, 18, 0, 20, 0,
         // State 15
-        -26, -26, -26, -26, -26, -26, -26, -26, -26, -26, -26, -26, -26, 0, 0, 0, -26, 0, -26, -26, -26, 0, -26, 0,
+        -28, -28, -28, -28, -28, -28, -28, -28, -28, -28, -28, -28, -28, 0, 0, 0, -28, 0, -28, -28, -28, 0, -28, 0,
         // State 16
-        -27, -27, -27, -27, -27, -27, -27, -27, -27, -27, -27, -27, -27, 0, 0, 0, -27, 0, -27, -27, -27, 0, -27, 0,
+        -29, -29, -29, -29, -29, -29, -29, -29, -29, -29, -29, -29, -29, 0, 0, 0, -29, 0, -29, -29, -29, 0, -29, 0,
         // State 17
-        -23, -23, -23, -23, -23, -23, -23, -23, -23, -23, -23, -23, -23, 0, 0, 0, -23, 0, -23, -23, -23, 0, -23, 0,
+        -25, -25, -25, -25, -25, -25, -25, -25, -25, -25, -25, -25, -25, 0, 0, 0, -25, 0, -25, -25, -25, 0, -25, 0,
         // State 18
         0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 0, 16, 17, 18, 0, 20, 0,
         // State 19
-        -25, -25, -25, -25, -25, -25, -25, -25, -25, -25, -25, -25, -25, 0, 0, 0, -25, 0, -25, -25, -25, 0, -25, 0,
+        -27, -27, -27, -27, -27, -27, -27, -27, -27, -27, -27, -27, -27, 0, 0, 0, -27, 0, -27, -27, -27, 0, -27, 0,
         // State 20
         0, 11, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 0, 16, 17, 18, 0, 20, 0,
         // State 21
@@ -85,35 +86,35 @@ mod __parse__SourceUnit {
         // State 25
         0, 11, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 0, 16, 17, 18, 0, 20, 0,
         // State 26
-        0, -16, 0, 0, 0, -16, 0, 0, 0, 0, 0, 0, 0, -16, -16, 0, -16, -16, -16, -16, -16, -16, -16, -16,
+        0, -18, 0, 0, 0, -18, 0, 0, 0, 0, 0, 0, 0, -18, -18, 0, -18, -18, -18, -18, -18, -18, -18, -18,
         // State 27
         0, 0, 40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 28
-        0, 0, -29, -29, -29, -29, -29, -29, 0, -29, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, -31, -31, -31, -31, -31, -31, 0, -31, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 29
         0, 0, 0, 0, 0, 0, 0, 41, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 30
         0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 43, 0, 0, 0, 14, 0, 16, 17, 18, 0, 20, 0,
         // State 31
-        -8, -8, 0, 0, 0, 0, 0, 0, -8, 0, -8, -8, -8, 0, 0, 0, -8, 0, -8, -8, -8, 0, -8, 0,
+        -10, -10, 0, 0, 0, 0, 0, 0, -10, 0, -10, -10, -10, 0, 0, 0, -10, 0, -10, -10, -10, 0, -10, 0,
         // State 32
         0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 0, 0, 0, 14, 0, 16, 17, 18, 0, 20, 0,
         // State 33
         0, 0, 0, 0, 0, 0, 0, 45, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 34
-        0, 0, -1, 25, -1, -1, 26, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, -3, 25, -3, -3, 26, -3, 0, -3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 35
-        0, 0, -2, 25, -2, -2, 26, -2, 0, -2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, -4, 25, -4, -4, 26, -4, 0, -4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 36
         0, 0, 0, 0, 0, 0, 0, 46, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 37
-        0, 0, -10, -10, -10, -10, -10, -10, 0, -10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, -12, -12, -12, -12, -12, -12, 0, -12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 38
-        0, 0, -11, -11, -11, -11, -11, -11, 0, -11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, -13, -13, -13, -13, -13, -13, 0, -13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 39
-        -28, -28, -28, -28, -28, -28, -28, -28, -28, -28, -28, -28, -28, 0, 0, 0, -28, 0, -28, -28, -28, 0, -28, 0,
+        -30, -30, -30, -30, -30, -30, -30, -30, -30, -30, -30, -30, -30, 0, 0, 0, -30, 0, -30, -30, -30, 0, -30, 0,
         // State 40
-        0, -17, 0, 0, 0, -17, 0, 0, 0, 0, 0, 0, 0, -17, -17, 0, -17, -17, -17, -17, -17, -17, -17, -17,
+        0, -19, 0, 0, 0, -19, 0, 0, 0, 0, 0, 0, 0, -19, -19, 0, -19, -19, -19, -19, -19, -19, -19, -19,
         // State 41
         47, 11, 0, 0, 0, 0, 0, 0, 48, 0, 49, 50, 0, 0, 0, 0, 14, 0, 16, 17, 18, 0, 20, 0,
         // State 42
@@ -121,25 +122,25 @@ mod __parse__SourceUnit {
         // State 43
         0, 11, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 14, 15, 16, 17, 18, 19, 20, 21,
         // State 44
-        0, -19, 0, 0, 0, -19, 0, 0, 0, 0, 0, 0, 0, -19, -19, 0, -19, -19, -19, -19, -19, -19, -19, -19,
+        0, -21, 0, 0, 0, -21, 0, 0, 0, 0, 0, 0, 0, -21, -21, 0, -21, -21, -21, -21, -21, -21, -21, -21,
         // State 45
-        0, -18, 0, 0, 0, -18, 0, 0, 0, 0, 0, 0, 0, -18, -18, 0, -18, -18, -18, -18, -18, -18, -18, -18,
+        0, -20, 0, 0, 0, -20, 0, 0, 0, 0, 0, 0, 0, -20, -20, 0, -20, -20, -20, -20, -20, -20, -20, -20,
         // State 46
-        -5, -5, 0, 0, 0, 0, 0, 0, -5, 0, -5, -5, -5, 0, 0, 0, -5, 0, -5, -5, -5, 0, -5, 0,
-        // State 47
         -7, -7, 0, 0, 0, 0, 0, 0, -7, 0, -7, -7, -7, 0, 0, 0, -7, 0, -7, -7, -7, 0, -7, 0,
+        // State 47
+        -9, -9, 0, 0, 0, 0, 0, 0, -9, 0, -9, -9, -9, 0, 0, 0, -9, 0, -9, -9, -9, 0, -9, 0,
         // State 48
-        -4, -4, 0, 0, 0, 0, 0, 0, -4, 0, -4, -4, -4, 0, 0, 0, -4, 0, -4, -4, -4, 0, -4, 0,
-        // State 49
         -6, -6, 0, 0, 0, 0, 0, 0, -6, 0, -6, -6, -6, 0, 0, 0, -6, 0, -6, -6, -6, 0, -6, 0,
+        // State 49
+        -8, -8, 0, 0, 0, 0, 0, 0, -8, 0, -8, -8, -8, 0, 0, 0, -8, 0, -8, -8, -8, 0, -8, 0,
         // State 50
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 53, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 51
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 54, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 52
-        0, -20, 0, 0, 0, -20, 0, 0, 0, 0, 0, 0, 0, -20, -20, 55, -20, -20, -20, -20, -20, -20, -20, -20,
+        0, -22, 0, 0, 0, -22, 0, 0, 0, 0, 0, 0, 0, -22, -22, 55, -22, -22, -22, -22, -22, -22, -22, -22,
         // State 53
-        0, -22, 0, 0, 0, -22, 0, 0, 0, 0, 0, 0, 0, -22, -22, 0, -22, -22, -22, -22, -22, -22, -22, -22,
+        0, -24, 0, 0, 0, -24, 0, 0, 0, 0, 0, 0, 0, -24, -24, 0, -24, -24, -24, -24, -24, -24, -24, -24,
         // State 54
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 56, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 55
@@ -147,7 +148,7 @@ mod __parse__SourceUnit {
         // State 56
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 58, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 57
-        0, -21, 0, 0, 0, -21, 0, 0, 0, 0, 0, 0, 0, -21, -21, 0, -21, -21, -21, -21, -21, -21, -21, -21,
+        0, -23, 0, 0, 0, -23, 0, 0, 0, 0, 0, 0, 0, -23, -23, 0, -23, -23, -23, -23, -23, -23, -23, -23,
     ];
     const __EOF_ACTION: &'static [i8] = &[
         // State 0
@@ -159,13 +160,13 @@ mod __parse__SourceUnit {
         // State 3
         0,
         // State 4
-        -31,
+        -33,
         // State 5
-        -15,
+        -17,
         // State 6
-        -13,
+        -15,
         // State 7
-        -14,
+        -16,
         // State 8
         0,
         // State 9
@@ -203,7 +204,7 @@ mod __parse__SourceUnit {
         // State 25
         0,
         // State 26
-        -16,
+        -18,
         // State 27
         0,
         // State 28
@@ -231,7 +232,7 @@ mod __parse__SourceUnit {
         // State 39
         0,
         // State 40
-        -17,
+        -19,
         // State 41
         0,
         // State 42
@@ -239,9 +240,9 @@ mod __parse__SourceUnit {
         // State 43
         0,
         // State 44
-        -19,
+        -21,
         // State 45
-        -18,
+        -20,
         // State 46
         0,
         // State 47
@@ -255,9 +256,9 @@ mod __parse__SourceUnit {
         // State 51
         0,
         // State 52
-        -20,
-        // State 53
         -22,
+        // State 53
+        -24,
         // State 54
         0,
         // State 55
@@ -265,125 +266,125 @@ mod __parse__SourceUnit {
         // State 56
         0,
         // State 57
-        -21,
+        -23,
     ];
     const __GOTO: &'static [i8] = &[
         // State 0
-        2, 0, 3, 4, 5, 6, 7, 8, 9, 10, 0,
+        0, 0, 2, 0, 3, 4, 5, 6, 7, 8, 9, 10, 0,
         // State 1
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 2
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 3
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 4
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 5
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 6
-        2, 0, 3, 4, 0, 27, 0, 8, 9, 10, 0,
+        0, 0, 2, 0, 3, 4, 0, 27, 0, 8, 9, 10, 0,
         // State 7
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 8
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 9
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 10
-        2, 0, 28, 4, 0, 0, 0, 0, 9, 10, 0,
+        0, 0, 2, 0, 28, 4, 0, 0, 0, 0, 9, 10, 0,
         // State 11
-        0, 0, 0, 0, 0, 0, 0, 0, 9, 29, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 29, 0,
         // State 12
-        2, 0, 30, 4, 0, 0, 0, 0, 9, 10, 0,
+        0, 0, 2, 0, 30, 4, 0, 0, 0, 0, 9, 10, 0,
         // State 13
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 14
-        0, 31, 0, 0, 0, 0, 0, 0, 32, 0, 0,
+        0, 0, 0, 31, 0, 0, 0, 0, 0, 0, 32, 0, 0,
         // State 15
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 16
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 17
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 18
-        0, 33, 0, 0, 0, 0, 0, 0, 32, 0, 0,
+        0, 0, 0, 33, 0, 0, 0, 0, 0, 0, 32, 0, 0,
         // State 19
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 20
-        2, 0, 34, 4, 0, 0, 0, 0, 9, 10, 0,
+        0, 0, 2, 0, 34, 4, 0, 0, 0, 0, 9, 10, 0,
         // State 21
-        0, 0, 0, 35, 0, 0, 0, 0, 9, 10, 0,
+        0, 0, 0, 0, 0, 35, 0, 0, 0, 0, 9, 10, 0,
         // State 22
-        0, 0, 0, 36, 0, 0, 0, 0, 9, 10, 0,
+        0, 0, 0, 0, 0, 36, 0, 0, 0, 0, 9, 10, 0,
         // State 23
-        2, 0, 37, 4, 0, 0, 0, 0, 9, 10, 0,
+        0, 0, 2, 0, 37, 4, 0, 0, 0, 0, 9, 10, 0,
         // State 24
-        0, 0, 0, 0, 0, 0, 0, 0, 9, 38, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 38, 0,
         // State 25
-        0, 0, 0, 0, 0, 0, 0, 0, 9, 39, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 39, 0,
         // State 26
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 27
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 28
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 29
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 30
-        0, 42, 0, 0, 0, 0, 0, 0, 32, 0, 0,
+        0, 0, 0, 42, 0, 0, 0, 0, 0, 0, 32, 0, 0,
         // State 31
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 32
-        0, 42, 0, 0, 0, 0, 0, 0, 32, 0, 0,
+        0, 0, 0, 42, 0, 0, 0, 0, 0, 0, 32, 0, 0,
         // State 33
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 34
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 35
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 36
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 37
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 38
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 39
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 40
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 41
-        0, 42, 0, 0, 0, 0, 0, 0, 32, 0, 0,
+        0, 0, 0, 42, 0, 0, 0, 0, 0, 0, 32, 0, 0,
         // State 42
-        2, 0, 3, 4, 51, 6, 7, 8, 9, 10, 0,
+        0, 0, 2, 0, 3, 4, 51, 6, 7, 8, 9, 10, 0,
         // State 43
-        2, 0, 3, 4, 52, 6, 7, 8, 9, 10, 0,
+        0, 0, 2, 0, 3, 4, 52, 6, 7, 8, 9, 10, 0,
         // State 44
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 45
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 46
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 47
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 48
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 49
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 50
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 51
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 52
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 53
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 54
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 55
-        2, 0, 3, 4, 57, 6, 7, 8, 9, 10, 0,
+        0, 0, 2, 0, 3, 4, 57, 6, 7, 8, 9, 10, 0,
         // State 56
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 57
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     ];
     fn __expected_tokens(__state: usize) -> Vec<::std::string::String> {
         const __TERMINAL: &'static [&'static str] = &[
@@ -472,7 +473,7 @@ mod __parse__SourceUnit {
 
         #[inline]
         fn goto(&self, state: i8, nt: usize) -> i8 {
-            __GOTO[(state as usize) * 11 + nt] - 1
+            __GOTO[(state as usize) * 13 + nt] - 1
         }
 
         fn token_to_symbol(&self, token_index: usize, token: Self::Token) -> Self::Symbol {
@@ -706,8 +707,14 @@ mod __parse__SourceUnit {
                 __reduce29(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<(&())>)
             }
             30 => {
+                __reduce30(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<(&())>)
+            }
+            31 => {
+                __reduce31(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<(&())>)
+            }
+            32 => {
                 // __SourceUnit = SourceUnit => ActionFn(0);
-                let __sym0 = __pop_Variant3(__symbols);
+                let __sym0 = __pop_Variant4(__symbols);
                 let __start = __sym0.0.clone();
                 let __end = __sym0.2.clone();
                 let __nt = super::__action0::<>(input, __sym0);
@@ -718,26 +725,15 @@ mod __parse__SourceUnit {
         let __states_len = __states.len();
         __states.truncate(__states_len - __pop_states);
         let __state = *__states.last().unwrap() as usize;
-        let __next_state = __GOTO[__state * 11 + __nonterminal] - 1;
+        let __next_state = __GOTO[__state * 13 + __nonterminal] - 1;
         __states.push(__next_state);
         None
-    }
-    fn __pop_Variant2<
-      'input,
-    >(
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>
-    ) -> (usize, Expression<'input>, usize)
-     {
-        match __symbols.pop().unwrap() {
-            (__l, __Symbol::Variant2(__v), __r) => (__l, __v, __r),
-            _ => panic!("symbol type mismatch")
-        }
     }
     fn __pop_Variant3<
       'input,
     >(
         __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>
-    ) -> (usize, SourceUnit<'input>, usize)
+    ) -> (usize, Expression<'input>, usize)
      {
         match __symbols.pop().unwrap() {
             (__l, __Symbol::Variant3(__v), __r) => (__l, __v, __r),
@@ -748,21 +744,32 @@ mod __parse__SourceUnit {
       'input,
     >(
         __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>
-    ) -> (usize, SourceUnitPart<'input>, usize)
+    ) -> (usize, SourceUnit<'input>, usize)
      {
         match __symbols.pop().unwrap() {
             (__l, __Symbol::Variant4(__v), __r) => (__l, __v, __r),
             _ => panic!("symbol type mismatch")
         }
     }
-    fn __pop_Variant6<
+    fn __pop_Variant5<
+      'input,
+    >(
+        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>
+    ) -> (usize, SourceUnitPart<'input>, usize)
+     {
+        match __symbols.pop().unwrap() {
+            (__l, __Symbol::Variant5(__v), __r) => (__l, __v, __r),
+            _ => panic!("symbol type mismatch")
+        }
+    }
+    fn __pop_Variant7<
       'input,
     >(
         __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>
     ) -> (usize, Statement<'input>, usize)
      {
         match __symbols.pop().unwrap() {
-            (__l, __Symbol::Variant6(__v), __r) => (__l, __v, __r),
+            (__l, __Symbol::Variant7(__v), __r) => (__l, __v, __r),
             _ => panic!("symbol type mismatch")
         }
     }
@@ -777,14 +784,25 @@ mod __parse__SourceUnit {
             _ => panic!("symbol type mismatch")
         }
     }
-    fn __pop_Variant5<
+    fn __pop_Variant2<
+      'input,
+    >(
+        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>
+    ) -> (usize, usize, usize)
+     {
+        match __symbols.pop().unwrap() {
+            (__l, __Symbol::Variant2(__v), __r) => (__l, __v, __r),
+            _ => panic!("symbol type mismatch")
+        }
+    }
+    fn __pop_Variant6<
       'input,
     >(
         __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>
     ) -> (usize, ::std::vec::Vec<SourceUnitPart<'input>>, usize)
      {
         match __symbols.pop().unwrap() {
-            (__l, __Symbol::Variant5(__v), __r) => (__l, __v, __r),
+            (__l, __Symbol::Variant6(__v), __r) => (__l, __v, __r),
             _ => panic!("symbol type mismatch")
         }
     }
@@ -808,16 +826,12 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // ArithExpression = ArithExpression, "+", Factor => ActionFn(15);
-        assert!(__symbols.len() >= 3);
-        let __sym2 = __pop_Variant2(__symbols);
-        let __sym1 = __pop_Variant0(__symbols);
-        let __sym0 = __pop_Variant2(__symbols);
-        let __start = __sym0.0.clone();
-        let __end = __sym2.2.clone();
-        let __nt = super::__action15::<>(input, __sym0, __sym1, __sym2);
+        // @L =  => ActionFn(30);
+        let __start = __symbols.last().map(|s| s.2.clone()).unwrap_or_default();
+        let __end = __lookahead_start.cloned().unwrap_or_else(|| __start.clone());
+        let __nt = super::__action30::<>(input, &__start, &__end);
         __symbols.push((__start, __Symbol::Variant2(__nt), __end));
-        (3, 0)
+        (0, 0)
     }
     pub(crate) fn __reduce1<
         'input,
@@ -828,16 +842,12 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // ArithExpression = ArithExpression, "-", Factor => ActionFn(16);
-        assert!(__symbols.len() >= 3);
-        let __sym2 = __pop_Variant2(__symbols);
-        let __sym1 = __pop_Variant0(__symbols);
-        let __sym0 = __pop_Variant2(__symbols);
-        let __start = __sym0.0.clone();
-        let __end = __sym2.2.clone();
-        let __nt = super::__action16::<>(input, __sym0, __sym1, __sym2);
+        // @R =  => ActionFn(29);
+        let __start = __symbols.last().map(|s| s.2.clone()).unwrap_or_default();
+        let __end = __lookahead_start.cloned().unwrap_or_else(|| __start.clone());
+        let __nt = super::__action29::<>(input, &__start, &__end);
         __symbols.push((__start, __Symbol::Variant2(__nt), __end));
-        (3, 0)
+        (0, 1)
     }
     pub(crate) fn __reduce2<
         'input,
@@ -848,13 +858,16 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // ArithExpression = Factor => ActionFn(17);
-        let __sym0 = __pop_Variant2(__symbols);
+        // ArithExpression = ArithExpression, "+", Factor => ActionFn(53);
+        assert!(__symbols.len() >= 3);
+        let __sym2 = __pop_Variant3(__symbols);
+        let __sym1 = __pop_Variant0(__symbols);
+        let __sym0 = __pop_Variant3(__symbols);
         let __start = __sym0.0.clone();
-        let __end = __sym0.2.clone();
-        let __nt = super::__action17::<>(input, __sym0);
-        __symbols.push((__start, __Symbol::Variant2(__nt), __end));
-        (1, 0)
+        let __end = __sym2.2.clone();
+        let __nt = super::__action53::<>(input, __sym0, __sym1, __sym2);
+        __symbols.push((__start, __Symbol::Variant3(__nt), __end));
+        (3, 2)
     }
     pub(crate) fn __reduce3<
         'input,
@@ -865,16 +878,16 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // Conditional = Conditional, Conditional, "==" => ActionFn(10);
+        // ArithExpression = ArithExpression, "-", Factor => ActionFn(54);
         assert!(__symbols.len() >= 3);
-        let __sym2 = __pop_Variant0(__symbols);
-        let __sym1 = __pop_Variant2(__symbols);
-        let __sym0 = __pop_Variant2(__symbols);
+        let __sym2 = __pop_Variant3(__symbols);
+        let __sym1 = __pop_Variant0(__symbols);
+        let __sym0 = __pop_Variant3(__symbols);
         let __start = __sym0.0.clone();
         let __end = __sym2.2.clone();
-        let __nt = super::__action10::<>(input, __sym0, __sym1, __sym2);
-        __symbols.push((__start, __Symbol::Variant2(__nt), __end));
-        (3, 1)
+        let __nt = super::__action54::<>(input, __sym0, __sym1, __sym2);
+        __symbols.push((__start, __Symbol::Variant3(__nt), __end));
+        (3, 2)
     }
     pub(crate) fn __reduce4<
         'input,
@@ -885,16 +898,13 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // Conditional = Conditional, Conditional, "!=" => ActionFn(11);
-        assert!(__symbols.len() >= 3);
-        let __sym2 = __pop_Variant0(__symbols);
-        let __sym1 = __pop_Variant2(__symbols);
-        let __sym0 = __pop_Variant2(__symbols);
+        // ArithExpression = Factor => ActionFn(17);
+        let __sym0 = __pop_Variant3(__symbols);
         let __start = __sym0.0.clone();
-        let __end = __sym2.2.clone();
-        let __nt = super::__action11::<>(input, __sym0, __sym1, __sym2);
-        __symbols.push((__start, __Symbol::Variant2(__nt), __end));
-        (3, 1)
+        let __end = __sym0.2.clone();
+        let __nt = super::__action17::<>(input, __sym0);
+        __symbols.push((__start, __Symbol::Variant3(__nt), __end));
+        (1, 2)
     }
     pub(crate) fn __reduce5<
         'input,
@@ -905,16 +915,16 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // Conditional = Conditional, Conditional, ">" => ActionFn(12);
+        // Conditional = Conditional, Conditional, "==" => ActionFn(55);
         assert!(__symbols.len() >= 3);
         let __sym2 = __pop_Variant0(__symbols);
-        let __sym1 = __pop_Variant2(__symbols);
-        let __sym0 = __pop_Variant2(__symbols);
+        let __sym1 = __pop_Variant3(__symbols);
+        let __sym0 = __pop_Variant3(__symbols);
         let __start = __sym0.0.clone();
         let __end = __sym2.2.clone();
-        let __nt = super::__action12::<>(input, __sym0, __sym1, __sym2);
-        __symbols.push((__start, __Symbol::Variant2(__nt), __end));
-        (3, 1)
+        let __nt = super::__action55::<>(input, __sym0, __sym1, __sym2);
+        __symbols.push((__start, __Symbol::Variant3(__nt), __end));
+        (3, 3)
     }
     pub(crate) fn __reduce6<
         'input,
@@ -925,16 +935,16 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // Conditional = Conditional, Conditional, "<" => ActionFn(13);
+        // Conditional = Conditional, Conditional, "!=" => ActionFn(56);
         assert!(__symbols.len() >= 3);
         let __sym2 = __pop_Variant0(__symbols);
-        let __sym1 = __pop_Variant2(__symbols);
-        let __sym0 = __pop_Variant2(__symbols);
+        let __sym1 = __pop_Variant3(__symbols);
+        let __sym0 = __pop_Variant3(__symbols);
         let __start = __sym0.0.clone();
         let __end = __sym2.2.clone();
-        let __nt = super::__action13::<>(input, __sym0, __sym1, __sym2);
-        __symbols.push((__start, __Symbol::Variant2(__nt), __end));
-        (3, 1)
+        let __nt = super::__action56::<>(input, __sym0, __sym1, __sym2);
+        __symbols.push((__start, __Symbol::Variant3(__nt), __end));
+        (3, 3)
     }
     pub(crate) fn __reduce7<
         'input,
@@ -945,13 +955,16 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // Conditional = Term => ActionFn(14);
-        let __sym0 = __pop_Variant2(__symbols);
+        // Conditional = Conditional, Conditional, ">" => ActionFn(57);
+        assert!(__symbols.len() >= 3);
+        let __sym2 = __pop_Variant0(__symbols);
+        let __sym1 = __pop_Variant3(__symbols);
+        let __sym0 = __pop_Variant3(__symbols);
         let __start = __sym0.0.clone();
-        let __end = __sym0.2.clone();
-        let __nt = super::__action14::<>(input, __sym0);
-        __symbols.push((__start, __Symbol::Variant2(__nt), __end));
-        (1, 1)
+        let __end = __sym2.2.clone();
+        let __nt = super::__action57::<>(input, __sym0, __sym1, __sym2);
+        __symbols.push((__start, __Symbol::Variant3(__nt), __end));
+        (3, 3)
     }
     pub(crate) fn __reduce8<
         'input,
@@ -962,13 +975,16 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // Expression = ArithExpression => ActionFn(9);
-        let __sym0 = __pop_Variant2(__symbols);
+        // Conditional = Conditional, Conditional, "<" => ActionFn(58);
+        assert!(__symbols.len() >= 3);
+        let __sym2 = __pop_Variant0(__symbols);
+        let __sym1 = __pop_Variant3(__symbols);
+        let __sym0 = __pop_Variant3(__symbols);
         let __start = __sym0.0.clone();
-        let __end = __sym0.2.clone();
-        let __nt = super::__action9::<>(input, __sym0);
-        __symbols.push((__start, __Symbol::Variant2(__nt), __end));
-        (1, 2)
+        let __end = __sym2.2.clone();
+        let __nt = super::__action58::<>(input, __sym0, __sym1, __sym2);
+        __symbols.push((__start, __Symbol::Variant3(__nt), __end));
+        (3, 3)
     }
     pub(crate) fn __reduce9<
         'input,
@@ -979,16 +995,13 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // Factor = Factor, "*", Unary => ActionFn(18);
-        assert!(__symbols.len() >= 3);
-        let __sym2 = __pop_Variant2(__symbols);
-        let __sym1 = __pop_Variant0(__symbols);
-        let __sym0 = __pop_Variant2(__symbols);
+        // Conditional = Term => ActionFn(14);
+        let __sym0 = __pop_Variant3(__symbols);
         let __start = __sym0.0.clone();
-        let __end = __sym2.2.clone();
-        let __nt = super::__action18::<>(input, __sym0, __sym1, __sym2);
-        __symbols.push((__start, __Symbol::Variant2(__nt), __end));
-        (3, 3)
+        let __end = __sym0.2.clone();
+        let __nt = super::__action14::<>(input, __sym0);
+        __symbols.push((__start, __Symbol::Variant3(__nt), __end));
+        (1, 3)
     }
     pub(crate) fn __reduce10<
         'input,
@@ -999,16 +1012,13 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // Factor = Factor, "/", Unary => ActionFn(19);
-        assert!(__symbols.len() >= 3);
-        let __sym2 = __pop_Variant2(__symbols);
-        let __sym1 = __pop_Variant0(__symbols);
-        let __sym0 = __pop_Variant2(__symbols);
+        // Expression = ArithExpression => ActionFn(9);
+        let __sym0 = __pop_Variant3(__symbols);
         let __start = __sym0.0.clone();
-        let __end = __sym2.2.clone();
-        let __nt = super::__action19::<>(input, __sym0, __sym1, __sym2);
-        __symbols.push((__start, __Symbol::Variant2(__nt), __end));
-        (3, 3)
+        let __end = __sym0.2.clone();
+        let __nt = super::__action9::<>(input, __sym0);
+        __symbols.push((__start, __Symbol::Variant3(__nt), __end));
+        (1, 4)
     }
     pub(crate) fn __reduce11<
         'input,
@@ -1019,13 +1029,16 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // Factor = Unary => ActionFn(20);
-        let __sym0 = __pop_Variant2(__symbols);
+        // Factor = Factor, "*", Unary => ActionFn(59);
+        assert!(__symbols.len() >= 3);
+        let __sym2 = __pop_Variant3(__symbols);
+        let __sym1 = __pop_Variant0(__symbols);
+        let __sym0 = __pop_Variant3(__symbols);
         let __start = __sym0.0.clone();
-        let __end = __sym0.2.clone();
-        let __nt = super::__action20::<>(input, __sym0);
-        __symbols.push((__start, __Symbol::Variant2(__nt), __end));
-        (1, 3)
+        let __end = __sym2.2.clone();
+        let __nt = super::__action59::<>(input, __sym0, __sym1, __sym2);
+        __symbols.push((__start, __Symbol::Variant3(__nt), __end));
+        (3, 5)
     }
     pub(crate) fn __reduce12<
         'input,
@@ -1036,13 +1049,16 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // SourceUnit = SourceUnitPart+ => ActionFn(1);
-        let __sym0 = __pop_Variant5(__symbols);
+        // Factor = Factor, "/", Unary => ActionFn(60);
+        assert!(__symbols.len() >= 3);
+        let __sym2 = __pop_Variant3(__symbols);
+        let __sym1 = __pop_Variant0(__symbols);
+        let __sym0 = __pop_Variant3(__symbols);
         let __start = __sym0.0.clone();
-        let __end = __sym0.2.clone();
-        let __nt = super::__action1::<>(input, __sym0);
+        let __end = __sym2.2.clone();
+        let __nt = super::__action60::<>(input, __sym0, __sym1, __sym2);
         __symbols.push((__start, __Symbol::Variant3(__nt), __end));
-        (1, 4)
+        (3, 5)
     }
     pub(crate) fn __reduce13<
         'input,
@@ -1053,12 +1069,12 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // SourceUnitPart = Statement => ActionFn(2);
-        let __sym0 = __pop_Variant6(__symbols);
+        // Factor = Unary => ActionFn(20);
+        let __sym0 = __pop_Variant3(__symbols);
         let __start = __sym0.0.clone();
         let __end = __sym0.2.clone();
-        let __nt = super::__action2::<>(input, __sym0);
-        __symbols.push((__start, __Symbol::Variant4(__nt), __end));
+        let __nt = super::__action20::<>(input, __sym0);
+        __symbols.push((__start, __Symbol::Variant3(__nt), __end));
         (1, 5)
     }
     pub(crate) fn __reduce14<
@@ -1070,12 +1086,12 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // SourceUnitPart+ = SourceUnitPart => ActionFn(29);
-        let __sym0 = __pop_Variant4(__symbols);
+        // SourceUnit = SourceUnitPart+ => ActionFn(1);
+        let __sym0 = __pop_Variant6(__symbols);
         let __start = __sym0.0.clone();
         let __end = __sym0.2.clone();
-        let __nt = super::__action29::<>(input, __sym0);
-        __symbols.push((__start, __Symbol::Variant5(__nt), __end));
+        let __nt = super::__action1::<>(input, __sym0);
+        __symbols.push((__start, __Symbol::Variant4(__nt), __end));
         (1, 6)
     }
     pub(crate) fn __reduce15<
@@ -1087,15 +1103,13 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // SourceUnitPart+ = SourceUnitPart+, SourceUnitPart => ActionFn(30);
-        assert!(__symbols.len() >= 2);
-        let __sym1 = __pop_Variant4(__symbols);
-        let __sym0 = __pop_Variant5(__symbols);
+        // SourceUnitPart = Statement => ActionFn(2);
+        let __sym0 = __pop_Variant7(__symbols);
         let __start = __sym0.0.clone();
-        let __end = __sym1.2.clone();
-        let __nt = super::__action30::<>(input, __sym0, __sym1);
+        let __end = __sym0.2.clone();
+        let __nt = super::__action2::<>(input, __sym0);
         __symbols.push((__start, __Symbol::Variant5(__nt), __end));
-        (2, 6)
+        (1, 7)
     }
     pub(crate) fn __reduce16<
         'input,
@@ -1106,16 +1120,13 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // Statement = Declaration, Expression, ";" => ActionFn(3);
-        assert!(__symbols.len() >= 3);
-        let __sym2 = __pop_Variant0(__symbols);
-        let __sym1 = __pop_Variant2(__symbols);
-        let __sym0 = __pop_Variant0(__symbols);
+        // SourceUnitPart+ = SourceUnitPart => ActionFn(31);
+        let __sym0 = __pop_Variant5(__symbols);
         let __start = __sym0.0.clone();
-        let __end = __sym2.2.clone();
-        let __nt = super::__action3::<>(input, __sym0, __sym1, __sym2);
+        let __end = __sym0.2.clone();
+        let __nt = super::__action31::<>(input, __sym0);
         __symbols.push((__start, __Symbol::Variant6(__nt), __end));
-        (3, 7)
+        (1, 8)
     }
     pub(crate) fn __reduce17<
         'input,
@@ -1126,17 +1137,15 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // Statement = Expression, "=", Expression, ";" => ActionFn(4);
-        assert!(__symbols.len() >= 4);
-        let __sym3 = __pop_Variant0(__symbols);
-        let __sym2 = __pop_Variant2(__symbols);
-        let __sym1 = __pop_Variant0(__symbols);
-        let __sym0 = __pop_Variant2(__symbols);
+        // SourceUnitPart+ = SourceUnitPart+, SourceUnitPart => ActionFn(32);
+        assert!(__symbols.len() >= 2);
+        let __sym1 = __pop_Variant5(__symbols);
+        let __sym0 = __pop_Variant6(__symbols);
         let __start = __sym0.0.clone();
-        let __end = __sym3.2.clone();
-        let __nt = super::__action4::<>(input, __sym0, __sym1, __sym2, __sym3);
+        let __end = __sym1.2.clone();
+        let __nt = super::__action32::<>(input, __sym0, __sym1);
         __symbols.push((__start, __Symbol::Variant6(__nt), __end));
-        (4, 7)
+        (2, 8)
     }
     pub(crate) fn __reduce18<
         'input,
@@ -1147,16 +1156,16 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // Statement = Write, Expression, ";" => ActionFn(5);
+        // Statement = Declaration, Expression, ";" => ActionFn(61);
         assert!(__symbols.len() >= 3);
         let __sym2 = __pop_Variant0(__symbols);
-        let __sym1 = __pop_Variant2(__symbols);
+        let __sym1 = __pop_Variant3(__symbols);
         let __sym0 = __pop_Variant0(__symbols);
         let __start = __sym0.0.clone();
         let __end = __sym2.2.clone();
-        let __nt = super::__action5::<>(input, __sym0, __sym1, __sym2);
-        __symbols.push((__start, __Symbol::Variant6(__nt), __end));
-        (3, 7)
+        let __nt = super::__action61::<>(input, __sym0, __sym1, __sym2);
+        __symbols.push((__start, __Symbol::Variant7(__nt), __end));
+        (3, 9)
     }
     pub(crate) fn __reduce19<
         'input,
@@ -1167,18 +1176,17 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // Statement = If, Conditional, "{", SourceUnit, "}" => ActionFn(6);
-        assert!(__symbols.len() >= 5);
-        let __sym4 = __pop_Variant0(__symbols);
-        let __sym3 = __pop_Variant3(__symbols);
-        let __sym2 = __pop_Variant0(__symbols);
-        let __sym1 = __pop_Variant2(__symbols);
-        let __sym0 = __pop_Variant0(__symbols);
+        // Statement = Expression, "=", Expression, ";" => ActionFn(62);
+        assert!(__symbols.len() >= 4);
+        let __sym3 = __pop_Variant0(__symbols);
+        let __sym2 = __pop_Variant3(__symbols);
+        let __sym1 = __pop_Variant0(__symbols);
+        let __sym0 = __pop_Variant3(__symbols);
         let __start = __sym0.0.clone();
-        let __end = __sym4.2.clone();
-        let __nt = super::__action6::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4);
-        __symbols.push((__start, __Symbol::Variant6(__nt), __end));
-        (5, 7)
+        let __end = __sym3.2.clone();
+        let __nt = super::__action62::<>(input, __sym0, __sym1, __sym2, __sym3);
+        __symbols.push((__start, __Symbol::Variant7(__nt), __end));
+        (4, 9)
     }
     pub(crate) fn __reduce20<
         'input,
@@ -1189,22 +1197,16 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // Statement = If, Conditional, "{", SourceUnit, "}", Else, "{", SourceUnit, "}" => ActionFn(7);
-        assert!(__symbols.len() >= 9);
-        let __sym8 = __pop_Variant0(__symbols);
-        let __sym7 = __pop_Variant3(__symbols);
-        let __sym6 = __pop_Variant0(__symbols);
-        let __sym5 = __pop_Variant0(__symbols);
-        let __sym4 = __pop_Variant0(__symbols);
-        let __sym3 = __pop_Variant3(__symbols);
+        // Statement = Write, Expression, ";" => ActionFn(63);
+        assert!(__symbols.len() >= 3);
         let __sym2 = __pop_Variant0(__symbols);
-        let __sym1 = __pop_Variant2(__symbols);
+        let __sym1 = __pop_Variant3(__symbols);
         let __sym0 = __pop_Variant0(__symbols);
         let __start = __sym0.0.clone();
-        let __end = __sym8.2.clone();
-        let __nt = super::__action7::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4, __sym5, __sym6, __sym7, __sym8);
-        __symbols.push((__start, __Symbol::Variant6(__nt), __end));
-        (9, 7)
+        let __end = __sym2.2.clone();
+        let __nt = super::__action63::<>(input, __sym0, __sym1, __sym2);
+        __symbols.push((__start, __Symbol::Variant7(__nt), __end));
+        (3, 9)
     }
     pub(crate) fn __reduce21<
         'input,
@@ -1215,18 +1217,18 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // Statement = Loop, Conditional, "{", SourceUnit, "}" => ActionFn(8);
+        // Statement = If, Conditional, "{", SourceUnit, "}" => ActionFn(64);
         assert!(__symbols.len() >= 5);
         let __sym4 = __pop_Variant0(__symbols);
-        let __sym3 = __pop_Variant3(__symbols);
+        let __sym3 = __pop_Variant4(__symbols);
         let __sym2 = __pop_Variant0(__symbols);
-        let __sym1 = __pop_Variant2(__symbols);
+        let __sym1 = __pop_Variant3(__symbols);
         let __sym0 = __pop_Variant0(__symbols);
         let __start = __sym0.0.clone();
         let __end = __sym4.2.clone();
-        let __nt = super::__action8::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4);
-        __symbols.push((__start, __Symbol::Variant6(__nt), __end));
-        (5, 7)
+        let __nt = super::__action64::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4);
+        __symbols.push((__start, __Symbol::Variant7(__nt), __end));
+        (5, 9)
     }
     pub(crate) fn __reduce22<
         'input,
@@ -1237,13 +1239,22 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // Term = Integer => ActionFn(23);
+        // Statement = If, Conditional, "{", SourceUnit, "}", Else, "{", SourceUnit, "}" => ActionFn(65);
+        assert!(__symbols.len() >= 9);
+        let __sym8 = __pop_Variant0(__symbols);
+        let __sym7 = __pop_Variant4(__symbols);
+        let __sym6 = __pop_Variant0(__symbols);
+        let __sym5 = __pop_Variant0(__symbols);
+        let __sym4 = __pop_Variant0(__symbols);
+        let __sym3 = __pop_Variant4(__symbols);
+        let __sym2 = __pop_Variant0(__symbols);
+        let __sym1 = __pop_Variant3(__symbols);
         let __sym0 = __pop_Variant0(__symbols);
         let __start = __sym0.0.clone();
-        let __end = __sym0.2.clone();
-        let __nt = super::__action23::<>(input, __sym0);
-        __symbols.push((__start, __Symbol::Variant2(__nt), __end));
-        (1, 8)
+        let __end = __sym8.2.clone();
+        let __nt = super::__action65::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4, __sym5, __sym6, __sym7, __sym8);
+        __symbols.push((__start, __Symbol::Variant7(__nt), __end));
+        (9, 9)
     }
     pub(crate) fn __reduce23<
         'input,
@@ -1254,13 +1265,18 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // Term = Identifier => ActionFn(24);
-        let __sym0 = __pop_Variant1(__symbols);
+        // Statement = Loop, Conditional, "{", SourceUnit, "}" => ActionFn(66);
+        assert!(__symbols.len() >= 5);
+        let __sym4 = __pop_Variant0(__symbols);
+        let __sym3 = __pop_Variant4(__symbols);
+        let __sym2 = __pop_Variant0(__symbols);
+        let __sym1 = __pop_Variant3(__symbols);
+        let __sym0 = __pop_Variant0(__symbols);
         let __start = __sym0.0.clone();
-        let __end = __sym0.2.clone();
-        let __nt = super::__action24::<>(input, __sym0);
-        __symbols.push((__start, __Symbol::Variant2(__nt), __end));
-        (1, 8)
+        let __end = __sym4.2.clone();
+        let __nt = super::__action66::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4);
+        __symbols.push((__start, __Symbol::Variant7(__nt), __end));
+        (5, 9)
     }
     pub(crate) fn __reduce24<
         'input,
@@ -1271,13 +1287,13 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // Term = StringLiteral => ActionFn(25);
-        let __sym0 = __pop_Variant1(__symbols);
+        // Term = Integer => ActionFn(67);
+        let __sym0 = __pop_Variant0(__symbols);
         let __start = __sym0.0.clone();
         let __end = __sym0.2.clone();
-        let __nt = super::__action25::<>(input, __sym0);
-        __symbols.push((__start, __Symbol::Variant2(__nt), __end));
-        (1, 8)
+        let __nt = super::__action67::<>(input, __sym0);
+        __symbols.push((__start, __Symbol::Variant3(__nt), __end));
+        (1, 10)
     }
     pub(crate) fn __reduce25<
         'input,
@@ -1288,13 +1304,13 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // Term = InputNumber => ActionFn(26);
-        let __sym0 = __pop_Variant0(__symbols);
+        // Term = Identifier => ActionFn(68);
+        let __sym0 = __pop_Variant1(__symbols);
         let __start = __sym0.0.clone();
         let __end = __sym0.2.clone();
-        let __nt = super::__action26::<>(input, __sym0);
-        __symbols.push((__start, __Symbol::Variant2(__nt), __end));
-        (1, 8)
+        let __nt = super::__action68::<>(input, __sym0);
+        __symbols.push((__start, __Symbol::Variant3(__nt), __end));
+        (1, 10)
     }
     pub(crate) fn __reduce26<
         'input,
@@ -1305,15 +1321,49 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // Term = InputString => ActionFn(27);
+        // Term = StringLiteral => ActionFn(69);
+        let __sym0 = __pop_Variant1(__symbols);
+        let __start = __sym0.0.clone();
+        let __end = __sym0.2.clone();
+        let __nt = super::__action69::<>(input, __sym0);
+        __symbols.push((__start, __Symbol::Variant3(__nt), __end));
+        (1, 10)
+    }
+    pub(crate) fn __reduce27<
+        'input,
+    >(
+        input: &'input str,
+        __lookahead_start: Option<&usize>,
+        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>,
+        _: ::std::marker::PhantomData<(&'input ())>,
+    ) -> (usize, usize)
+    {
+        // Term = InputNumber => ActionFn(70);
         let __sym0 = __pop_Variant0(__symbols);
         let __start = __sym0.0.clone();
         let __end = __sym0.2.clone();
-        let __nt = super::__action27::<>(input, __sym0);
-        __symbols.push((__start, __Symbol::Variant2(__nt), __end));
-        (1, 8)
+        let __nt = super::__action70::<>(input, __sym0);
+        __symbols.push((__start, __Symbol::Variant3(__nt), __end));
+        (1, 10)
     }
-    pub(crate) fn __reduce27<
+    pub(crate) fn __reduce28<
+        'input,
+    >(
+        input: &'input str,
+        __lookahead_start: Option<&usize>,
+        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>,
+        _: ::std::marker::PhantomData<(&'input ())>,
+    ) -> (usize, usize)
+    {
+        // Term = InputString => ActionFn(71);
+        let __sym0 = __pop_Variant0(__symbols);
+        let __start = __sym0.0.clone();
+        let __end = __sym0.2.clone();
+        let __nt = super::__action71::<>(input, __sym0);
+        __symbols.push((__start, __Symbol::Variant3(__nt), __end));
+        (1, 10)
+    }
+    pub(crate) fn __reduce29<
         'input,
     >(
         input: &'input str,
@@ -1325,15 +1375,15 @@ mod __parse__SourceUnit {
         // Term = "(", Expression, ")" => ActionFn(28);
         assert!(__symbols.len() >= 3);
         let __sym2 = __pop_Variant0(__symbols);
-        let __sym1 = __pop_Variant2(__symbols);
+        let __sym1 = __pop_Variant3(__symbols);
         let __sym0 = __pop_Variant0(__symbols);
         let __start = __sym0.0.clone();
         let __end = __sym2.2.clone();
         let __nt = super::__action28::<>(input, __sym0, __sym1, __sym2);
-        __symbols.push((__start, __Symbol::Variant2(__nt), __end));
-        (3, 8)
+        __symbols.push((__start, __Symbol::Variant3(__nt), __end));
+        (3, 10)
     }
-    pub(crate) fn __reduce28<
+    pub(crate) fn __reduce30<
         'input,
     >(
         input: &'input str,
@@ -1342,17 +1392,17 @@ mod __parse__SourceUnit {
         _: ::std::marker::PhantomData<(&'input ())>,
     ) -> (usize, usize)
     {
-        // Unary = "-", Unary => ActionFn(21);
+        // Unary = "-", Unary => ActionFn(72);
         assert!(__symbols.len() >= 2);
-        let __sym1 = __pop_Variant2(__symbols);
+        let __sym1 = __pop_Variant3(__symbols);
         let __sym0 = __pop_Variant0(__symbols);
         let __start = __sym0.0.clone();
         let __end = __sym1.2.clone();
-        let __nt = super::__action21::<>(input, __sym0, __sym1);
-        __symbols.push((__start, __Symbol::Variant2(__nt), __end));
-        (2, 9)
+        let __nt = super::__action72::<>(input, __sym0, __sym1);
+        __symbols.push((__start, __Symbol::Variant3(__nt), __end));
+        (2, 11)
     }
-    pub(crate) fn __reduce29<
+    pub(crate) fn __reduce31<
         'input,
     >(
         input: &'input str,
@@ -1362,109 +1412,95 @@ mod __parse__SourceUnit {
     ) -> (usize, usize)
     {
         // Unary = Term => ActionFn(22);
-        let __sym0 = __pop_Variant2(__symbols);
+        let __sym0 = __pop_Variant3(__symbols);
         let __start = __sym0.0.clone();
         let __end = __sym0.2.clone();
         let __nt = super::__action22::<>(input, __sym0);
-        __symbols.push((__start, __Symbol::Variant2(__nt), __end));
-        (1, 9)
+        __symbols.push((__start, __Symbol::Variant3(__nt), __end));
+        (1, 11)
     }
 }
 pub use self::__parse__SourceUnit::SourceUnitParser;
 
 #[allow(unused_variables)]
-fn __action0<
-    'input,
->(
+fn __action0<'input>(
     input: &'input str,
     (_, __0, _): (usize, SourceUnit<'input>, usize),
-) -> SourceUnit<'input>
-{
+) -> SourceUnit<'input> {
     __0
 }
 
 #[allow(unused_variables)]
-fn __action1<
-    'input,
->(
+fn __action1<'input>(
     input: &'input str,
     (_, __0, _): (usize, ::std::vec::Vec<SourceUnitPart<'input>>, usize),
-) -> SourceUnit<'input>
-{
+) -> SourceUnit<'input> {
     SourceUnit(__0)
 }
 
 #[allow(unused_variables)]
-fn __action2<
-    'input,
->(
+fn __action2<'input>(
     input: &'input str,
     (_, __0, _): (usize, Statement<'input>, usize),
-) -> SourceUnitPart<'input>
-{
+) -> SourceUnitPart<'input> {
     SourceUnitPart::Statement(__0)
 }
 
 #[allow(unused_variables)]
-fn __action3<
-    'input,
->(
+fn __action3<'input>(
     input: &'input str,
+    (_, a, _): (usize, usize, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
     (_, id, _): (usize, Expression<'input>, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
-) -> Statement<'input>
-{
-    Statement::Declaration(id)
+    (_, b, _): (usize, usize, usize),
+) -> Statement<'input> {
+    Statement::Declaration((a, b), id)
 }
 
 #[allow(unused_variables)]
-fn __action4<
-    'input,
->(
+fn __action4<'input>(
     input: &'input str,
+    (_, a, _): (usize, usize, usize),
     (_, l, _): (usize, Expression<'input>, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
     (_, r, _): (usize, Expression<'input>, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
-) -> Statement<'input>
-{
-    Statement::Assignment(l,r)
+    (_, b, _): (usize, usize, usize),
+) -> Statement<'input> {
+    Statement::Assignment((a, b), l, r)
 }
 
 #[allow(unused_variables)]
-fn __action5<
-    'input,
->(
+fn __action5<'input>(
     input: &'input str,
+    (_, a, _): (usize, usize, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
     (_, e, _): (usize, Expression<'input>, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
-) -> Statement<'input>
-{
-    Statement::Write(e)
+    (_, b, _): (usize, usize, usize),
+) -> Statement<'input> {
+    Statement::Write((a, b), e)
 }
 
 #[allow(unused_variables)]
-fn __action6<
-    'input,
->(
+fn __action6<'input>(
     input: &'input str,
+    (_, a, _): (usize, usize, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
     (_, condition, _): (usize, Expression<'input>, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
     (_, s, _): (usize, SourceUnit<'input>, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
-) -> Statement<'input>
-{
-    Statement::Conditional(condition,s,None)
+    (_, b, _): (usize, usize, usize),
+) -> Statement<'input> {
+    Statement::Conditional((a, b), condition, s, None)
 }
 
 #[allow(unused_variables)]
-fn __action7<
-    'input,
->(
+fn __action7<'input>(
     input: &'input str,
+    (_, a, _): (usize, usize, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
     (_, condition, _): (usize, Expression<'input>, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
@@ -1474,299 +1510,865 @@ fn __action7<
     (_, _, _): (usize, TokenType<'input>, usize),
     (_, f, _): (usize, SourceUnit<'input>, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
-) -> Statement<'input>
-{
-    Statement::Conditional(condition,s,Some(f))
+    (_, b, _): (usize, usize, usize),
+) -> Statement<'input> {
+    Statement::Conditional((a, b), condition, s, Some(f))
 }
 
 #[allow(unused_variables)]
-fn __action8<
-    'input,
->(
+fn __action8<'input>(
     input: &'input str,
+    (_, a, _): (usize, usize, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
     (_, condition, _): (usize, Expression<'input>, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
     (_, s, _): (usize, SourceUnit<'input>, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
-) -> Statement<'input>
-{
-    Statement::Loop(condition,s)
+    (_, b, _): (usize, usize, usize),
+) -> Statement<'input> {
+    Statement::Loop((a, b), condition, s)
 }
 
 #[allow(unused_variables)]
-fn __action9<
-    'input,
->(
+fn __action9<'input>(
     input: &'input str,
     (_, __0, _): (usize, Expression<'input>, usize),
-) -> Expression<'input>
-{
+) -> Expression<'input> {
     __0
 }
 
 #[allow(unused_variables)]
-fn __action10<
-    'input,
->(
+fn __action10<'input>(
     input: &'input str,
     (_, l, _): (usize, Expression<'input>, usize),
     (_, r, _): (usize, Expression<'input>, usize),
+    (_, a, _): (usize, usize, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
-) -> Expression<'input>
-{
-    Expression::Equals(Box::new(l),Box::new(r))
+    (_, b, _): (usize, usize, usize),
+) -> Expression<'input> {
+    Expression::Equals((a, b), Box::new(l), Box::new(r))
 }
 
 #[allow(unused_variables)]
-fn __action11<
-    'input,
->(
+fn __action11<'input>(
     input: &'input str,
     (_, l, _): (usize, Expression<'input>, usize),
     (_, r, _): (usize, Expression<'input>, usize),
+    (_, a, _): (usize, usize, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
-) -> Expression<'input>
-{
-    Expression::NotEquals(Box::new(l),Box::new(r))
+    (_, b, _): (usize, usize, usize),
+) -> Expression<'input> {
+    Expression::NotEquals((a, b), Box::new(l), Box::new(r))
 }
 
 #[allow(unused_variables)]
-fn __action12<
-    'input,
->(
+fn __action12<'input>(
     input: &'input str,
     (_, l, _): (usize, Expression<'input>, usize),
     (_, r, _): (usize, Expression<'input>, usize),
+    (_, a, _): (usize, usize, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
-) -> Expression<'input>
-{
-    Expression::GreaterThan(Box::new(l),Box::new(r))
+    (_, b, _): (usize, usize, usize),
+) -> Expression<'input> {
+    Expression::GreaterThan((a, b), Box::new(l), Box::new(r))
 }
 
 #[allow(unused_variables)]
-fn __action13<
-    'input,
->(
+fn __action13<'input>(
     input: &'input str,
     (_, l, _): (usize, Expression<'input>, usize),
     (_, r, _): (usize, Expression<'input>, usize),
+    (_, a, _): (usize, usize, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
-) -> Expression<'input>
-{
-    Expression::LessThan(Box::new(l),Box::new(r))
+    (_, b, _): (usize, usize, usize),
+) -> Expression<'input> {
+    Expression::LessThan((a, b), Box::new(l), Box::new(r))
 }
 
 #[allow(unused_variables)]
-fn __action14<
-    'input,
->(
+fn __action14<'input>(
     input: &'input str,
     (_, __0, _): (usize, Expression<'input>, usize),
-) -> Expression<'input>
-{
+) -> Expression<'input> {
     __0
 }
 
 #[allow(unused_variables)]
-fn __action15<
-    'input,
->(
+fn __action15<'input>(
     input: &'input str,
     (_, l, _): (usize, Expression<'input>, usize),
+    (_, a, _): (usize, usize, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
+    (_, b, _): (usize, usize, usize),
     (_, r, _): (usize, Expression<'input>, usize),
-) -> Expression<'input>
-{
-    Expression::Add(Box::new(l),Box::new(r))
+) -> Expression<'input> {
+    Expression::Add((a, b), Box::new(l), Box::new(r))
 }
 
 #[allow(unused_variables)]
-fn __action16<
-    'input,
->(
+fn __action16<'input>(
     input: &'input str,
     (_, l, _): (usize, Expression<'input>, usize),
+    (_, a, _): (usize, usize, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
+    (_, b, _): (usize, usize, usize),
     (_, r, _): (usize, Expression<'input>, usize),
-) -> Expression<'input>
-{
-    Expression::Subtract(Box::new(l),Box::new(r))
+) -> Expression<'input> {
+    Expression::Subtract((a, b), Box::new(l), Box::new(r))
 }
 
 #[allow(unused_variables)]
-fn __action17<
-    'input,
->(
+fn __action17<'input>(
     input: &'input str,
     (_, __0, _): (usize, Expression<'input>, usize),
-) -> Expression<'input>
-{
+) -> Expression<'input> {
     __0
 }
 
 #[allow(unused_variables)]
-fn __action18<
-    'input,
->(
+fn __action18<'input>(
     input: &'input str,
     (_, l, _): (usize, Expression<'input>, usize),
+    (_, a, _): (usize, usize, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
+    (_, b, _): (usize, usize, usize),
     (_, r, _): (usize, Expression<'input>, usize),
-) -> Expression<'input>
-{
-    Expression::Multiply(Box::new(l),Box::new(r))
+) -> Expression<'input> {
+    Expression::Multiply((a, b), Box::new(l), Box::new(r))
 }
 
 #[allow(unused_variables)]
-fn __action19<
-    'input,
->(
+fn __action19<'input>(
     input: &'input str,
     (_, l, _): (usize, Expression<'input>, usize),
+    (_, a, _): (usize, usize, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
+    (_, b, _): (usize, usize, usize),
     (_, r, _): (usize, Expression<'input>, usize),
-) -> Expression<'input>
-{
-    Expression::Divide(Box::new(l),Box::new(r))
+) -> Expression<'input> {
+    Expression::Divide((a, b), Box::new(l), Box::new(r))
 }
 
 #[allow(unused_variables)]
-fn __action20<
-    'input,
->(
+fn __action20<'input>(
     input: &'input str,
     (_, __0, _): (usize, Expression<'input>, usize),
-) -> Expression<'input>
-{
+) -> Expression<'input> {
     __0
 }
 
 #[allow(unused_variables)]
-fn __action21<
-    'input,
->(
+fn __action21<'input>(
     input: &'input str,
+    (_, a, _): (usize, usize, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
+    (_, b, _): (usize, usize, usize),
     (_, r, _): (usize, Expression<'input>, usize),
-) -> Expression<'input>
-{
-    Expression::UnaryMinus(Box::new(r))
+) -> Expression<'input> {
+    Expression::UnaryMinus((a, b), Box::new(r))
 }
 
 #[allow(unused_variables)]
-fn __action22<
-    'input,
->(
+fn __action22<'input>(
     input: &'input str,
     (_, __0, _): (usize, Expression<'input>, usize),
-) -> Expression<'input>
-{
+) -> Expression<'input> {
     __0
 }
 
 #[allow(unused_variables)]
-fn __action23<
-    'input,
->(
+fn __action23<'input>(
     input: &'input str,
+    (_, a, _): (usize, usize, usize),
     (_, v, _): (usize, TokenType<'input>, usize),
-) -> Expression<'input>
-{
-    Expression::Integer(v)
+    (_, b, _): (usize, usize, usize),
+) -> Expression<'input> {
+    Expression::Integer((a, b), v)
 }
 
 #[allow(unused_variables)]
-fn __action24<
-    'input,
->(
+fn __action24<'input>(
     input: &'input str,
+    (_, a, _): (usize, usize, usize),
     (_, id, _): (usize, &'input str, usize),
-) -> Expression<'input>
-{
-    Expression::Symbol(id)
+    (_, b, _): (usize, usize, usize),
+) -> Expression<'input> {
+    Expression::Symbol((a, b), id)
 }
 
 #[allow(unused_variables)]
-fn __action25<
-    'input,
->(
+fn __action25<'input>(
     input: &'input str,
+    (_, a, _): (usize, usize, usize),
     (_, string, _): (usize, &'input str, usize),
-) -> Expression<'input>
-{
-    Expression::StringLiteral(string)
+    (_, b, _): (usize, usize, usize),
+) -> Expression<'input> {
+    Expression::StringLiteral((a, b), string)
 }
 
 #[allow(unused_variables)]
-fn __action26<
-    'input,
->(
+fn __action26<'input>(
     input: &'input str,
-    (_, __0, _): (usize, TokenType<'input>, usize),
-) -> Expression<'input>
-{
-    Expression::InputNumber
+    (_, a, _): (usize, usize, usize),
+    (_, d, _): (usize, TokenType<'input>, usize),
+    (_, b, _): (usize, usize, usize),
+) -> Expression<'input> {
+    Expression::InputNumber((a, b))
 }
 
 #[allow(unused_variables)]
-fn __action27<
-    'input,
->(
+fn __action27<'input>(
     input: &'input str,
-    (_, __0, _): (usize, TokenType<'input>, usize),
-) -> Expression<'input>
-{
-    Expression::InputString
+    (_, a, _): (usize, usize, usize),
+    (_, d, _): (usize, TokenType<'input>, usize),
+    (_, b, _): (usize, usize, usize),
+) -> Expression<'input> {
+    Expression::InputString((a, b))
 }
 
 #[allow(unused_variables)]
-fn __action28<
-    'input,
->(
+fn __action28<'input>(
     input: &'input str,
     (_, _, _): (usize, TokenType<'input>, usize),
     (_, e, _): (usize, Expression<'input>, usize),
     (_, _, _): (usize, TokenType<'input>, usize),
-) -> Expression<'input>
-{
+) -> Expression<'input> {
     e
 }
 
 #[allow(unused_variables)]
-fn __action29<
-    'input,
->(
+fn __action29<'input>(input: &'input str, __lookbehind: &usize, __lookahead: &usize) -> usize {
+    __lookbehind.clone()
+}
+
+#[allow(unused_variables)]
+fn __action30<'input>(input: &'input str, __lookbehind: &usize, __lookahead: &usize) -> usize {
+    __lookahead.clone()
+}
+
+#[allow(unused_variables)]
+fn __action31<'input>(
     input: &'input str,
     (_, __0, _): (usize, SourceUnitPart<'input>, usize),
-) -> ::std::vec::Vec<SourceUnitPart<'input>>
-{
+) -> ::std::vec::Vec<SourceUnitPart<'input>> {
     vec![__0]
 }
 
 #[allow(unused_variables)]
-fn __action30<
-    'input,
->(
+fn __action32<'input>(
     input: &'input str,
     (_, v, _): (usize, ::std::vec::Vec<SourceUnitPart<'input>>, usize),
     (_, e, _): (usize, SourceUnitPart<'input>, usize),
-) -> ::std::vec::Vec<SourceUnitPart<'input>>
-{
-    { let mut v = v; v.push(e); v }
+) -> ::std::vec::Vec<SourceUnitPart<'input>> {
+    {
+        let mut v = v;
+        v.push(e);
+        v
+    }
 }
 
-pub trait __ToTriple<'input, > {
-    fn to_triple(value: Self) -> Result<(usize,TokenType<'input>,usize), __lalrpop_util::ParseError<usize, TokenType<'input>, LexicalError>>;
+#[allow(unused_variables)]
+fn __action33<'input>(
+    input: &'input str,
+    __0: (usize, Expression<'input>, usize),
+    __1: (usize, TokenType<'input>, usize),
+    __2: (usize, usize, usize),
+    __3: (usize, Expression<'input>, usize),
+) -> Expression<'input> {
+    let __start0 = __0.2.clone();
+    let __end0 = __1.0.clone();
+    let __temp0 = __action30(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action15(input, __0, __temp0, __1, __2, __3)
 }
 
-impl<'input, > __ToTriple<'input, > for (usize, TokenType<'input>, usize) {
-    fn to_triple(value: Self) -> Result<(usize,TokenType<'input>,usize), __lalrpop_util::ParseError<usize, TokenType<'input>, LexicalError>> {
+#[allow(unused_variables)]
+fn __action34<'input>(
+    input: &'input str,
+    __0: (usize, Expression<'input>, usize),
+    __1: (usize, TokenType<'input>, usize),
+    __2: (usize, usize, usize),
+    __3: (usize, Expression<'input>, usize),
+) -> Expression<'input> {
+    let __start0 = __0.2.clone();
+    let __end0 = __1.0.clone();
+    let __temp0 = __action30(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action16(input, __0, __temp0, __1, __2, __3)
+}
+
+#[allow(unused_variables)]
+fn __action35<'input>(
+    input: &'input str,
+    __0: (usize, Expression<'input>, usize),
+    __1: (usize, Expression<'input>, usize),
+    __2: (usize, TokenType<'input>, usize),
+    __3: (usize, usize, usize),
+) -> Expression<'input> {
+    let __start0 = __1.2.clone();
+    let __end0 = __2.0.clone();
+    let __temp0 = __action30(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action10(input, __0, __1, __temp0, __2, __3)
+}
+
+#[allow(unused_variables)]
+fn __action36<'input>(
+    input: &'input str,
+    __0: (usize, Expression<'input>, usize),
+    __1: (usize, Expression<'input>, usize),
+    __2: (usize, TokenType<'input>, usize),
+    __3: (usize, usize, usize),
+) -> Expression<'input> {
+    let __start0 = __1.2.clone();
+    let __end0 = __2.0.clone();
+    let __temp0 = __action30(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action11(input, __0, __1, __temp0, __2, __3)
+}
+
+#[allow(unused_variables)]
+fn __action37<'input>(
+    input: &'input str,
+    __0: (usize, Expression<'input>, usize),
+    __1: (usize, Expression<'input>, usize),
+    __2: (usize, TokenType<'input>, usize),
+    __3: (usize, usize, usize),
+) -> Expression<'input> {
+    let __start0 = __1.2.clone();
+    let __end0 = __2.0.clone();
+    let __temp0 = __action30(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action12(input, __0, __1, __temp0, __2, __3)
+}
+
+#[allow(unused_variables)]
+fn __action38<'input>(
+    input: &'input str,
+    __0: (usize, Expression<'input>, usize),
+    __1: (usize, Expression<'input>, usize),
+    __2: (usize, TokenType<'input>, usize),
+    __3: (usize, usize, usize),
+) -> Expression<'input> {
+    let __start0 = __1.2.clone();
+    let __end0 = __2.0.clone();
+    let __temp0 = __action30(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action13(input, __0, __1, __temp0, __2, __3)
+}
+
+#[allow(unused_variables)]
+fn __action39<'input>(
+    input: &'input str,
+    __0: (usize, Expression<'input>, usize),
+    __1: (usize, TokenType<'input>, usize),
+    __2: (usize, usize, usize),
+    __3: (usize, Expression<'input>, usize),
+) -> Expression<'input> {
+    let __start0 = __0.2.clone();
+    let __end0 = __1.0.clone();
+    let __temp0 = __action30(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action18(input, __0, __temp0, __1, __2, __3)
+}
+
+#[allow(unused_variables)]
+fn __action40<'input>(
+    input: &'input str,
+    __0: (usize, Expression<'input>, usize),
+    __1: (usize, TokenType<'input>, usize),
+    __2: (usize, usize, usize),
+    __3: (usize, Expression<'input>, usize),
+) -> Expression<'input> {
+    let __start0 = __0.2.clone();
+    let __end0 = __1.0.clone();
+    let __temp0 = __action30(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action19(input, __0, __temp0, __1, __2, __3)
+}
+
+#[allow(unused_variables)]
+fn __action41<'input>(
+    input: &'input str,
+    __0: (usize, TokenType<'input>, usize),
+    __1: (usize, Expression<'input>, usize),
+    __2: (usize, TokenType<'input>, usize),
+    __3: (usize, usize, usize),
+) -> Statement<'input> {
+    let __start0 = __0.0.clone();
+    let __end0 = __0.0.clone();
+    let __temp0 = __action30(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action3(input, __temp0, __0, __1, __2, __3)
+}
+
+#[allow(unused_variables)]
+fn __action42<'input>(
+    input: &'input str,
+    __0: (usize, Expression<'input>, usize),
+    __1: (usize, TokenType<'input>, usize),
+    __2: (usize, Expression<'input>, usize),
+    __3: (usize, TokenType<'input>, usize),
+    __4: (usize, usize, usize),
+) -> Statement<'input> {
+    let __start0 = __0.0.clone();
+    let __end0 = __0.0.clone();
+    let __temp0 = __action30(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action4(input, __temp0, __0, __1, __2, __3, __4)
+}
+
+#[allow(unused_variables)]
+fn __action43<'input>(
+    input: &'input str,
+    __0: (usize, TokenType<'input>, usize),
+    __1: (usize, Expression<'input>, usize),
+    __2: (usize, TokenType<'input>, usize),
+    __3: (usize, usize, usize),
+) -> Statement<'input> {
+    let __start0 = __0.0.clone();
+    let __end0 = __0.0.clone();
+    let __temp0 = __action30(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action5(input, __temp0, __0, __1, __2, __3)
+}
+
+#[allow(unused_variables)]
+fn __action44<'input>(
+    input: &'input str,
+    __0: (usize, TokenType<'input>, usize),
+    __1: (usize, Expression<'input>, usize),
+    __2: (usize, TokenType<'input>, usize),
+    __3: (usize, SourceUnit<'input>, usize),
+    __4: (usize, TokenType<'input>, usize),
+    __5: (usize, usize, usize),
+) -> Statement<'input> {
+    let __start0 = __0.0.clone();
+    let __end0 = __0.0.clone();
+    let __temp0 = __action30(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action6(input, __temp0, __0, __1, __2, __3, __4, __5)
+}
+
+#[allow(unused_variables)]
+fn __action45<'input>(
+    input: &'input str,
+    __0: (usize, TokenType<'input>, usize),
+    __1: (usize, Expression<'input>, usize),
+    __2: (usize, TokenType<'input>, usize),
+    __3: (usize, SourceUnit<'input>, usize),
+    __4: (usize, TokenType<'input>, usize),
+    __5: (usize, TokenType<'input>, usize),
+    __6: (usize, TokenType<'input>, usize),
+    __7: (usize, SourceUnit<'input>, usize),
+    __8: (usize, TokenType<'input>, usize),
+    __9: (usize, usize, usize),
+) -> Statement<'input> {
+    let __start0 = __0.0.clone();
+    let __end0 = __0.0.clone();
+    let __temp0 = __action30(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action7(
+        input, __temp0, __0, __1, __2, __3, __4, __5, __6, __7, __8, __9,
+    )
+}
+
+#[allow(unused_variables)]
+fn __action46<'input>(
+    input: &'input str,
+    __0: (usize, TokenType<'input>, usize),
+    __1: (usize, Expression<'input>, usize),
+    __2: (usize, TokenType<'input>, usize),
+    __3: (usize, SourceUnit<'input>, usize),
+    __4: (usize, TokenType<'input>, usize),
+    __5: (usize, usize, usize),
+) -> Statement<'input> {
+    let __start0 = __0.0.clone();
+    let __end0 = __0.0.clone();
+    let __temp0 = __action30(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action8(input, __temp0, __0, __1, __2, __3, __4, __5)
+}
+
+#[allow(unused_variables)]
+fn __action47<'input>(
+    input: &'input str,
+    __0: (usize, TokenType<'input>, usize),
+    __1: (usize, usize, usize),
+) -> Expression<'input> {
+    let __start0 = __0.0.clone();
+    let __end0 = __0.0.clone();
+    let __temp0 = __action30(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action23(input, __temp0, __0, __1)
+}
+
+#[allow(unused_variables)]
+fn __action48<'input>(
+    input: &'input str,
+    __0: (usize, &'input str, usize),
+    __1: (usize, usize, usize),
+) -> Expression<'input> {
+    let __start0 = __0.0.clone();
+    let __end0 = __0.0.clone();
+    let __temp0 = __action30(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action24(input, __temp0, __0, __1)
+}
+
+#[allow(unused_variables)]
+fn __action49<'input>(
+    input: &'input str,
+    __0: (usize, &'input str, usize),
+    __1: (usize, usize, usize),
+) -> Expression<'input> {
+    let __start0 = __0.0.clone();
+    let __end0 = __0.0.clone();
+    let __temp0 = __action30(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action25(input, __temp0, __0, __1)
+}
+
+#[allow(unused_variables)]
+fn __action50<'input>(
+    input: &'input str,
+    __0: (usize, TokenType<'input>, usize),
+    __1: (usize, usize, usize),
+) -> Expression<'input> {
+    let __start0 = __0.0.clone();
+    let __end0 = __0.0.clone();
+    let __temp0 = __action30(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action26(input, __temp0, __0, __1)
+}
+
+#[allow(unused_variables)]
+fn __action51<'input>(
+    input: &'input str,
+    __0: (usize, TokenType<'input>, usize),
+    __1: (usize, usize, usize),
+) -> Expression<'input> {
+    let __start0 = __0.0.clone();
+    let __end0 = __0.0.clone();
+    let __temp0 = __action30(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action27(input, __temp0, __0, __1)
+}
+
+#[allow(unused_variables)]
+fn __action52<'input>(
+    input: &'input str,
+    __0: (usize, TokenType<'input>, usize),
+    __1: (usize, usize, usize),
+    __2: (usize, Expression<'input>, usize),
+) -> Expression<'input> {
+    let __start0 = __0.0.clone();
+    let __end0 = __0.0.clone();
+    let __temp0 = __action30(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action21(input, __temp0, __0, __1, __2)
+}
+
+#[allow(unused_variables)]
+fn __action53<'input>(
+    input: &'input str,
+    __0: (usize, Expression<'input>, usize),
+    __1: (usize, TokenType<'input>, usize),
+    __2: (usize, Expression<'input>, usize),
+) -> Expression<'input> {
+    let __start0 = __1.2.clone();
+    let __end0 = __2.0.clone();
+    let __temp0 = __action29(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action33(input, __0, __1, __temp0, __2)
+}
+
+#[allow(unused_variables)]
+fn __action54<'input>(
+    input: &'input str,
+    __0: (usize, Expression<'input>, usize),
+    __1: (usize, TokenType<'input>, usize),
+    __2: (usize, Expression<'input>, usize),
+) -> Expression<'input> {
+    let __start0 = __1.2.clone();
+    let __end0 = __2.0.clone();
+    let __temp0 = __action29(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action34(input, __0, __1, __temp0, __2)
+}
+
+#[allow(unused_variables)]
+fn __action55<'input>(
+    input: &'input str,
+    __0: (usize, Expression<'input>, usize),
+    __1: (usize, Expression<'input>, usize),
+    __2: (usize, TokenType<'input>, usize),
+) -> Expression<'input> {
+    let __start0 = __2.2.clone();
+    let __end0 = __2.2.clone();
+    let __temp0 = __action29(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action35(input, __0, __1, __2, __temp0)
+}
+
+#[allow(unused_variables)]
+fn __action56<'input>(
+    input: &'input str,
+    __0: (usize, Expression<'input>, usize),
+    __1: (usize, Expression<'input>, usize),
+    __2: (usize, TokenType<'input>, usize),
+) -> Expression<'input> {
+    let __start0 = __2.2.clone();
+    let __end0 = __2.2.clone();
+    let __temp0 = __action29(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action36(input, __0, __1, __2, __temp0)
+}
+
+#[allow(unused_variables)]
+fn __action57<'input>(
+    input: &'input str,
+    __0: (usize, Expression<'input>, usize),
+    __1: (usize, Expression<'input>, usize),
+    __2: (usize, TokenType<'input>, usize),
+) -> Expression<'input> {
+    let __start0 = __2.2.clone();
+    let __end0 = __2.2.clone();
+    let __temp0 = __action29(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action37(input, __0, __1, __2, __temp0)
+}
+
+#[allow(unused_variables)]
+fn __action58<'input>(
+    input: &'input str,
+    __0: (usize, Expression<'input>, usize),
+    __1: (usize, Expression<'input>, usize),
+    __2: (usize, TokenType<'input>, usize),
+) -> Expression<'input> {
+    let __start0 = __2.2.clone();
+    let __end0 = __2.2.clone();
+    let __temp0 = __action29(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action38(input, __0, __1, __2, __temp0)
+}
+
+#[allow(unused_variables)]
+fn __action59<'input>(
+    input: &'input str,
+    __0: (usize, Expression<'input>, usize),
+    __1: (usize, TokenType<'input>, usize),
+    __2: (usize, Expression<'input>, usize),
+) -> Expression<'input> {
+    let __start0 = __1.2.clone();
+    let __end0 = __2.0.clone();
+    let __temp0 = __action29(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action39(input, __0, __1, __temp0, __2)
+}
+
+#[allow(unused_variables)]
+fn __action60<'input>(
+    input: &'input str,
+    __0: (usize, Expression<'input>, usize),
+    __1: (usize, TokenType<'input>, usize),
+    __2: (usize, Expression<'input>, usize),
+) -> Expression<'input> {
+    let __start0 = __1.2.clone();
+    let __end0 = __2.0.clone();
+    let __temp0 = __action29(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action40(input, __0, __1, __temp0, __2)
+}
+
+#[allow(unused_variables)]
+fn __action61<'input>(
+    input: &'input str,
+    __0: (usize, TokenType<'input>, usize),
+    __1: (usize, Expression<'input>, usize),
+    __2: (usize, TokenType<'input>, usize),
+) -> Statement<'input> {
+    let __start0 = __2.2.clone();
+    let __end0 = __2.2.clone();
+    let __temp0 = __action29(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action41(input, __0, __1, __2, __temp0)
+}
+
+#[allow(unused_variables)]
+fn __action62<'input>(
+    input: &'input str,
+    __0: (usize, Expression<'input>, usize),
+    __1: (usize, TokenType<'input>, usize),
+    __2: (usize, Expression<'input>, usize),
+    __3: (usize, TokenType<'input>, usize),
+) -> Statement<'input> {
+    let __start0 = __3.2.clone();
+    let __end0 = __3.2.clone();
+    let __temp0 = __action29(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action42(input, __0, __1, __2, __3, __temp0)
+}
+
+#[allow(unused_variables)]
+fn __action63<'input>(
+    input: &'input str,
+    __0: (usize, TokenType<'input>, usize),
+    __1: (usize, Expression<'input>, usize),
+    __2: (usize, TokenType<'input>, usize),
+) -> Statement<'input> {
+    let __start0 = __2.2.clone();
+    let __end0 = __2.2.clone();
+    let __temp0 = __action29(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action43(input, __0, __1, __2, __temp0)
+}
+
+#[allow(unused_variables)]
+fn __action64<'input>(
+    input: &'input str,
+    __0: (usize, TokenType<'input>, usize),
+    __1: (usize, Expression<'input>, usize),
+    __2: (usize, TokenType<'input>, usize),
+    __3: (usize, SourceUnit<'input>, usize),
+    __4: (usize, TokenType<'input>, usize),
+) -> Statement<'input> {
+    let __start0 = __4.2.clone();
+    let __end0 = __4.2.clone();
+    let __temp0 = __action29(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action44(input, __0, __1, __2, __3, __4, __temp0)
+}
+
+#[allow(unused_variables)]
+fn __action65<'input>(
+    input: &'input str,
+    __0: (usize, TokenType<'input>, usize),
+    __1: (usize, Expression<'input>, usize),
+    __2: (usize, TokenType<'input>, usize),
+    __3: (usize, SourceUnit<'input>, usize),
+    __4: (usize, TokenType<'input>, usize),
+    __5: (usize, TokenType<'input>, usize),
+    __6: (usize, TokenType<'input>, usize),
+    __7: (usize, SourceUnit<'input>, usize),
+    __8: (usize, TokenType<'input>, usize),
+) -> Statement<'input> {
+    let __start0 = __8.2.clone();
+    let __end0 = __8.2.clone();
+    let __temp0 = __action29(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action45(input, __0, __1, __2, __3, __4, __5, __6, __7, __8, __temp0)
+}
+
+#[allow(unused_variables)]
+fn __action66<'input>(
+    input: &'input str,
+    __0: (usize, TokenType<'input>, usize),
+    __1: (usize, Expression<'input>, usize),
+    __2: (usize, TokenType<'input>, usize),
+    __3: (usize, SourceUnit<'input>, usize),
+    __4: (usize, TokenType<'input>, usize),
+) -> Statement<'input> {
+    let __start0 = __4.2.clone();
+    let __end0 = __4.2.clone();
+    let __temp0 = __action29(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action46(input, __0, __1, __2, __3, __4, __temp0)
+}
+
+#[allow(unused_variables)]
+fn __action67<'input>(
+    input: &'input str,
+    __0: (usize, TokenType<'input>, usize),
+) -> Expression<'input> {
+    let __start0 = __0.2.clone();
+    let __end0 = __0.2.clone();
+    let __temp0 = __action29(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action47(input, __0, __temp0)
+}
+
+#[allow(unused_variables)]
+fn __action68<'input>(input: &'input str, __0: (usize, &'input str, usize)) -> Expression<'input> {
+    let __start0 = __0.2.clone();
+    let __end0 = __0.2.clone();
+    let __temp0 = __action29(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action48(input, __0, __temp0)
+}
+
+#[allow(unused_variables)]
+fn __action69<'input>(input: &'input str, __0: (usize, &'input str, usize)) -> Expression<'input> {
+    let __start0 = __0.2.clone();
+    let __end0 = __0.2.clone();
+    let __temp0 = __action29(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action49(input, __0, __temp0)
+}
+
+#[allow(unused_variables)]
+fn __action70<'input>(
+    input: &'input str,
+    __0: (usize, TokenType<'input>, usize),
+) -> Expression<'input> {
+    let __start0 = __0.2.clone();
+    let __end0 = __0.2.clone();
+    let __temp0 = __action29(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action50(input, __0, __temp0)
+}
+
+#[allow(unused_variables)]
+fn __action71<'input>(
+    input: &'input str,
+    __0: (usize, TokenType<'input>, usize),
+) -> Expression<'input> {
+    let __start0 = __0.2.clone();
+    let __end0 = __0.2.clone();
+    let __temp0 = __action29(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action51(input, __0, __temp0)
+}
+
+#[allow(unused_variables)]
+fn __action72<'input>(
+    input: &'input str,
+    __0: (usize, TokenType<'input>, usize),
+    __1: (usize, Expression<'input>, usize),
+) -> Expression<'input> {
+    let __start0 = __0.2.clone();
+    let __end0 = __1.0.clone();
+    let __temp0 = __action29(input, &__start0, &__end0);
+    let __temp0 = (__start0, __temp0, __end0);
+    __action52(input, __0, __temp0, __1)
+}
+
+pub trait __ToTriple<'input> {
+    fn to_triple(
+        value: Self,
+    ) -> Result<
+        (usize, TokenType<'input>, usize),
+        __lalrpop_util::ParseError<usize, TokenType<'input>, LexicalError>,
+    >;
+}
+
+impl<'input> __ToTriple<'input> for (usize, TokenType<'input>, usize) {
+    fn to_triple(
+        value: Self,
+    ) -> Result<
+        (usize, TokenType<'input>, usize),
+        __lalrpop_util::ParseError<usize, TokenType<'input>, LexicalError>,
+    > {
         Ok(value)
     }
 }
-impl<'input, > __ToTriple<'input, > for Result<(usize, TokenType<'input>, usize), LexicalError> {
-    fn to_triple(value: Self) -> Result<(usize,TokenType<'input>,usize), __lalrpop_util::ParseError<usize, TokenType<'input>, LexicalError>> {
+impl<'input> __ToTriple<'input> for Result<(usize, TokenType<'input>, usize), LexicalError> {
+    fn to_triple(
+        value: Self,
+    ) -> Result<
+        (usize, TokenType<'input>, usize),
+        __lalrpop_util::ParseError<usize, TokenType<'input>, LexicalError>,
+    > {
         match value {
             Ok(v) => Ok(v),
             Err(error) => Err(__lalrpop_util::ParseError::User { error }),
