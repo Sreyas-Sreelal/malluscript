@@ -7,7 +7,10 @@ build = "build.rs"
 
 [dependencies]
 lalrpop-util = "0.18.1"
-regex = "1"
+clap = "2.33"
 
 [build-dependencies]
 lalrpop = "0.18"
+
+[profile.release]
+lto = true
