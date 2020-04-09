@@ -24,9 +24,9 @@ impl std::ops::Add for DataTypes {
     fn add(self, rhs: DataTypes) -> Self {
         match (self, rhs) {
             (DataTypes::Integer(l), DataTypes::Integer(r)) => DataTypes::Integer(l + r),
-            (DataTypes::Integer(l), DataTypes::String(r)) => DataTypes::String(l.to_string()+&r),
-            (DataTypes::String(l), DataTypes::Integer(r)) => DataTypes::String(l+&r.to_string()),
-            (DataTypes::String(l), DataTypes::String(r)) => DataTypes::String(l+&r),
+            (DataTypes::Integer(l), DataTypes::String(r)) => DataTypes::String(l.to_string() + &r),
+            (DataTypes::String(l), DataTypes::Integer(r)) => DataTypes::String(l + &r.to_string()),
+            (DataTypes::String(l), DataTypes::String(r)) => DataTypes::String(l + &r),
             _ => raise_error(RunTimeErrors::IncompatibleOperation),
         }
     }
