@@ -61,10 +61,26 @@ impl std::ops::Mul for DataTypes {
 impl std::ops::Div for DataTypes {
     type Output = Self;
     fn div(self, rhs: DataTypes) -> Self {
-        match (rhs, self) {
-            (DataTypes::Integer(r), DataTypes::Integer(l)) => {
+        match (self, rhs) {
+            (DataTypes::Integer(l), DataTypes::Integer(r)) => {
                 if r != 0 {
                     DataTypes::Integer(l / r)
+                } else {
+                    raise_error(RunTimeErrors::DivisionByZero);
+                }
+            }
+            _ => raise_error(RunTimeErrors::IncompatibleOperation),
+        }
+    }
+}
+
+impl std::ops::Rem for DataTypes {
+    type Output = Self;
+    fn rem(self, rhs: DataTypes) -> Self {
+        match (self, rhs) {
+            (DataTypes::Integer(l), DataTypes::Integer(r)) => {
+                if r != 0 {
+                    DataTypes::Integer(l % r)
                 } else {
                     raise_error(RunTimeErrors::DivisionByZero);
                 }

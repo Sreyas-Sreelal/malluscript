@@ -45,6 +45,12 @@ pub enum Expression<'input> {
         Box<Expression<'input>>,
         Box<Expression<'input>>,
     ),
+    Modulo(
+        (usize, usize),
+        Box<Expression<'input>>,
+        Box<Expression<'input>>,
+    ),
+
     UnaryMinus((usize, usize), Box<Expression<'input>>),
     Equals(
         (usize, usize),

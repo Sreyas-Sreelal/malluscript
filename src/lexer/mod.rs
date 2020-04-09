@@ -53,7 +53,7 @@ impl<'input> Iterator for Lexer<'input> {
                 Some((i, '-')) => return Some(Ok((i, TokenType::Minus, i + 1))),
                 Some((i, '*')) => return Some(Ok((i, TokenType::Product, i + 1))),
                 Some((i, '/')) => return Some(Ok((i, TokenType::Divide, i + 1))),
-                Some((i, '%')) => return Some(Ok((i, TokenType::Modulus, i + 1))),
+                Some((i, '%')) => return Some(Ok((i, TokenType::Modulo, i + 1))),
                 Some((i, ';')) => return Some(Ok((i, TokenType::SemiColon, i + 1))),
                 Some((i, '(')) => return Some(Ok((i, TokenType::OpenParantheses, i + 1))),
                 Some((i, ')')) => return Some(Ok((i, TokenType::CloseParantheses, i + 1))),

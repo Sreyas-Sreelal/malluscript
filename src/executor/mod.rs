@@ -111,6 +111,10 @@ impl Executor {
                 .eval_arithmetic_logic_expression(&**l)?
                 / self.eval_arithmetic_logic_expression(&**r)?),
 
+            Expression::Modulo((_a, _b), l, r) => Ok(self
+                .eval_arithmetic_logic_expression(&**l)?
+                % self.eval_arithmetic_logic_expression(&**r)?),
+
             Expression::UnaryMinus((_a, _b), r) => {
                 Ok(DataTypes::Integer(-1) * self.eval_arithmetic_logic_expression(&**r)?)
             }

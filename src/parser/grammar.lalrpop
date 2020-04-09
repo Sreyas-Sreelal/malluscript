@@ -42,6 +42,7 @@ ArithExpression: Expression<'input> = {
 Factor: Expression<'input>= {
     <l:Factor> <a:@L> "*" <b:@R> <r:Unary> => Expression::Multiply((a,b),Box::new(l),Box::new(r)),
     <l:Factor> <a:@L> "/" <b:@R> <r:Unary> => Expression::Divide((a,b),Box::new(l),Box::new(r)),
+    <l:Factor> <a:@L> "%" <b:@R> <r:Unary> => Expression::Modulo((a,b),Box::new(l),Box::new(r)),
     Unary,
 };
 
@@ -85,6 +86,7 @@ extern {
         "!=" => TokenType::NotEqual,
         "{" => TokenType::LeftBrace,
         "}" => TokenType::RightBrace,
+        "%" => TokenType::Modulo,
         Loop => TokenType::Loop,
         InputNumber => TokenType::InputNumber,
         InputString => TokenType::InputString,
