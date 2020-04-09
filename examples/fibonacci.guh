@@ -11,9 +11,8 @@ a = 0;
 b = 1;
 
 repeat_adi i limit inekal_cheruthane {
-    dhe_pidicho a;
+    dhe_pidicho a + " ";
     c = a+b;
-    dhe_pidicho " ";
     a = b;
     b = c;
     i  = i+1;
