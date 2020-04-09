@@ -21,7 +21,7 @@ impl fmt::Display for RunTimeErrors {
             RunTimeErrors::SymbolAlreadyDefined(symbol) => {
                 write!(f, "[Error]: Symbol {} already defined", symbol)
             }
-            RunTimeErrors::UnInitialzedData(data) => write!(f, "Invalid integer constant {}", data),
+            RunTimeErrors::UnInitialzedData(data) => write!(f, "Uninitialised variable {}", data),
             RunTimeErrors::DivisionByZero => write!(f, "[Error]: Division by Zero"),
             RunTimeErrors::IncompatibleOperation => {
                 write!(f, "[Error]: Incompatible operation between datatypes")

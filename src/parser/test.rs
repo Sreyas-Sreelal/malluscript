@@ -80,5 +80,5 @@ fn parser_test() {
         ]
         .to_vec(),
     );
-    assert_eq!(expected, parsed);
+    assert_eq!(expected, parsed.unwrap());
 }

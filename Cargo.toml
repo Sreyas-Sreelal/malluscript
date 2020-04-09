@@ -8,6 +8,7 @@ build = "build.rs"
 [dependencies]
 lalrpop-util = "0.18.1"
 clap = "2.33"
+rustyline = "6.1"
 
 [build-dependencies]
 lalrpop = "0.18"

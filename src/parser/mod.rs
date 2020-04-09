@@ -7,37 +7,37 @@ use lalrpop_util::ParseError;
 #[cfg(test)]
 mod test;
 
-pub fn parse<'a>(src: &'a str, tokens: Lexer<'a>) -> ast::SourceUnit<'a> {
+pub fn parse<'a>(src: &'a str, tokens: Lexer<'a>) -> Result<ast::SourceUnit<'a>, String> {
     match grammar::SourceUnitParser::new().parse(&src, tokens) {
-        Ok(parsed) => parsed,
-        Err(err) => {
-            match err {
-                ParseError::InvalidToken { location } => {
-                    println!("Invalid Token {}", &src[location..location + 1])
-                }
-
-                ParseError::UnrecognizedToken {
-                    token: (l, token, r),
-                    expected,
-                } => println!(
-                    "{}\nUnrecognised token `{}` expected `{}` ",
-                    &src[l..r + 1].trim(),
-                    token,
-                    expected.join(", ")
-                ),
-
-                ParseError::User { error } => println!("Unexpected error {}", error.to_string()),
-                ParseError::ExtraToken { token } => println!(
-                    "{}\nExtra token `{}' encountered",
-                    &src[token.0..token.2 + 1].trim(),
-                    token.1
-                ),
-                ParseError::UnrecognizedEOF {
-                    location: _,
-                    expected,
-                } => println!("Unexpected end of file, expecting {}", expected.join(", ")),
+        Ok(parsed) => Ok(parsed),
+        Err(err) => match err {
+            ParseError::InvalidToken { location } => {
+                Err(format!("Invalid Token {}", &src[location..location + 1]))
             }
-            std::process::exit(1);
-        }
+
+            ParseError::UnrecognizedToken {
+                token: (l, token, r),
+                expected,
+            } => Err(format!(
+                "{}\nUnrecognised token `{}` expected `{}` ",
+                &src[l..r].trim(),
+                token,
+                expected.join(", ")
+            )),
+
+            ParseError::User { error } => Err(format!("Unexpected error {}", error.to_string())),
+            ParseError::ExtraToken { token } => Err(format!(
+                "{}\nExtra token `{}' encountered",
+                &src[token.0..token.2 + 1].trim(),
+                token.1
+            )),
+            ParseError::UnrecognizedEOF {
+                location: _,
+                expected,
+            } => Err(format!(
+                "Unexpected end of file, expecting {}",
+                expected.join(", ")
+            )),
+        },
     }
 }

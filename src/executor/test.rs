@@ -19,5 +19,5 @@ fn executor_test() {
     ";
     let lex = Lexer::new(&code);
     let parsed = parse(&code, lex);
-    assert!(Executor::new().execute(&parsed).is_ok());
+    assert!(Executor::new().execute(&parsed.unwrap()).is_ok());
 }

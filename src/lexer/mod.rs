@@ -27,7 +27,14 @@ impl<'input> Lexer<'input> {
     }
 
     fn is_operator(&self, c: &char) -> bool {
-        c == &' ' || c == &';' || c == &'+' || c == &'-' || c == &'*' || c == &'/' || c == &'\n' || c == &')'
+        c == &' '
+            || c == &';'
+            || c == &'+'
+            || c == &'-'
+            || c == &'*'
+            || c == &'/'
+            || c == &'\n'
+            || c == &')'
     }
 
     fn is_valid_name(&self, c: &char) -> bool {

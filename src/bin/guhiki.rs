@@ -20,6 +20,6 @@ fn main() {
             .expect("Something went wrong in reading contents of file");
         guhiki::run_file(&contents);
     } else {
-        //run REPL
+        guhiki::run_interactive_shell();
     }
 }
