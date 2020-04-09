@@ -9,6 +9,4 @@ repeat_adi 0 num um_same_alle {
     num = num -1;
 }
 
-dhe_pidicho "Factoral is :";
-dhe_pidicho factorial;
-dhe_pidicho "\n";
+dhe_pidicho "Factoral is : " + factorial + "\n";
