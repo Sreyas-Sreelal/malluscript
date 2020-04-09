@@ -5,12 +5,12 @@ pwoli_sadhanam c;
 pwoli_sadhanam i;
 
 dhe_pidicho "Input limit: ";
-limit = 5;
+limit = number_thada;
 i = 0;
 a = 0;
 b = 1;
 
-repeat_adi i limit inekal_cheruthane {
+repeat_adi limit ne_kal i cheruthane {
     dhe_pidicho a + " ";
     c = a+b;
     a = b;

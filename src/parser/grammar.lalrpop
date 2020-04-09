@@ -26,10 +26,10 @@ Expression:Expression<'input>= {
 }
 
 Conditional:Expression<'input> = {
-    <l:Conditional>  <r:Conditional> <a:@L> "==" <b:@R> => Expression::Equals((a,b),Box::new(l),Box::new(r)),
-    <l:Conditional>  <r:Conditional> <a:@L> "!=" <b:@R>  => Expression::NotEquals((a,b),Box::new(l),Box::new(r)),
-    <l:Conditional>  <r:Conditional> <a:@L> ">" <b:@R> => Expression::GreaterThan((a,b),Box::new(l),Box::new(r)),
-    <l:Conditional>  <r:Conditional> <a:@L> "<" <b:@R> => Expression::LessThan((a,b),Box::new(l),Box::new(r)),
+    <l:Expression> "um"  <r:Expression> "um" <a:@L> "==" <b:@R> => Expression::Equals((a,b),Box::new(l),Box::new(r)),
+    <l:Expression>  "um" <r:Expression> "um" <a:@L> "!=" <b:@R>  => Expression::NotEquals((a,b),Box::new(l),Box::new(r)),
+    <r:Expression>  "ne_kal" <l:Expression> <a:@L> ">" <b:@R> => Expression::GreaterThan((a,b),Box::new(l),Box::new(r)),
+    <r:Expression>  "ne_kal" <l:Expression> <a:@L> "<" <b:@R> => Expression::LessThan((a,b),Box::new(l),Box::new(r)),
     Term,
 };
 
@@ -87,6 +87,8 @@ extern {
         "{" => TokenType::LeftBrace,
         "}" => TokenType::RightBrace,
         "%" => TokenType::Modulo,
+        "um" => TokenType::Um,
+        "ne_kal" => TokenType::Nekal,
         Loop => TokenType::Loop,
         InputNumber => TokenType::InputNumber,
         InputString => TokenType::InputString,

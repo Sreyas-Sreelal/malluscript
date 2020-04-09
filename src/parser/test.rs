@@ -11,18 +11,19 @@ fn parser_test() {
     let code = "
         pwoli_sadhanam i;
         i=0;
-        seriyano_mwone i 0 um_same_alle {
+        seriyano_mwone i um 0 um same_alle {
             i = 10;
         } seri_allel {
             i = -1;
         }
-        repeat_adi i 0 um_same_alle {
+        repeat_adi i um 0 um same_alle {
             i = i-1;
         }
         dhe_pidicho i;
     ";
     let lex = Lexer::new(&code);
     let parsed = parse(&code, lex);
+    println!("{:?}", parsed);
     let expected = SourceUnit(
         [
             Statement(Declaration((9, 26), Symbol((24, 24), "i"))),
@@ -32,50 +33,50 @@ fn parser_test() {
                 Integer((37, 38), Number(0)),
             )),
             Statement(Conditional(
-                (48, 154),
+                (48, 157),
                 NotEquals(
-                    (67, 78),
+                    (73, 81),
                     Box::new(Symbol((63, 63), "i")),
-                    Box::new(Integer((65, 66), Number(0))),
+                    Box::new(Integer((68, 69), Number(0))),
                 ),
                 SourceUnit(
                     [Statement(Assignment(
-                        (94, 101),
-                        Symbol((94, 94), "i"),
-                        Integer((98, 100), Number(10)),
+                        (97, 104),
+                        Symbol((97, 97), "i"),
+                        Integer((101, 103), Number(10)),
                     ))]
                     .to_vec(),
                 ),
                 Some(SourceUnit(
                     [Statement(Assignment(
-                        (137, 144),
-                        Symbol((137, 137), "i"),
-                        UnaryMinus((141, 142), Box::new(Integer((142, 143), Number(1)))),
+                        (140, 147),
+                        Symbol((140, 140), "i"),
+                        UnaryMinus((144, 145), Box::new(Integer((145, 146), Number(1)))),
                     ))]
                     .to_vec(),
                 )),
             )),
             Statement(Loop(
-                (163, 223),
+                (166, 229),
                 NotEquals(
-                    (178, 189),
-                    Box::new(Symbol((174, 174), "i")),
-                    Box::new(Integer((176, 177), Number(0))),
+                    (187, 195),
+                    Box::new(Symbol((177, 177), "i")),
+                    Box::new(Integer((182, 183), Number(0))),
                 ),
                 SourceUnit(
                     [Statement(Assignment(
-                        (205, 213),
-                        Symbol((205, 205), "i"),
+                        (211, 219),
+                        Symbol((211, 211), "i"),
                         Subtract(
-                            (210, 211),
-                            Box::new(Symbol((209, 209), "i")),
-                            Box::new(Integer((211, 212), Number(1))),
+                            (216, 217),
+                            Box::new(Symbol((215, 215), "i")),
+                            Box::new(Integer((217, 218), Number(1))),
                         ),
                     ))]
                     .to_vec(),
                 ),
             )),
-            Statement(Write((232, 246), Symbol((244, 244), "i"))),
+            Statement(Write((238, 252), Symbol((250, 250), "i"))),
         ]
         .to_vec(),
     );

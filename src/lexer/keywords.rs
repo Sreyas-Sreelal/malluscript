@@ -14,10 +14,12 @@ impl<'input> Keywords<'input> {
         list.insert("seriyano_mwone", TokenType::If);
         list.insert("seri_allel", TokenType::Else);
         list.insert("repeat_adi", TokenType::Loop);
-        list.insert("inekal_veluthane", TokenType::GreaterThan);
-        list.insert("um_same_alle", TokenType::NotEqual);
-        list.insert("inekal_cheruthane", TokenType::LessThan);
-        list.insert("um_same_aane", TokenType::EqualTo);
+        list.insert("veluthane", TokenType::GreaterThan);
+        list.insert("same_alle", TokenType::NotEqual);
+        list.insert("cheruthane", TokenType::LessThan);
+        list.insert("same_aane", TokenType::EqualTo);
+        list.insert("um", TokenType::Um);
+        list.insert("ne_kal", TokenType::Nekal);
         Self { list }
     }
 }
