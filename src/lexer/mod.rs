@@ -1,6 +1,6 @@
 mod error;
 ///
-/// Guhiki Lexer
+/// Malluscript Lexer
 ///
 mod keywords;
 pub mod tokens;

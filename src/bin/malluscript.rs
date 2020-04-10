@@ -1,4 +1,4 @@
-extern crate guhiki;
+extern crate malluscript;
 
 use clap::{App, Arg};
 use std::env;
@@ -18,8 +18,8 @@ fn main() {
         let mut contents = String::new();
         file.read_to_string(&mut contents)
             .expect("Something went wrong in reading contents of file");
-        guhiki::run_file(&contents);
+        malluscript::run_file(&contents);
     } else {
-        guhiki::run_interactive_shell();
+        malluscript::run_interactive_shell();
     }
 }

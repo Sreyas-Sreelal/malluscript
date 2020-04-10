@@ -1,10 +1,10 @@
 [package]
-name = "guhiki"
+name = "malluscript"
 version = "0.1.0"
 authors = ["SyS <sreyassreelal@gmail.com>"]
 edition = "2018"
 build = "build.rs" 
-
+description = "Scripting language based on manglish and malayalam memes"
 [dependencies]
 lalrpop-util = "0.18.1"
 clap = "2.33"
