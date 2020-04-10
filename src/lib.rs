@@ -26,7 +26,7 @@ pub fn run_file(source: &str) {
 }
 
 pub fn run_interactive_shell() {
-    println!("Mallu Script Version 0.0.1");
+    println!("Mallu Script Version {}",env!("CARGO_PKG_VERSION"));
     let mut rl = Editor::<()>::new();
     let mut exec = executor::Executor::new();
 
