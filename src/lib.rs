@@ -33,12 +33,12 @@ pub fn run_interactive_shell() {
     loop {
         match rl.readline(">> ") {
             Ok(code) => {
-                if code.trim().len() == 0 {
+                if code.trim().is_empty() {
                     continue;
                 }
 
                 rl.add_history_entry(code.as_str());
-                
+
                 match parser::parse(&code, lexer::Lexer::new(&code)) {
                     Ok(parsed) => {
                         if let Err(message) = exec.execute(&parsed) {

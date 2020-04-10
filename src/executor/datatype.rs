@@ -92,8 +92,8 @@ impl std::ops::Rem for DataTypes {
 
 pub fn to_bool(data: DataTypes) -> bool {
     match data {
-        DataTypes::Bool(value) => return value,
-        DataTypes::Integer(value) => return value != 0,
+        DataTypes::Bool(value) => value,
+        DataTypes::Integer(value) => value != 0,
         _ => panic!("illegal datatype conversion"),
     }
 }

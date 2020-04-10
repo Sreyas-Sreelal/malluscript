@@ -33,14 +33,14 @@ impl Executor {
             match stmt {
                 Statement::Declaration((p, q), symbol) => {
                     if let Expression::Symbol((_a, _b), name) = symbol {
-                        if !self
+                        if self
                             .symbol_table
-                            .insert(name.to_string(), DataTypes::Unknown)
-                            .is_none()
+                            .insert((*name).to_string(), DataTypes::Unknown)
+                            .is_some()
                         {
                             return Err((
                                 (*p, *q),
-                                RunTimeErrors::SymbolAlreadyDefined(name.to_string()),
+                                RunTimeErrors::SymbolAlreadyDefined((*name).to_string()),
                             ));
                         }
                     }
@@ -50,10 +50,8 @@ impl Executor {
                     let truth = to_bool(self.eval_arithmetic_logic_expression(expr)?);
                     if truth {
                         self.execute(&truebody)?;
-                    } else {
-                        if let Some(body) = falsebody {
-                            self.execute(&body)?;
-                        }
+                    } else if let Some(body) = falsebody {
+                        self.execute(&body)?;
                     }
                 }
 
@@ -72,14 +70,14 @@ impl Executor {
 
                 Statement::Assignment((p, q), l, r) => {
                     if let Expression::Symbol((_a, _b), identifier) = l {
-                        if !self.symbol_table.contains_key(&identifier.to_string()) {
+                        if !self.symbol_table.contains_key(&(*identifier).to_string()) {
                             return Err((
                                 (*p, *q),
-                                RunTimeErrors::UndefinedSymbol(identifier.to_string()),
+                                RunTimeErrors::UndefinedSymbol((*identifier).to_string()),
                             ));
                         }
                         self.symbol_table.insert(
-                            identifier.to_string(),
+                            (*identifier).to_string(),
                             self.eval_arithmetic_logic_expression(&*r)?,
                         );
                     } else {
@@ -145,7 +143,7 @@ impl Executor {
             },
 
             Expression::Symbol((a, b), identifier) => {
-                let identifier = identifier.to_string();
+                let identifier = (*identifier).to_string();
                 if !self.symbol_table.contains_key(&identifier) {
                     return Err(((*a, *b), RunTimeErrors::UndefinedSymbol(identifier)));
                 }
@@ -156,12 +154,14 @@ impl Executor {
                 }
             }
 
-            Expression::StringLiteral((_a, _b), value) => Ok(DataTypes::String(value.to_string())),
+            Expression::StringLiteral((_a, _b), value) => {
+                Ok(DataTypes::String((*value).to_string()))
+            }
 
             Expression::InputNumber((a, b)) => {
                 let mut input = String::new();
 
-                if let Err(_) = stdin().read_line(&mut input) {
+                if stdin().read_line(&mut input).is_err() {
                     return Err(((*a, *b), RunTimeErrors::ErrorReadingStdin));
                 }
 

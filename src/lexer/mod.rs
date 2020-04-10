@@ -26,20 +26,20 @@ impl<'input> Lexer<'input> {
         }
     }
 
-    fn is_operator(&self, c: &char) -> bool {
-        c == &' '
-            || c == &';'
-            || c == &'+'
-            || c == &'-'
-            || c == &'*'
-            || c == &'/'
-            || c == &'\n'
-            || c == &')'
-            || c == &'='
+    fn is_operator(&self, c: char) -> bool {
+        c == ' '
+            || c == ';'
+            || c == '+'
+            || c == '-'
+            || c == '*'
+            || c == '/'
+            || c == '\n'
+            || c == ')'
+            || c == '='
     }
 
-    fn is_valid_name(&self, c: &char) -> bool {
-        c.is_ascii_alphanumeric() || c == &'_'
+    fn is_valid_name(&self, c: char) -> bool {
+        c.is_ascii_alphanumeric() || c == '_'
     }
 }
 
@@ -75,7 +75,7 @@ impl<'input> Iterator for Lexer<'input> {
                         }
                         end += 1;
                     }
-                    end = start + end;
+                    end += start;
                     if ch != '"' {
                         return Some(Err(LexicalError::InvalidStringLiteral(i, end)));
                         //panic!(
@@ -91,19 +91,19 @@ impl<'input> Iterator for Lexer<'input> {
                     let (start, mut end) = (i, 0);
 
                     while let Some((_, c)) = self.chars.clone().peekable().peek() {
-                        if self.is_valid_name(c) {
+                        if self.is_valid_name(*c) {
                             end += 1;
                             self.chars.next();
                         } else {
                             break;
                         }
                     }
-                    end = start + end;
+                    end += start;
                     //println!("check symbol keyword{}",&self.src[i..i+length+1]);
-                    if let Some(keyword) = &self.keywords.list.get(&self.src[start..end + 1]) {
+                    if let Some(keyword) = &self.keywords.list.get(&self.src[start..=end]) {
                         return Some(Ok((i, (**keyword).clone(), end)));
                     } else {
-                        return Some(Ok((i, TokenType::Symbol(&self.src[start..end + 1]), end)));
+                        return Some(Ok((i, TokenType::Symbol(&self.src[start..=end]), end)));
                     }
                 }
 
@@ -111,7 +111,7 @@ impl<'input> Iterator for Lexer<'input> {
                     let mut word = String::new();
                     word.push(c);
                     while let Some((_, c)) = self.chars.clone().peekable().peek() {
-                        if self.is_operator(c) {
+                        if self.is_operator(*c) {
                             break;
                         }
                         word.push(*c);

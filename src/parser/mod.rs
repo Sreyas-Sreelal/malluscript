@@ -1,3 +1,4 @@
+#![allow(clippy::all)]
 mod grammar;
 use crate::executor::ast;
 use crate::lexer::Lexer;
@@ -12,7 +13,7 @@ pub fn parse<'a>(src: &'a str, tokens: Lexer<'a>) -> Result<ast::SourceUnit<'a>,
         Ok(parsed) => Ok(parsed),
         Err(err) => match err {
             ParseError::InvalidToken { location } => {
-                Err(format!("Invalid Token {}", &src[location..location + 1]))
+                Err(format!("Invalid Token {}", &src[location..=location]))
             }
 
             ParseError::UnrecognizedToken {
@@ -28,7 +29,7 @@ pub fn parse<'a>(src: &'a str, tokens: Lexer<'a>) -> Result<ast::SourceUnit<'a>,
             ParseError::User { error } => Err(format!("Unexpected error {}", error.to_string())),
             ParseError::ExtraToken { token } => Err(format!(
                 "{}\nExtra token `{}' encountered",
-                &src[token.0..token.2 + 1].trim(),
+                &src[token.0..=token.2].trim(),
                 token.1
             )),
             ParseError::UnrecognizedEOF {
