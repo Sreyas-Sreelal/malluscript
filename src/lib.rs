@@ -13,7 +13,7 @@ pub fn run_file(source: &str) {
                 println!("\n**[Execution Failed]**");
                 println!(
                     "{}\n^^^^{}",
-                    &source[(message.0).0..(message.0).1 + 1].trim(),
+                    &source[(message.0).0..(message.0).1].trim(),
                     message.1
                 );
             }
@@ -29,19 +29,23 @@ pub fn run_interactive_shell() {
     println!("Guhiki Scripting Language Version 0.0.1");
     let mut rl = Editor::<()>::new();
     let mut exec = executor::Executor::new();
+    let mut prompt = ">> ".to_string();
+
     loop {
-        match rl.readline(">> ") {
+        match rl.readline(&prompt) {
             Ok(code) => {
                 if code.trim().len() == 0 {
                     continue;
                 }
+
                 rl.add_history_entry(code.as_str());
+                
                 match parser::parse(&code, lexer::Lexer::new(&code)) {
                     Ok(parsed) => {
                         if let Err(message) = exec.execute(&parsed) {
                             println!(
                                 "{}\n^^^^{}",
-                                &code[(message.0).0..(message.0).1 + 1].trim(),
+                                &code[(message.0).0..(message.0).1].trim(),
                                 message.1
                             );
                         }
