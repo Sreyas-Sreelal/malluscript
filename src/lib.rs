@@ -29,10 +29,9 @@ pub fn run_interactive_shell() {
     println!("Guhiki Scripting Language Version 0.0.1");
     let mut rl = Editor::<()>::new();
     let mut exec = executor::Executor::new();
-    let mut prompt = ">> ".to_string();
 
     loop {
-        match rl.readline(&prompt) {
+        match rl.readline(">> ") {
             Ok(code) => {
                 if code.trim().len() == 0 {
                     continue;
