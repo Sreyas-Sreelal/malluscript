@@ -35,6 +35,7 @@ impl<'input> Lexer<'input> {
             || c == &'/'
             || c == &'\n'
             || c == &')'
+            || c == &'='
     }
 
     fn is_valid_name(&self, c: &char) -> bool {
