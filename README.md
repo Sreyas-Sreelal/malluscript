@@ -94,8 +94,8 @@ The above snippet checks whether i is equals to 0 and if yes the code in first b
 In general
 * `i um 0 um same_aane` checks if i is equals to 0
 * `i um 0 um same_alle` checks if i not equals to 0
-* `i 0 nekal cheruthane` checks if i is less than 0
-* `i 0 nekal veluthane` checks if i is greater than 0
+* `i nekal 0  cheruthane` checks if 0 is less than i
+* `i nekal 0  veluthane` checks if 0 is greater than i
 
 ## Iterative Statments Or Loops
 
