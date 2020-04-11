@@ -1,6 +1,6 @@
 [package]
 name = "malluscript"
-version = "0.1.0"
+version = "0.0.1-alpha"
 authors = ["SyS <sreyassreelal@gmail.com>"]
 edition = "2018"
 build = "build.rs" 
