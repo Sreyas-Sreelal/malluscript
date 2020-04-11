@@ -1,6 +1,10 @@
 # Mallu Script
 <p align="center">
-  <a href="https://github.com/actions/toolkit"><img alt="GitHub Actions status" src="https://github.com/sreyas-sreelal/malluscript/workflows/build/badge.svg"></a>
+  
+<img alt="Malluscript" src="images/poster-transparent.png">
+<a href="https://github.com/actions/toolkit"><img alt="GitHub Actions status" src="https://github.com/sreyas-sreelal/malluscript/workflows/build/badge.svg"></a>
+<img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/sreyas-sreelal/malluscript">
+<img alt="GitHub issues" src="https://img.shields.io/github/issues/sreyas-sreelal/malluscript">
 </p>
 
 Malluscript is an esoteric scripting language based on manglish and malayalam memes.The language uses trending malayalam memetic words as keywords.The language is not strictly type safe and uses only two datatypes strings and integers.Currently malluscript is on development phase and undergoing vigorous changes.Always check the release section for pre built binaries for interpreter.
@@ -101,7 +105,7 @@ In general
 
 The loops in malluscript looks as follows
 ```
-repeat_adi i 0 nekal veluthane {
+repeat_adi 0 nekal i veluthane {
   i = i-1;
 }
 ```
