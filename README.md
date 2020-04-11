@@ -1,7 +1,6 @@
 # Mallu Script
 <p align="center">
-  
-<img alt="Malluscript" src="images/poster-transparent.png">
+<img alt="Malluscript" src="images/poster-transparent.png" height=500 width=500><br/>
 <a href="https://github.com/actions/toolkit"><img alt="GitHub Actions status" src="https://github.com/sreyas-sreelal/malluscript/workflows/build/badge.svg"></a>
 <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/sreyas-sreelal/malluscript">
 <img alt="GitHub issues" src="https://img.shields.io/github/issues/sreyas-sreelal/malluscript">
