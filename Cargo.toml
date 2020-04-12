@@ -5,10 +5,12 @@ authors = ["SyS <sreyassreelal@gmail.com>"]
 edition = "2018"
 build = "build.rs" 
 description = "Scripting language based on manglish and malayalam memes"
+
 [dependencies]
 lalrpop-util = "0.18.1"
 clap = "2.33"
 rustyline = "6.1"
+encoding = "0.2"
 
 [build-dependencies]
 lalrpop = "0.18"

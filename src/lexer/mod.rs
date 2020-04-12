@@ -39,7 +39,7 @@ impl<'input> Lexer<'input> {
     }
 
     fn is_valid_name(&self, c: char) -> bool {
-        c.is_ascii_alphanumeric() || c == '_'
+        !self.is_operator(c)
     }
 }
 

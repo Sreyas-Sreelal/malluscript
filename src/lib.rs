@@ -1,6 +1,9 @@
+mod encoding;
 mod executor;
 mod lexer;
 mod parser;
+
+use crate::encoding::to_ascii;
 use rustyline::error::ReadlineError;
 use rustyline::Editor;
 
@@ -26,7 +29,7 @@ pub fn run_file(source: &str) {
 }
 
 pub fn run_interactive_shell() {
-    println!("Mallu Script Version {}",env!("CARGO_PKG_VERSION"));
+    println!("Mallu Script Version {}", env!("CARGO_PKG_VERSION"));
     println!("Repository: https://www.github.com/sreyas-sreelal/malluscript");
     let mut rl = Editor::<()>::new();
     let mut exec = executor::Executor::new();
@@ -37,8 +40,8 @@ pub fn run_interactive_shell() {
                 if code.trim().is_empty() {
                     continue;
                 }
-
                 rl.add_history_entry(code.as_str());
+                let code = to_ascii(code);
 
                 match parser::parse(&code, lexer::Lexer::new(&code)) {
                     Ok(parsed) => {

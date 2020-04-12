@@ -15,7 +15,7 @@ fn main() {
 
     if let Some(filename) = matches.value_of("FILE") {
         let mut file = File::open(filename).expect("File not found!!");
-        if !filename.ends_with(".ms"){
+        if !filename.ends_with(".ms") {
             println!("[Error]: Malluscript programs should be written in file with .ms extension");
             return;
         }
