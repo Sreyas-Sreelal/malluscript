@@ -14,8 +14,8 @@ fn escape_unicode(_encoder: &mut dyn RawEncoder, input: &str, output: &mut dyn B
 
 static UNICODE_ESCAPE: EncoderTrap = EncoderTrap::Call(escape_unicode);
 
-fn encode(data: String) -> Vec<u8> {
-    if let Ok(encoded) = ASCII.encode(&data, UNICODE_ESCAPE) {
+fn encode(data: &str) -> Vec<u8> {
+    if let Ok(encoded) = ASCII.encode(data, UNICODE_ESCAPE) {
         encoded
     } else {
         println!("Couldn't encode!");
@@ -32,6 +32,6 @@ fn decode(data: &[u8]) -> String {
     }
 }
 
-pub fn to_ascii(data: String) -> String {
+pub fn to_ascii(data: &str) -> String {
     decode(&encode(data))
 }

@@ -9,6 +9,7 @@ use rustyline::Editor;
 
 pub fn run_file(source: &str) {
     let mut exec = executor::Executor::new();
+    let source = to_ascii(&source);
     let tokens = lexer::Lexer::new(&source);
     match parser::parse(&source, tokens) {
         Ok(parsed) => {
@@ -41,7 +42,7 @@ pub fn run_interactive_shell() {
                     continue;
                 }
                 rl.add_history_entry(code.as_str());
-                let code = to_ascii(code);
+                let code = to_ascii(&code);
 
                 match parser::parse(&code, lexer::Lexer::new(&code)) {
                     Ok(parsed) => {

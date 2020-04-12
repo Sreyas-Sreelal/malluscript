@@ -33,7 +33,7 @@ pub enum TokenType<'input> {
 impl std::fmt::Display for TokenType<'_> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            TokenType::Declaration => write!(f, "ada_mwone"),
+            TokenType::Declaration => write!(f, "pwoli_sadhanam"),
             TokenType::Write => write!(f, "dhe_pidicho"),
             TokenType::InputString => write!(f, "address_thada"),
             TokenType::InputNumber => write!(f, "number_thada"),
