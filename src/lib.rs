@@ -16,11 +16,10 @@ pub fn run_file(source: &str) {
             let mut exec = executor::Executor::new(tokens.literal_table, tokens.symbol_lookup);
             if let Err(message) = exec.execute(&parsed) {
                 println!("\n**[Execution Failed]**");
-                println!(
-                    "{}\n^^^^{}",
-                    &source[(message.0).0..(message.0).1].trim(),
-                    message.1
-                );
+                if let Some(region) = source.get((message.0).0..=(message.0).1) {
+                    println!("{}", region);
+                }
+                println!("^^^^{}",message.1);
             }
         }
         Err(message) => {
@@ -55,11 +54,11 @@ pub fn run_interactive_shell() {
                         offest = tokens.lookup_count;
                         exec.update_lookup_table(tokens.symbol_lookup);
                         if let Err(message) = exec.execute(&parsed) {
-                            println!(
-                                "{}\n^^^^{}",
-                                &code[(message.0).0..(message.0).1].trim(),
-                                message.1
-                            );
+                            
+                            if let Some(region) = code.get((message.0).0..=(message.0).1) {
+                                println!("{}", region);
+                            }
+                            println!("^^^^{}",message.1);
                         }
                     }
                     Err(message) => {
