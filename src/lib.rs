@@ -30,8 +30,13 @@ pub fn run_file(source: &str) {
 }
 
 pub fn run_interactive_shell() {
-    println!("Mallu Script Version {}", env!("CARGO_PKG_VERSION"));
-    println!("Repository: https://www.github.com/sreyas-sreelal/malluscript");
+    println!("
+    +---------------------------------------------------------------+
+    |                   Mallu Script                                |
+    | Repository: https://www.github.com/sreyas-sreelal/malluscript |
+    +---------------------------------------------------------------+
+                        Version {}
+    ", env!("CARGO_PKG_VERSION"));
     let mut rl = Editor::<()>::new();
     let mut exec = executor::Executor::new(HashMap::new(), HashMap::new());
     let mut perisit_table = HashMap::new();

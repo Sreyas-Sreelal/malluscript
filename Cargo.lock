@@ -328,7 +328,7 @@ dependencies = [
 
 [[package]]
 name = "malluscript"
-version = "0.0.1-alpha"
+version = "0.1.0-alpha"
 dependencies = [
  "clap 2.33.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "lalrpop 0.18.1 (registry+https://github.com/rust-lang/crates.io-index)",
