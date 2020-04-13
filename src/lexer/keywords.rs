@@ -12,7 +12,7 @@ impl Keywords {
 
         // Vec<str>s contain keywords that are named meme_style
         // Last word will be in മലയാളലിപി(Malayalalipi)
-        for pwoli_sanam in vec![
+        for &pwoli_sanam in &[
             "pwoli_sadhanam",
             "pwoli_sanam",
             "pwoli_saanam",
@@ -24,52 +24,52 @@ impl Keywords {
             list.insert(pwoli_sanam.to_string(), TokenType::Declaration);
         }
 
-        for addr_tha in vec!["address_thada", "അഡ്രസ്_താടാ"] {
+        for &addr_tha in &["address_thada", "അഡ്രസ്_താടാ"] {
             list.insert(addr_tha.to_string(), TokenType::InputString);
         }
 
-        for num_tha in vec!["number_thada", "നമ്പർ_താടാ"] {
+        for &num_tha in &["number_thada", "നമ്പർ_താടാ"] {
             list.insert(num_tha.to_string(), TokenType::InputNumber);
         }
 
-        for da_pidi in vec!["dhe_pidicho", "ദേ_പിടിച്ചോ"] {
+        for &da_pidi in &["dhe_pidicho", "ദേ_പിടിച്ചോ"] {
             list.insert(da_pidi.to_string(), TokenType::Write);
         }
 
-        for seriano_mone in vec!["seriyano_mwone", "seriyano", "ശെരിയാണോ_മോനെ"]
+        for &seriano_mone in &["seriyano_mwone", "seriyano", "ശെരിയാണോ_മോനെ"]
         {
             list.insert(seriano_mone.to_string(), TokenType::If);
         }
 
-        for seri_alle in vec!["seri_allel", "ശെരി_അല്ലേൽ"] {
+        for &seri_alle in &["seri_allel", "ശെരി_അല്ലേൽ"] {
             list.insert(seri_alle.to_string(), TokenType::Else);
         }
 
-        for repeat_adi in vec!["repeat_adi", "റിപീറ്റടി"] {
+        for &repeat_adi in &["repeat_adi", "റിപീറ്റടി"] {
             list.insert(repeat_adi.to_string(), TokenType::Loop);
         }
 
-        for veluth_aan in vec!["veluthane", "വലുതാണെ"] {
+        for &veluth_aan in &["veluthane", "വലുതാണെ"] {
             list.insert(veluth_aan.to_string(), TokenType::GreaterThan);
         }
 
-        for same_alle in vec!["same_alle", "same_allel", "സെയിം_അല്ല"] {
+        for &same_alle in &["same_alle", "same_allel", "സെയിം_അല്ല"] {
             list.insert(same_alle.to_string(), TokenType::NotEqual);
         }
 
-        for cheruth_aane in vec!["cheruthane", "ചെറുതാണെ"] {
+        for &cheruth_aane in &["cheruthane", "ചെറുതാണെ"] {
             list.insert(cheruth_aane.to_string(), TokenType::LessThan);
         }
 
-        for same_aane in vec!["same_aane", "സെയിം_ആണേ"] {
+        for &same_aane in &["same_aane", "സെയിം_ആണേ"] {
             list.insert(same_aane.to_string(), TokenType::EqualTo);
         }
 
-        for um in vec!["um", "ഉം"] {
+        for &um in &["um", "ഉം"] {
             list.insert(um.to_string(), TokenType::Um);
         }
 
-        for ne_kal in vec!["ne_kal", "നെകാൾ"] {
+        for &ne_kal in &["ne_kal", "നെകാൾ"] {
             list.insert(ne_kal.to_string(), TokenType::Nekal);
         }
 
