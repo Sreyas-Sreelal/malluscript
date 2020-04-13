@@ -7,19 +7,19 @@ pub mod tokens;
 
 pub use error::LexicalError;
 use keywords::Keywords;
+use std::collections::HashMap;
 use std::str::CharIndices;
 use tokens::TokenType;
-use std::collections::HashMap;
 
 #[derive(Clone, Debug)]
 pub struct Lexer<'input> {
     chars: CharIndices<'input>,
     keywords: Keywords,
     src: &'input str,
-    pub literal_table:HashMap<usize,String>,
-    pub symbol_lookup:HashMap<String,usize>,
-    lookup_count:usize,
-    literal_count:usize,
+    pub literal_table: HashMap<usize, String>,
+    pub symbol_lookup: HashMap<String, usize>,
+    lookup_count: usize,
+    literal_count: usize,
 }
 
 impl<'input> Lexer<'input> {
@@ -28,10 +28,10 @@ impl<'input> Lexer<'input> {
             chars: input.char_indices(),
             keywords: Keywords::new(),
             src: input,
-            literal_table:HashMap::new(),
-            symbol_lookup:HashMap::new(),
-            literal_count:0,
-            lookup_count:0,
+            literal_table: HashMap::new(),
+            symbol_lookup: HashMap::new(),
+            literal_count: 0,
+            lookup_count: 0,
         }
     }
 
@@ -96,7 +96,7 @@ impl<'input> Iterator for &mut Lexer<'input> {
                         //)
                     }
                     self.literal_count += 1;
-                    self.literal_table.insert(self.literal_count,word);
+                    self.literal_table.insert(self.literal_count, word);
                     return Some(Ok((i, TokenType::Literal(self.literal_count), end)));
                 }
 
@@ -118,10 +118,14 @@ impl<'input> Iterator for &mut Lexer<'input> {
                     if let Some(keyword) = &self.keywords.list.get(&word) {
                         return Some(Ok((i, (**keyword).clone(), end)));
                     } else if !self.symbol_lookup.contains_key(&word) {
-                            self.lookup_count += 1;
-                            self.symbol_lookup.insert(word.clone(), self.lookup_count);
+                        self.lookup_count += 1;
+                        self.symbol_lookup.insert(word.clone(), self.lookup_count);
                     }
-                    return Some(Ok((i, TokenType::Symbol(*(self.symbol_lookup.get(&word).unwrap())), end)));
+                    return Some(Ok((
+                        i,
+                        TokenType::Symbol(*(self.symbol_lookup.get(&word).unwrap())),
+                        end,
+                    )));
                 }
 
                 Some((i, c)) if c.is_digit(10) => {

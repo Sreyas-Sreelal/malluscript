@@ -15,25 +15,33 @@ use crate::lexer::tokens::TokenType;
 
 pub struct Executor {
     symbol_table: HashMap<usize, DataTypes>,
-    literal_table: HashMap<usize,String>,
-    symbol_lookup_table: HashMap<String,usize>
+    literal_table: HashMap<usize, String>,
+    symbol_lookup_table: HashMap<String, usize>,
 }
 
 impl Executor {
-    pub fn new(literal_table:HashMap<usize,String>,symbol_lookup_table:HashMap<String,usize>) -> Self {
+    pub fn new(
+        literal_table: HashMap<usize, String>,
+        symbol_lookup_table: HashMap<String, usize>,
+    ) -> Self {
         Executor {
             symbol_table: HashMap::new(),
             literal_table,
-            symbol_lookup_table
+            symbol_lookup_table,
         }
     }
 
-    pub fn get_symbol_name(&self,address:&usize) -> Option<String> {
-        self.symbol_lookup_table.iter()
-        .find_map(|(key, val)| if val == address { Some(key.to_string()) } else { None })
+    pub fn get_symbol_name(&self, address: &usize) -> Option<String> {
+        self.symbol_lookup_table.iter().find_map(|(key, val)| {
+            if val == address {
+                Some(key.to_string())
+            } else {
+                None
+            }
+        })
     }
-    
-    pub fn update_literal_table(&mut self,literal_table:HashMap<usize,String>) {
+
+    pub fn update_literal_table(&mut self, literal_table: HashMap<usize, String>) {
         self.literal_table = literal_table;
     }
     pub fn execute(
@@ -52,7 +60,9 @@ impl Executor {
                         {
                             return Err((
                                 (*p, *q),
-                                RunTimeErrors::SymbolAlreadyDefined(self.get_symbol_name(address).unwrap()),
+                                RunTimeErrors::SymbolAlreadyDefined(
+                                    self.get_symbol_name(address).unwrap(),
+                                ),
                             ));
                         }
                     }
@@ -85,13 +95,13 @@ impl Executor {
                         if !self.symbol_table.contains_key(address) {
                             return Err((
                                 (*p, *q),
-                                RunTimeErrors::UndefinedSymbol(self.get_symbol_name(address).unwrap()),
+                                RunTimeErrors::UndefinedSymbol(
+                                    self.get_symbol_name(address).unwrap(),
+                                ),
                             ));
                         }
-                        self.symbol_table.insert(
-                            *address,
-                            self.eval_arithmetic_logic_expression(&*r)?,
-                        );
+                        self.symbol_table
+                            .insert(*address, self.eval_arithmetic_logic_expression(&*r)?);
                     } else {
                         return Err(((*p, *q), RunTimeErrors::InvalidAssignment));
                     }
@@ -157,21 +167,29 @@ impl Executor {
             Expression::Symbol((a, b), TokenType::Symbol(address)) => {
                 //let identifier = (*identifier).to_string();
                 if !self.symbol_table.contains_key(address) {
-                    return Err(((*a, *b), RunTimeErrors::UndefinedSymbol(self.get_symbol_name(address).unwrap())));
+                    return Err((
+                        (*a, *b),
+                        RunTimeErrors::UndefinedSymbol(self.get_symbol_name(address).unwrap()),
+                    ));
                 }
                 match self.symbol_table.get(address).unwrap() {
                     DataTypes::Integer(number) => Ok(DataTypes::Integer(*number)),
                     DataTypes::String(data) => Ok(DataTypes::String(data.to_string())),
-                    _ => Err(((*a, *b), RunTimeErrors::UnInitialzedData(self.get_symbol_name(address).unwrap()))),
+                    _ => Err((
+                        (*a, *b),
+                        RunTimeErrors::UnInitialzedData(self.get_symbol_name(address).unwrap()),
+                    )),
                 }
             }
-            Expression::Symbol((a, b), _) =>  Err(((*a, *b), RunTimeErrors::InvalidExpression)),
-            
+            Expression::Symbol((a, b), _) => Err(((*a, *b), RunTimeErrors::InvalidExpression)),
+
             Expression::StringLiteral((a, b), value) => {
                 if let TokenType::Literal(address) = value {
-                    Ok(DataTypes::String((&self.literal_table[address]).to_string()))
+                    Ok(DataTypes::String(
+                        (&self.literal_table[address]).to_string(),
+                    ))
                 } else {
-                    Err(((*a,*b),RunTimeErrors::InvalidExpression))
+                    Err(((*a, *b), RunTimeErrors::InvalidExpression))
                 }
             }
 
@@ -194,7 +212,6 @@ impl Executor {
                 stdin().read_line(&mut input).expect("Unable to read input");
                 Ok(DataTypes::String(input))
             }
-            
         }
     }
 }

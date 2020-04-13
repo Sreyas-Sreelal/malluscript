@@ -2,8 +2,8 @@ use crate::executor::ast::Expression::*;
 use crate::executor::ast::SourceUnitPart::Statement;
 use crate::executor::ast::Statement::*;
 use crate::executor::ast::*;
-use crate::lexer::tokens::TokenType::Number;
 use crate::lexer::tokens::TokenType;
+use crate::lexer::tokens::TokenType::Number;
 use crate::lexer::Lexer;
 use crate::parser::parse;
 

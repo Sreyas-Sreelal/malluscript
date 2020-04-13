@@ -10,10 +10,10 @@ use std::collections::HashMap;
 pub fn run_file(source: &str) {
     //let source = to_ascii(&source);
     let mut tokens = lexer::Lexer::new(&source);
-    
+
     match parser::parse(&source, &mut tokens) {
         Ok(parsed) => {
-            let mut exec = executor::Executor::new(tokens.literal_table,tokens.symbol_lookup);
+            let mut exec = executor::Executor::new(tokens.literal_table, tokens.symbol_lookup);
             if let Err(message) = exec.execute(&parsed) {
                 println!("\n**[Execution Failed]**");
                 println!(
@@ -34,7 +34,7 @@ pub fn run_interactive_shell() {
     println!("Mallu Script Version {}", env!("CARGO_PKG_VERSION"));
     println!("Repository: https://www.github.com/sreyas-sreelal/malluscript");
     let mut rl = Editor::<()>::new();
-    let mut exec = executor::Executor::new(HashMap::new(),HashMap::new());
+    let mut exec = executor::Executor::new(HashMap::new(), HashMap::new());
 
     loop {
         match rl.readline(">> ") {
