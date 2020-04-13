@@ -31,8 +31,8 @@ impl Executor {
         }
     }
 
-    pub fn get_symbol_name(&self, address: &usize) -> Option<String> {
-        self.symbol_lookup_table.iter().find_map(|(key, val)| {
+    pub fn get_symbol_name(&self, address: usize) -> Option<String> {
+        self.symbol_lookup_table.iter().find_map(|(key, &val)| {
             if val == address {
                 Some(key.to_string())
             } else {
@@ -61,7 +61,7 @@ impl Executor {
                             return Err((
                                 (*p, *q),
                                 RunTimeErrors::SymbolAlreadyDefined(
-                                    self.get_symbol_name(address).unwrap(),
+                                    self.get_symbol_name(*address).unwrap(),
                                 ),
                             ));
                         }
@@ -96,7 +96,7 @@ impl Executor {
                             return Err((
                                 (*p, *q),
                                 RunTimeErrors::UndefinedSymbol(
-                                    self.get_symbol_name(address).unwrap(),
+                                    self.get_symbol_name(*address).unwrap(),
                                 ),
                             ));
                         }
@@ -169,7 +169,7 @@ impl Executor {
                 if !self.symbol_table.contains_key(address) {
                     return Err((
                         (*a, *b),
-                        RunTimeErrors::UndefinedSymbol(self.get_symbol_name(address).unwrap()),
+                        RunTimeErrors::UndefinedSymbol(self.get_symbol_name(*address).unwrap()),
                     ));
                 }
                 match self.symbol_table.get(address).unwrap() {
@@ -177,7 +177,7 @@ impl Executor {
                     DataTypes::String(data) => Ok(DataTypes::String(data.to_string())),
                     _ => Err((
                         (*a, *b),
-                        RunTimeErrors::UnInitialzedData(self.get_symbol_name(address).unwrap()),
+                        RunTimeErrors::UnInitialzedData(self.get_symbol_name(*address).unwrap()),
                     )),
                 }
             }
