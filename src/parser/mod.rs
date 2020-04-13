@@ -8,7 +8,7 @@ use lalrpop_util::ParseError;
 #[cfg(test)]
 mod test;
 
-pub fn parse<'a>(src: &'a str, tokens: Lexer<'a>) -> Result<ast::SourceUnit<'a>, String> {
+pub fn parse<'a>(src: &'a str, tokens: &mut Lexer<'a>) -> Result<ast::SourceUnit<'a>, String> {
     match grammar::SourceUnitParser::new().parse(&src, tokens) {
         Ok(parsed) => Ok(parsed),
         Err(err) => match err {

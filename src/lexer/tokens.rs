@@ -25,7 +25,7 @@ pub enum TokenType<'input> {
     CloseParantheses,
     Um,
     Nekal,
-    Literal(&'input str),
+    Literal(usize),
     Number(i64),
     Symbol(&'input str),
 }

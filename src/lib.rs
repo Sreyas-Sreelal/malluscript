@@ -6,13 +6,15 @@ mod parser;
 use crate::encoding::to_ascii;
 use rustyline::error::ReadlineError;
 use rustyline::Editor;
+use std::collections::HashMap;
 
 pub fn run_file(source: &str) {
-    let mut exec = executor::Executor::new();
-    let source = to_ascii(&source);
-    let tokens = lexer::Lexer::new(&source);
-    match parser::parse(&source, tokens) {
+    //let source = to_ascii(&source);
+    let mut tokens = lexer::Lexer::new(&source);
+    
+    match parser::parse(&source, &mut tokens) {
         Ok(parsed) => {
+            let mut exec = executor::Executor::new(tokens.literal_table.clone());
             if let Err(message) = exec.execute(&parsed) {
                 println!("\n**[Execution Failed]**");
                 println!(
@@ -33,7 +35,7 @@ pub fn run_interactive_shell() {
     println!("Mallu Script Version {}", env!("CARGO_PKG_VERSION"));
     println!("Repository: https://www.github.com/sreyas-sreelal/malluscript");
     let mut rl = Editor::<()>::new();
-    let mut exec = executor::Executor::new();
+    let mut exec = executor::Executor::new(HashMap::new());
 
     loop {
         match rl.readline(">> ") {
@@ -44,7 +46,7 @@ pub fn run_interactive_shell() {
                 rl.add_history_entry(code.as_str());
                 let code = to_ascii(&code);
 
-                match parser::parse(&code, lexer::Lexer::new(&code)) {
+                match parser::parse(&code, &mut lexer::Lexer::new(&code)) {
                     Ok(parsed) => {
                         if let Err(message) = exec.execute(&parsed) {
                             println!(

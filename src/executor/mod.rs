@@ -15,12 +15,14 @@ use crate::lexer::tokens::TokenType;
 
 pub struct Executor {
     symbol_table: HashMap<String, DataTypes>,
+    literal_table: HashMap<usize,String>
 }
 
 impl Executor {
-    pub fn new() -> Self {
+    pub fn new(literal_table:HashMap<usize,String>) -> Self {
         Executor {
             symbol_table: HashMap::new(),
+            literal_table,
         }
     }
 
@@ -154,8 +156,12 @@ impl Executor {
                 }
             }
 
-            Expression::StringLiteral((_a, _b), value) => {
-                Ok(DataTypes::String((*value).to_string()))
+            Expression::StringLiteral((a, b), value) => {
+                if let TokenType::Literal(address) = value {
+                    Ok(DataTypes::String((&self.literal_table[address]).to_string()))
+                } else {
+                    Err(((*a,*b),RunTimeErrors::InvalidExpression))
+                }
             }
 
             Expression::InputNumber((a, b)) => {

@@ -74,7 +74,7 @@ pub enum Expression<'input> {
     ),
     Integer((usize, usize), TokenType<'input>),
     Symbol((usize, usize), &'input str),
-    StringLiteral((usize, usize), &'input str),
+    StringLiteral((usize, usize), TokenType<'input>),
     InputString((usize, usize)),
     InputNumber((usize, usize)),
 }

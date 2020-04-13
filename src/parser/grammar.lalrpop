@@ -70,7 +70,7 @@ extern {
         Declaration => TokenType::Declaration,
         "=" => TokenType::Assignment,
         Integer => TokenType::Number(i64),
-        StringLiteral => TokenType::Literal(<&'input str>),
+        StringLiteral => TokenType::Literal(usize),
         "+" => TokenType::Plus,
         "-" => TokenType::Minus,
         "*" => TokenType::Product,

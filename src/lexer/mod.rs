@@ -9,12 +9,15 @@ pub use error::LexicalError;
 use keywords::Keywords;
 use std::str::CharIndices;
 use tokens::TokenType;
+use std::collections::HashMap;
 
 #[derive(Clone, Debug)]
 pub struct Lexer<'input> {
     chars: CharIndices<'input>,
     keywords: Keywords<'input>,
     src: &'input str,
+    pub literal_table:HashMap<usize,String>,
+    literal_count:usize,
 }
 
 impl<'input> Lexer<'input> {
@@ -23,6 +26,8 @@ impl<'input> Lexer<'input> {
             chars: input.char_indices(),
             keywords: Keywords::new(),
             src: input,
+            literal_table:HashMap::new(),
+            literal_count:0,
         }
     }
 
@@ -46,7 +51,7 @@ impl<'input> Lexer<'input> {
 
 pub type Spanned<TokenType, Loc, Error> = Result<(Loc, TokenType, Loc), Error>;
 
-impl<'input> Iterator for Lexer<'input> {
+impl<'input> Iterator for &mut Lexer<'input> {
     type Item = Spanned<TokenType<'input>, usize, LexicalError>;
 
     fn next(&mut self) -> Option<Self::Item> {
@@ -69,11 +74,13 @@ impl<'input> Iterator for Lexer<'input> {
                 Some((i, '"')) => {
                     let (start, mut end) = (i + 1, 0);
                     let mut ch = ' ';
+                    let mut word = String::new();
                     while let Some((_, c)) = self.chars.next() {
                         ch = c;
                         if c == '"' {
                             break;
                         }
+                        word.push(c);
                         end += 1;
                     }
                     end += start;
@@ -84,8 +91,9 @@ impl<'input> Iterator for Lexer<'input> {
                         //    end, i
                         //)
                     }
-                    //println!("literal {}",&self.src[i..i+length+1]);
-                    return Some(Ok((i, TokenType::Literal(&self.src[start..end]), end)));
+                    self.literal_count += 1;
+                    self.literal_table.insert(self.literal_count,word);
+                    return Some(Ok((i, TokenType::Literal(self.literal_count), end)));
                 }
 
                 Some((i, c)) if c.is_alphabetic() => {

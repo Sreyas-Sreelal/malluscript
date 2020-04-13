@@ -17,7 +17,8 @@ fn executor_test() {
         }
         dhe_pidicho i;
     ";
-    let lex = Lexer::new(&code);
-    let parsed = parse(&code, lex);
-    assert!(Executor::new().execute(&parsed.unwrap()).is_ok());
+    let mut lex = Lexer::new(&code);
+    let mut exec = Executor::new(lex.literal_table.clone());
+    let parsed = parse(&code, &mut lex);  
+    assert!(exec.execute(&parsed.unwrap()).is_ok());
 }

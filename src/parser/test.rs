@@ -21,8 +21,8 @@ fn parser_test() {
         }
         dhe_pidicho i;
     ";
-    let lex = Lexer::new(&code);
-    let parsed = parse(&code, lex);
+    let mut lex = Lexer::new(&code);
+    let parsed = parse(&code, &mut lex);
     println!("{:?}", parsed);
     let expected = SourceUnit(
         [
