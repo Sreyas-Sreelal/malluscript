@@ -23,6 +23,7 @@ fn parser_test() {
     ";
     let mut lex = Lexer::new(&code);
     let parsed = parse(&code, &mut lex);
+
     println!("{:?}", parsed);
     let expected = SourceUnit(
         [

@@ -25,7 +25,9 @@ impl Executor {
             literal_table,
         }
     }
-
+    pub fn update_literal_table(&mut self,literal_table:HashMap<usize,String>) {
+        self.literal_table = literal_table;
+    }
     pub fn execute(
         &mut self,
         unit: &SourceUnit,

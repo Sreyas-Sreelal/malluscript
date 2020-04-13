@@ -3,7 +3,6 @@ mod executor;
 mod lexer;
 mod parser;
 
-use crate::encoding::to_ascii;
 use rustyline::error::ReadlineError;
 use rustyline::Editor;
 use std::collections::HashMap;
@@ -14,7 +13,7 @@ pub fn run_file(source: &str) {
     
     match parser::parse(&source, &mut tokens) {
         Ok(parsed) => {
-            let mut exec = executor::Executor::new(tokens.literal_table.clone());
+            let mut exec = executor::Executor::new(tokens.literal_table);
             if let Err(message) = exec.execute(&parsed) {
                 println!("\n**[Execution Failed]**");
                 println!(
@@ -44,10 +43,11 @@ pub fn run_interactive_shell() {
                     continue;
                 }
                 rl.add_history_entry(code.as_str());
-                let code = to_ascii(&code);
-
-                match parser::parse(&code, &mut lexer::Lexer::new(&code)) {
+                //let code = to_ascii(&code);
+                let mut tokens = lexer::Lexer::new(&code);
+                match parser::parse(&code, &mut tokens) {
                     Ok(parsed) => {
+                        exec.update_literal_table(tokens.literal_table);
                         if let Err(message) = exec.execute(&parsed) {
                             println!(
                                 "{}\n^^^^{}",
