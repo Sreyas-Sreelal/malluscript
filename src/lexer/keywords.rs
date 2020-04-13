@@ -23,6 +23,32 @@ impl<'input> Keywords<'input> {
         list.insert("same_aane".to_string(), TokenType::EqualTo);
         list.insert("um".to_string(), TokenType::Um);
         list.insert("ne_kal".to_string(), TokenType::Nekal);
+        list.insert("pwoli_sanam".to_string(), TokenType::Declaration);
+        list.insert("pwoli_saanam".to_string(), TokenType::Declaration);
+        
+        list.insert("poli_sadhanam".to_string(), TokenType::Declaration);
+        list.insert("poli_sanam".to_string(), TokenType::Declaration);
+        list.insert("poli_saanam".to_string(), TokenType::Declaration);
+
+        list.insert("address_thada".to_string(), TokenType::InputString);
+        list.insert("number_thada".to_string(), TokenType::InputNumber);
+        list.insert("dhe_pidicho".to_string(), TokenType::Write);
+        
+        list.insert("seriyano_mwone".to_string(), TokenType::If);
+        list.insert("seriyano".to_string(), TokenType::If);
+        
+        list.insert("seri_allel".to_string(), TokenType::Else);
+        list.insert("repeat_adi".to_string(), TokenType::Loop);
+        list.insert("veluthane".to_string(), TokenType::GreaterThan);
+        
+        list.insert("same_alle".to_string(), TokenType::NotEqual);
+        list.insert("same_allel".to_string(), TokenType::NotEqual);
+        
+        list.insert("cheruthane".to_string(), TokenType::LessThan);
+        list.insert("same_aane".to_string(), TokenType::EqualTo);
+        list.insert("um".to_string(), TokenType::Um);
+        list.insert("ne_kal".to_string(), TokenType::Nekal);
+        
         //Malayalam counterparts
         list.insert(to_ascii("പൊളിസാധനം"), TokenType::Declaration);
         list.insert(to_ascii("അഡ്രസ്_താടാ"), TokenType::InputString);
@@ -37,6 +63,7 @@ impl<'input> Keywords<'input> {
         list.insert(to_ascii("സെയിം_ആണേ"), TokenType::EqualTo);
         list.insert(to_ascii("ഉം"), TokenType::Um);
         list.insert(to_ascii("നെകാൾ"), TokenType::Nekal);
+        
         Self { list }
     }
 }
