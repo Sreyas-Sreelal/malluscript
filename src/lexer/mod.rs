@@ -18,20 +18,24 @@ pub struct Lexer<'input> {
     src: &'input str,
     pub literal_table: HashMap<usize, String>,
     pub symbol_lookup: HashMap<String, usize>,
-    lookup_count: usize,
+    pub lookup_count: usize,
     literal_count: usize,
 }
 
 impl<'input> Lexer<'input> {
-    pub fn new(input: &'input str) -> Self {
+    pub fn new(
+        input: &'input str,
+        symbol_lookup: HashMap<String, usize>,
+        lookup_count: usize,
+    ) -> Self {
         Lexer {
             chars: input.char_indices(),
             keywords: Keywords::new(),
             src: input,
             literal_table: HashMap::new(),
-            symbol_lookup: HashMap::new(),
+            symbol_lookup,
             literal_count: 0,
-            lookup_count: 0,
+            lookup_count,
         }
     }
 

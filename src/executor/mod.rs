@@ -44,6 +44,12 @@ impl Executor {
     pub fn update_literal_table(&mut self, literal_table: HashMap<usize, String>) {
         self.literal_table = literal_table;
     }
+    pub fn update_lookup_table(&mut self, lookup_table: HashMap<String, usize>) {
+        for x in lookup_table {
+            self.symbol_lookup_table.insert(x.0, x.1);
+        }
+    }
+
     pub fn execute(
         &mut self,
         unit: &SourceUnit,

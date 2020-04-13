@@ -1,6 +1,7 @@
 use crate::executor::Executor;
 use crate::lexer::Lexer;
 use crate::parser::parse;
+use std::collections::HashMap;
 
 #[test]
 fn executor_test() {
@@ -17,7 +18,7 @@ fn executor_test() {
         }
         dhe_pidicho i;
     ";
-    let mut lex = Lexer::new(&code);
+    let mut lex = Lexer::new(&code, HashMap::new(), 0);
     let parsed = parse(&code, &mut lex);
     let mut exec = Executor::new(lex.literal_table, lex.symbol_lookup);
     assert!(exec.execute(&parsed.unwrap()).is_ok());

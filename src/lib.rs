@@ -9,7 +9,7 @@ use std::collections::HashMap;
 
 pub fn run_file(source: &str) {
     //let source = to_ascii(&source);
-    let mut tokens = lexer::Lexer::new(&source);
+    let mut tokens = lexer::Lexer::new(&source, HashMap::new(), 0);
 
     match parser::parse(&source, &mut tokens) {
         Ok(parsed) => {
@@ -35,7 +35,8 @@ pub fn run_interactive_shell() {
     println!("Repository: https://www.github.com/sreyas-sreelal/malluscript");
     let mut rl = Editor::<()>::new();
     let mut exec = executor::Executor::new(HashMap::new(), HashMap::new());
-
+    let mut perisit_table = HashMap::new();
+    let mut offest = 0;
     loop {
         match rl.readline(">> ") {
             Ok(code) => {
@@ -44,10 +45,15 @@ pub fn run_interactive_shell() {
                 }
                 rl.add_history_entry(code.as_str());
                 //let code = to_ascii(&code);
-                let mut tokens = lexer::Lexer::new(&code);
+
+                let mut tokens = lexer::Lexer::new(&code, perisit_table.clone(), offest);
+
                 match parser::parse(&code, &mut tokens) {
                     Ok(parsed) => {
                         exec.update_literal_table(tokens.literal_table);
+                        perisit_table = tokens.symbol_lookup.clone();
+                        offest = tokens.lookup_count;
+                        exec.update_lookup_table(tokens.symbol_lookup);
                         if let Err(message) = exec.execute(&parsed) {
                             println!(
                                 "{}\n^^^^{}",

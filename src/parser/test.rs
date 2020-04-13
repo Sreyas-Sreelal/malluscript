@@ -6,6 +6,7 @@ use crate::lexer::tokens::TokenType;
 use crate::lexer::tokens::TokenType::Number;
 use crate::lexer::Lexer;
 use crate::parser::parse;
+use std::collections::HashMap;
 
 #[test]
 fn parser_test() {
@@ -22,7 +23,7 @@ fn parser_test() {
         }
         dhe_pidicho i;
     ";
-    let mut lex = Lexer::new(&code);
+    let mut lex = Lexer::new(&code, HashMap::new(), 0);
     let parsed = parse(&code, &mut lex);
 
     println!("{:?}", parsed);
