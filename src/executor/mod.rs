@@ -14,13 +14,39 @@ use crate::executor::datatype::{to_bool, DataTypes};
 use crate::lexer::tokens::TokenType;
 
 pub struct Executor {
-    symbol_table: HashMap<String, DataTypes>,
+    symbol_table: HashMap<usize, DataTypes>,
+    literal_table: HashMap<usize, String>,
+    symbol_lookup_table: HashMap<String, usize>,
 }
 
 impl Executor {
-    pub fn new() -> Self {
+    pub fn new(
+        literal_table: HashMap<usize, String>,
+        symbol_lookup_table: HashMap<String, usize>,
+    ) -> Self {
         Executor {
             symbol_table: HashMap::new(),
+            literal_table,
+            symbol_lookup_table,
+        }
+    }
+
+    pub fn get_symbol_name(&self, address: usize) -> Option<String> {
+        self.symbol_lookup_table.iter().find_map(|(key, &val)| {
+            if val == address {
+                Some(key.to_string())
+            } else {
+                None
+            }
+        })
+    }
+
+    pub fn update_literal_table(&mut self, literal_table: HashMap<usize, String>) {
+        self.literal_table = literal_table;
+    }
+    pub fn update_lookup_table(&mut self, lookup_table: HashMap<String, usize>) {
+        for x in lookup_table {
+            self.symbol_lookup_table.insert(x.0, x.1);
         }
     }
 
@@ -32,15 +58,17 @@ impl Executor {
             let SourceUnitPart::Statement(stmt) = x;
             match stmt {
                 Statement::Declaration((p, q), symbol) => {
-                    if let Expression::Symbol((_a, _b), name) = symbol {
+                    if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = symbol {
                         if self
                             .symbol_table
-                            .insert((*name).to_string(), DataTypes::Unknown)
+                            .insert(*address, DataTypes::Unknown)
                             .is_some()
                         {
                             return Err((
                                 (*p, *q),
-                                RunTimeErrors::SymbolAlreadyDefined((*name).to_string()),
+                                RunTimeErrors::SymbolAlreadyDefined(
+                                    self.get_symbol_name(*address).unwrap(),
+                                ),
                             ));
                         }
                     }
@@ -69,17 +97,17 @@ impl Executor {
                 }
 
                 Statement::Assignment((p, q), l, r) => {
-                    if let Expression::Symbol((_a, _b), identifier) = l {
-                        if !self.symbol_table.contains_key(&(*identifier).to_string()) {
+                    if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = l {
+                        if !self.symbol_table.contains_key(address) {
                             return Err((
                                 (*p, *q),
-                                RunTimeErrors::UndefinedSymbol((*identifier).to_string()),
+                                RunTimeErrors::UndefinedSymbol(
+                                    self.get_symbol_name(*address).unwrap(),
+                                ),
                             ));
                         }
-                        self.symbol_table.insert(
-                            (*identifier).to_string(),
-                            self.eval_arithmetic_logic_expression(&*r)?,
-                        );
+                        self.symbol_table
+                            .insert(*address, self.eval_arithmetic_logic_expression(&*r)?);
                     } else {
                         return Err(((*p, *q), RunTimeErrors::InvalidAssignment));
                     }
@@ -142,20 +170,33 @@ impl Executor {
                 _ => Err(((*a, *b), RunTimeErrors::InvalidExpression)),
             },
 
-            Expression::Symbol((a, b), identifier) => {
-                let identifier = (*identifier).to_string();
-                if !self.symbol_table.contains_key(&identifier) {
-                    return Err(((*a, *b), RunTimeErrors::UndefinedSymbol(identifier)));
+            Expression::Symbol((a, b), TokenType::Symbol(address)) => {
+                //let identifier = (*identifier).to_string();
+                if !self.symbol_table.contains_key(address) {
+                    return Err((
+                        (*a, *b),
+                        RunTimeErrors::UndefinedSymbol(self.get_symbol_name(*address).unwrap()),
+                    ));
                 }
-                match self.symbol_table.get(&identifier).unwrap() {
+                match self.symbol_table.get(address).unwrap() {
                     DataTypes::Integer(number) => Ok(DataTypes::Integer(*number)),
                     DataTypes::String(data) => Ok(DataTypes::String(data.to_string())),
-                    _ => Err(((*a, *b), RunTimeErrors::UnInitialzedData(identifier))),
+                    _ => Err((
+                        (*a, *b),
+                        RunTimeErrors::UnInitialzedData(self.get_symbol_name(*address).unwrap()),
+                    )),
                 }
             }
+            Expression::Symbol((a, b), _) => Err(((*a, *b), RunTimeErrors::InvalidExpression)),
 
-            Expression::StringLiteral((_a, _b), value) => {
-                Ok(DataTypes::String((*value).to_string()))
+            Expression::StringLiteral((a, b), value) => {
+                if let TokenType::Literal(address) = value {
+                    Ok(DataTypes::String(
+                        (&self.literal_table[address]).to_string(),
+                    ))
+                } else {
+                    Err(((*a, *b), RunTimeErrors::InvalidExpression))
+                }
             }
 
             Expression::InputNumber((a, b)) => {

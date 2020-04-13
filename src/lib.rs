@@ -1,14 +1,19 @@
+//mod encoding;
 mod executor;
 mod lexer;
 mod parser;
+
 use rustyline::error::ReadlineError;
 use rustyline::Editor;
+use std::collections::HashMap;
 
 pub fn run_file(source: &str) {
-    let mut exec = executor::Executor::new();
-    let tokens = lexer::Lexer::new(&source);
-    match parser::parse(&source, tokens) {
+    //let source = to_ascii(&source);
+    let mut tokens = lexer::Lexer::new(&source, HashMap::new(), 0);
+
+    match parser::parse(&source, &mut tokens) {
         Ok(parsed) => {
+            let mut exec = executor::Executor::new(tokens.literal_table, tokens.symbol_lookup);
             if let Err(message) = exec.execute(&parsed) {
                 println!("\n**[Execution Failed]**");
                 println!(
@@ -26,22 +31,29 @@ pub fn run_file(source: &str) {
 }
 
 pub fn run_interactive_shell() {
-    println!("Mallu Script Version {}",env!("CARGO_PKG_VERSION"));
+    println!("Mallu Script Version {}", env!("CARGO_PKG_VERSION"));
     println!("Repository: https://www.github.com/sreyas-sreelal/malluscript");
     let mut rl = Editor::<()>::new();
-    let mut exec = executor::Executor::new();
-
+    let mut exec = executor::Executor::new(HashMap::new(), HashMap::new());
+    let mut perisit_table = HashMap::new();
+    let mut offest = 0;
     loop {
         match rl.readline(">> ") {
             Ok(code) => {
                 if code.trim().is_empty() {
                     continue;
                 }
-
                 rl.add_history_entry(code.as_str());
+                //let code = to_ascii(&code);
 
-                match parser::parse(&code, lexer::Lexer::new(&code)) {
+                let mut tokens = lexer::Lexer::new(&code, perisit_table.clone(), offest);
+
+                match parser::parse(&code, &mut tokens) {
                     Ok(parsed) => {
+                        exec.update_literal_table(tokens.literal_table);
+                        perisit_table = tokens.symbol_lookup.clone();
+                        offest = tokens.lookup_count;
+                        exec.update_lookup_table(tokens.symbol_lookup);
                         if let Err(message) = exec.execute(&parsed) {
                             println!(
                                 "{}\n^^^^{}",

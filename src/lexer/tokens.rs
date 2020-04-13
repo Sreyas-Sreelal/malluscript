@@ -1,6 +1,6 @@
 use std::fmt::Formatter;
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub enum TokenType<'input> {
+pub enum TokenType {
     Declaration,
     Write,
     InputString,
@@ -25,15 +25,15 @@ pub enum TokenType<'input> {
     CloseParantheses,
     Um,
     Nekal,
-    Literal(&'input str),
+    Literal(usize),
     Number(i64),
-    Symbol(&'input str),
+    Symbol(usize),
 }
 
-impl std::fmt::Display for TokenType<'_> {
+impl std::fmt::Display for TokenType {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            TokenType::Declaration => write!(f, "ada_mwone"),
+            TokenType::Declaration => write!(f, "pwoli_sadhanam"),
             TokenType::Write => write!(f, "dhe_pidicho"),
             TokenType::InputString => write!(f, "address_thada"),
             TokenType::InputNumber => write!(f, "number_thada"),
