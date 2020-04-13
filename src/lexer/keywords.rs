@@ -1,13 +1,12 @@
 use crate::lexer::tokens::TokenType;
-use crate::encoding::to_ascii;
 use std::collections::HashMap;
 
 #[derive(Clone, Debug)]
-pub struct Keywords<'input> {
-    pub list: HashMap<String, TokenType<'input>>,
+pub struct Keywords {
+    pub list: HashMap<String, TokenType>,
 }
 
-impl<'input> Keywords<'input> {
+impl Keywords {
     pub fn new() -> Self {
         let mut list = HashMap::new();
         list.insert("pwoli_sadhanam".to_string(), TokenType::Declaration);
@@ -50,19 +49,19 @@ impl<'input> Keywords<'input> {
         list.insert("ne_kal".to_string(), TokenType::Nekal);
         
         //Malayalam counterparts
-        list.insert(to_ascii("പൊളിസാധനം"), TokenType::Declaration);
-        list.insert(to_ascii("അഡ്രസ്_താടാ"), TokenType::InputString);
-        list.insert(to_ascii("നമ്പർ_താടാ"), TokenType::InputNumber);
-        list.insert(to_ascii("ദേ_പിടിച്ചോ"), TokenType::Write);
-        list.insert(to_ascii("ശെരിയാണോ_മോനെ"), TokenType::If);
-        list.insert(to_ascii("ശെരി_അല്ലേൽ"), TokenType::Else);
-        list.insert(to_ascii("റിപീറ്റടി"), TokenType::Loop);
-        list.insert(to_ascii("വലുതാണെ"), TokenType::GreaterThan);
-        list.insert(to_ascii("സെയിം_അല്ല"), TokenType::NotEqual);
-        list.insert(to_ascii("ചെറുതാണെ"), TokenType::LessThan);
-        list.insert(to_ascii("സെയിം_ആണേ"), TokenType::EqualTo);
-        list.insert(to_ascii("ഉം"), TokenType::Um);
-        list.insert(to_ascii("നെകാൾ"), TokenType::Nekal);
+        list.insert("പൊളിസാധനം".to_string(), TokenType::Declaration);
+        list.insert("അഡ്രസ്_താടാ".to_string(), TokenType::InputString);
+        list.insert("നമ്പർ_താടാ".to_string(), TokenType::InputNumber);
+        list.insert("ദേ_പിടിച്ചോ".to_string(), TokenType::Write);
+        list.insert("ശെരിയാണോ_മോനെ".to_string(), TokenType::If);
+        list.insert("ശെരി_അല്ലേൽ".to_string(), TokenType::Else);
+        list.insert("റിപീറ്റടി".to_string(), TokenType::Loop);
+        list.insert("വലുതാണെ".to_string(), TokenType::GreaterThan);
+        list.insert("സെയിം_അല്ല".to_string(), TokenType::NotEqual);
+        list.insert("ചെറുതാണെ".to_string(), TokenType::LessThan);
+        list.insert("സെയിം_ആണേ".to_string(), TokenType::EqualTo);
+        list.insert("ഉം".to_string(), TokenType::Um);
+        list.insert("നെകാൾ".to_string(), TokenType::Nekal);
         
         Self { list }
     }

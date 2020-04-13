@@ -1,80 +1,80 @@
 use crate::lexer::tokens::TokenType;
 
 #[derive(Debug, Clone, PartialEq)]
-pub struct SourceUnit<'input>(pub Vec<SourceUnitPart<'input>>);
+pub struct SourceUnit(pub Vec<SourceUnitPart>);
 
 #[derive(Debug, Clone, PartialEq)]
-pub enum SourceUnitPart<'input> {
-    Statement(Statement<'input>),
+pub enum SourceUnitPart {
+    Statement(Statement),
 }
 
 #[derive(Debug, Clone, PartialEq)]
-pub enum Statement<'input> {
+pub enum Statement {
     Conditional(
         (usize, usize),
-        Expression<'input>,
-        SourceUnit<'input>,
-        Option<SourceUnit<'input>>,
+        Expression,
+        SourceUnit,
+        Option<SourceUnit>,
     ),
-    Loop((usize, usize), Expression<'input>, SourceUnit<'input>),
-    Declaration((usize, usize), Expression<'input>),
-    Assignment((usize, usize), Expression<'input>, Expression<'input>),
-    Write((usize, usize), Expression<'input>),
+    Loop((usize, usize), Expression, SourceUnit),
+    Declaration((usize, usize), Expression),
+    Assignment((usize, usize), Expression, Expression),
+    Write((usize, usize), Expression),
 }
 
 #[derive(Debug, Clone, PartialEq)]
-pub enum Expression<'input> {
+pub enum Expression {
     //    Empty,
     Add(
         (usize, usize),
-        Box<Expression<'input>>,
-        Box<Expression<'input>>,
+        Box<Expression>,
+        Box<Expression>,
     ),
     Subtract(
         (usize, usize),
-        Box<Expression<'input>>,
-        Box<Expression<'input>>,
+        Box<Expression>,
+        Box<Expression>,
     ),
     Multiply(
         (usize, usize),
-        Box<Expression<'input>>,
-        Box<Expression<'input>>,
+        Box<Expression>,
+        Box<Expression>,
     ),
     Divide(
         (usize, usize),
-        Box<Expression<'input>>,
-        Box<Expression<'input>>,
+        Box<Expression>,
+        Box<Expression>,
     ),
     Modulo(
         (usize, usize),
-        Box<Expression<'input>>,
-        Box<Expression<'input>>,
+        Box<Expression>,
+        Box<Expression>,
     ),
 
-    UnaryMinus((usize, usize), Box<Expression<'input>>),
+    UnaryMinus((usize, usize), Box<Expression>),
     Equals(
         (usize, usize),
-        Box<Expression<'input>>,
-        Box<Expression<'input>>,
+        Box<Expression>,
+        Box<Expression>,
     ),
     GreaterThan(
         (usize, usize),
-        Box<Expression<'input>>,
-        Box<Expression<'input>>,
+        Box<Expression>,
+        Box<Expression>,
     ),
     LessThan(
         (usize, usize),
-        Box<Expression<'input>>,
-        Box<Expression<'input>>,
+        Box<Expression>,
+        Box<Expression>,
     ),
     NotEquals(
         (usize, usize),
-        Box<Expression<'input>>,
-        Box<Expression<'input>>,
+        Box<Expression>,
+        Box<Expression>,
     ),
-    Integer((usize, usize), TokenType<'input>),
-    Symbol((usize, usize), &'input str),
-    StringLiteral((usize, usize), TokenType<'input>),
+    Integer((usize, usize), TokenType),
+    Symbol((usize, usize), TokenType),
+    StringLiteral((usize, usize), TokenType),
     InputString((usize, usize)),
     InputNumber((usize, usize)),
 }

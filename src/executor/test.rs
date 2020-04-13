@@ -19,6 +19,6 @@ fn executor_test() {
     ";
     let mut lex = Lexer::new(&code);
     let parsed = parse(&code, &mut lex);  
-    let mut exec = Executor::new(lex.literal_table);
+    let mut exec = Executor::new(lex.literal_table,lex.symbol_lookup);
     assert!(exec.execute(&parsed.unwrap()).is_ok());
 }

@@ -14,9 +14,11 @@ use std::collections::HashMap;
 #[derive(Clone, Debug)]
 pub struct Lexer<'input> {
     chars: CharIndices<'input>,
-    keywords: Keywords<'input>,
+    keywords: Keywords,
     src: &'input str,
     pub literal_table:HashMap<usize,String>,
+    pub symbol_lookup:HashMap<String,usize>,
+    lookup_count:usize,
     literal_count:usize,
 }
 
@@ -27,7 +29,9 @@ impl<'input> Lexer<'input> {
             keywords: Keywords::new(),
             src: input,
             literal_table:HashMap::new(),
+            symbol_lookup:HashMap::new(),
             literal_count:0,
+            lookup_count:0,
         }
     }
 
@@ -52,7 +56,7 @@ impl<'input> Lexer<'input> {
 pub type Spanned<TokenType, Loc, Error> = Result<(Loc, TokenType, Loc), Error>;
 
 impl<'input> Iterator for &mut Lexer<'input> {
-    type Item = Spanned<TokenType<'input>, usize, LexicalError>;
+    type Item = Spanned<TokenType, usize, LexicalError>;
 
     fn next(&mut self) -> Option<Self::Item> {
         loop {
@@ -98,22 +102,26 @@ impl<'input> Iterator for &mut Lexer<'input> {
 
                 Some((i, c)) if c.is_alphabetic() => {
                     let (start, mut end) = (i, 0);
-
+                    let mut word = String::new();
+                    word.push(c);
                     while let Some((_, c)) = self.chars.clone().peekable().peek() {
                         if self.is_valid_name(*c) {
                             end += 1;
+                            word.push(*c);
                             self.chars.next();
                         } else {
                             break;
                         }
                     }
                     end += start;
-                    //println!("check symbol keyword{}",&self.src[i..i+length+1]);
-                    if let Some(keyword) = &self.keywords.list.get(&self.src[start..=end]) {
+                    //println!("check symbol keyword {}",word);
+                    if let Some(keyword) = &self.keywords.list.get(&word) {
                         return Some(Ok((i, (**keyword).clone(), end)));
-                    } else {
-                        return Some(Ok((i, TokenType::Symbol(&self.src[start..=end]), end)));
+                    } else if !self.symbol_lookup.contains_key(&word) {
+                            self.lookup_count += 1;
+                            self.symbol_lookup.insert(word.clone(), self.lookup_count);
                     }
+                    return Some(Ok((i, TokenType::Symbol(*(self.symbol_lookup.get(&word).unwrap())), end)));
                 }
 
                 Some((i, c)) if c.is_digit(10) => {
