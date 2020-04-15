@@ -10,7 +10,7 @@ impl Keywords {
     pub fn new() -> Self {
         let mut list = HashMap::new();
 
-        // Vec<str>s contain keywords that are named meme_style
+        // The following list contain keywords that are named meme_style
         // Last word will be in മലയാളലിപി(Malayalalipi)
         for &pwoli_sanam in &[
             "pwoli_sadhanam",
@@ -49,7 +49,17 @@ impl Keywords {
             list.insert(repeat_adi.to_string(), TokenType::Loop);
         }
 
-        for &veluth_aan in &["veluthane", "വലുതാണെ"] {
+        for &veluth_aan in &[
+            "veluthane",
+            "veluthanenkil",
+            "veluthanekil",
+            "valuthanenkil",
+            "valuthanekil",
+            "valuthane",
+            "വലുതാണെ",
+            "വലുതാണെങ്കിൽ",
+            "വലുതാണെകിൽ",
+        ] {
             list.insert(veluth_aan.to_string(), TokenType::GreaterThan);
         }
 
@@ -57,7 +67,16 @@ impl Keywords {
             list.insert(same_alle.to_string(), TokenType::NotEqual);
         }
 
-        for &cheruth_aane in &["cheruthane", "ചെറുതാണെ"] {
+        for &cheruth_aane in &[
+            "cheruthane",
+            "cheruthanenkil",
+            "cheruthanekil",
+            "charuthane",
+            "charuthanenkil",
+            "charuthanekil",
+            "ചെറുതാണെകിൽ",
+            "ചെറുതാണെങ്കിൽ"
+        ] {
             list.insert(cheruth_aane.to_string(), TokenType::LessThan);
         }
 
