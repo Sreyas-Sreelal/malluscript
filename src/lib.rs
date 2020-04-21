@@ -1,4 +1,3 @@
-//mod encoding;
 mod executor;
 mod lexer;
 mod parser;
@@ -8,7 +7,6 @@ use rustyline::Editor;
 use std::collections::HashMap;
 
 pub fn run_file(source: &str) {
-    //let source = to_ascii(&source);
     let mut tokens = lexer::Lexer::new(&source, HashMap::new(), 0);
 
     match parser::parse(&source, &mut tokens) {
@@ -19,7 +17,7 @@ pub fn run_file(source: &str) {
                 if let Some(region) = source.get((message.0).0..=(message.0).1) {
                     println!("{}", region);
                 }
-                println!("^^^^{}",message.1);
+                println!("^^^^{}", message.1);
             }
         }
         Err(message) => {
@@ -30,13 +28,16 @@ pub fn run_file(source: &str) {
 }
 
 pub fn run_interactive_shell() {
-    println!("
+    println!(
+        "
     +---------------------------------------------------------------+
     |                   Mallu Script                                |
     | Repository: https://www.github.com/sreyas-sreelal/malluscript |
     +---------------------------------------------------------------+
                         Version {}
-    ", env!("CARGO_PKG_VERSION"));
+    ",
+        env!("CARGO_PKG_VERSION")
+    );
     let mut rl = Editor::<()>::new();
     let mut exec = executor::Executor::new(HashMap::new(), HashMap::new());
     let mut perisit_table = HashMap::new();
@@ -48,10 +49,8 @@ pub fn run_interactive_shell() {
                     continue;
                 }
                 rl.add_history_entry(code.as_str());
-                //let code = to_ascii(&code);
-
+                
                 let mut tokens = lexer::Lexer::new(&code, perisit_table.clone(), offest);
-
                 match parser::parse(&code, &mut tokens) {
                     Ok(parsed) => {
                         exec.update_literal_table(tokens.literal_table);
@@ -59,11 +58,10 @@ pub fn run_interactive_shell() {
                         offest = tokens.lookup_count;
                         exec.update_lookup_table(tokens.symbol_lookup);
                         if let Err(message) = exec.execute(&parsed) {
-                            
                             if let Some(region) = code.get((message.0).0..=(message.0).1) {
                                 println!("{}", region);
                             }
-                            println!("^^^^{}",message.1);
+                            println!("^^^^{}", message.1);
                         }
                     }
                     Err(message) => {

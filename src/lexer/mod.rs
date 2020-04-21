@@ -1,9 +1,9 @@
-mod error;
 ///
 /// Malluscript Lexer
 ///
 mod keywords;
 pub mod tokens;
+mod error;
 
 pub use error::LexicalError;
 use keywords::Keywords;
@@ -50,6 +50,7 @@ impl<'input> Lexer<'input> {
             || c == '\n'
             || c == ')'
             || c == '='
+            || c == '\n'
     }
 
     fn is_valid_name(&self, c: char) -> bool {
@@ -94,10 +95,6 @@ impl<'input> Iterator for &mut Lexer<'input> {
                     end += start;
                     if ch != '"' {
                         return Some(Err(LexicalError::InvalidStringLiteral(i, end)));
-                        //panic!(
-                        //    "Invalid Literal Closing Quotation Not Found at {}:{}",
-                        //    end, i
-                        //)
                     }
                     self.literal_count += 1;
                     self.literal_table.insert(self.literal_count, word);
@@ -118,7 +115,7 @@ impl<'input> Iterator for &mut Lexer<'input> {
                         }
                     }
                     end += start;
-                    //println!("check symbol keyword {}",word);
+
                     if let Some(keyword) = &self.keywords.list.get(&word) {
                         return Some(Ok((i, (**keyword).clone(), end)));
                     } else if !self.symbol_lookup.contains_key(&word) {
