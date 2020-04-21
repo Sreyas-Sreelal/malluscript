@@ -32,6 +32,7 @@ pub enum Expression {
     LessThan((usize, usize), Box<Expression>, Box<Expression>),
     NotEquals((usize, usize), Box<Expression>, Box<Expression>),
     Integer((usize, usize), TokenType),
+    Float((usize, usize), TokenType),
     Symbol((usize, usize), TokenType),
     StringLiteral((usize, usize), TokenType),
     InputString((usize, usize)),

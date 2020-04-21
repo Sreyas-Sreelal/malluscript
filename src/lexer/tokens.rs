@@ -1,5 +1,5 @@
 use std::fmt::Formatter;
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, PartialOrd)]
 pub enum TokenType {
     Declaration,
     Write,
@@ -26,7 +26,8 @@ pub enum TokenType {
     Um,
     Nekal,
     Literal(usize),
-    Number(i64),
+    Integer(i64),
+    Float(f64),
     Symbol(usize),
 }
 
@@ -58,7 +59,8 @@ impl std::fmt::Display for TokenType {
             TokenType::Um => write!(f, "um"),
             TokenType::Nekal => write!(f, "ne_kal"),
             TokenType::Literal(literal) => write!(f, "{}", literal),
-            TokenType::Number(number) => write!(f, "{}", number),
+            TokenType::Integer(number) => write!(f, "{}", number),
+            TokenType::Float(number) => write!(f, "{}", number),
             TokenType::Symbol(symbol) => write!(f, "{}", symbol),
         }
     }

@@ -1,11 +1,11 @@
 #![allow(clippy::all)]
 mod grammar;
-use std::collections::HashMap;
 use crate::executor::ast;
-use crate::lexer::Lexer;
 use crate::lexer::tokens::TokenType;
+use crate::lexer::Lexer;
 pub use grammar::SourceUnitParser;
 use lalrpop_util::ParseError;
+use std::collections::HashMap;
 
 #[cfg(test)]
 mod test;
@@ -33,7 +33,7 @@ pub fn parse<'a>(src: &'a str, mut tokens: &mut Lexer<'a>) -> Result<ast::Source
             } => Err(format!(
                 "{}\nUnrecognised token `{}` expected `{}` ",
                 &src[l..r].trim(),
-                get_symbol_name(&tokens.symbol_lookup,token),
+                get_symbol_name(&tokens.symbol_lookup, token),
                 expected.join(", ")
             )),
             ParseError::UnrecognizedToken {
@@ -63,14 +63,14 @@ pub fn parse<'a>(src: &'a str, mut tokens: &mut Lexer<'a>) -> Result<ast::Source
     }
 }
 
-fn get_symbol_name(table:&HashMap<String,usize>, address: usize) -> String {
+fn get_symbol_name(table: &HashMap<String, usize>, address: usize) -> String {
     if let Some(name) = table.iter().find_map(|(key, &val)| {
         if val == address {
             Some(key.to_string())
         } else {
-            None 
+            None
         }
-    }){
+    }) {
         name.to_string()
     } else {
         "<invalid-entry-in-symbol-table>".to_string()

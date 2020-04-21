@@ -53,6 +53,7 @@ Unary:Expression = {
 
 Term: Expression= {
     <a:@L> <v:Integer> <b:@R> => Expression::Integer((a,b),v),
+    <a:@L> <v:Float> <b:@R> => Expression::Float((a,b),v),
     <a:@L> <id:Identifier> <b:@R> => Expression::Symbol((a,b),id),
     <a:@L> <string:StringLiteral> <b:@R> => Expression::StringLiteral((a,b),string),
     <a:@L> <d:InputNumber> <b:@R> => Expression::InputNumber((a,b)),
@@ -69,7 +70,8 @@ extern {
         ";" => TokenType::SemiColon,
         Declaration => TokenType::Declaration,
         "=" => TokenType::Assignment,
-        Integer => TokenType::Number(i64),
+        Integer => TokenType::Integer(i64),
+        Float => TokenType::Float(f64),
         StringLiteral => TokenType::Literal(usize),
         "+" => TokenType::Plus,
         "-" => TokenType::Minus,

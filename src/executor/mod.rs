@@ -166,10 +166,13 @@ impl Executor {
             )),
 
             Expression::Integer((a, b), l) => match l {
-                TokenType::Number(number) => Ok(DataTypes::Integer(*number)),
+                TokenType::Integer(number) => Ok(DataTypes::Integer(*number)),
                 _ => Err(((*a, *b), RunTimeErrors::InvalidExpression)),
             },
-
+            Expression::Float((a, b), l) => match l {
+                TokenType::Float(number) => Ok(DataTypes::Float(*number)),
+                _ => Err(((*a, *b), RunTimeErrors::InvalidExpression)),
+            },
             Expression::Symbol((a, b), TokenType::Symbol(address)) => {
                 //let identifier = (*identifier).to_string();
                 if !self.symbol_table.contains_key(address) {
