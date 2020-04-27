@@ -49,7 +49,7 @@ pub fn run_interactive_shell() {
                     continue;
                 }
                 rl.add_history_entry(code.as_str());
-                
+
                 let mut tokens = lexer::Lexer::new(&code, perisit_table.clone(), offest);
                 match parser::parse(&code, &mut tokens) {
                     Ok(parsed) => {

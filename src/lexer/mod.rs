@@ -1,9 +1,9 @@
+mod error;
 ///
 /// Malluscript Lexer
 ///
 mod keywords;
 pub mod tokens;
-mod error;
 
 pub use error::LexicalError;
 use keywords::Keywords;
@@ -139,9 +139,12 @@ impl<'input> Iterator for &mut Lexer<'input> {
                         word.push(*c);
                         self.chars.next();
                     }
-
-                    if let Ok(number) = word.parse() {
-                        return Some(Ok((i, TokenType::Number(number), i + word.len())));
+                    if !word.contains('.') {
+                        if let Ok(number) = word.parse() {
+                            return Some(Ok((i, TokenType::Integer(number), i + word.len())));
+                        }
+                    } else if let Ok(number) = word.parse() {
+                        return Some(Ok((i, TokenType::Float(number), i + word.len())));
                     } else {
                         return Some(Err(LexicalError::InvalidIntegerConstant(
                             i,

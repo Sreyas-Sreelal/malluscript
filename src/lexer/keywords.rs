@@ -75,7 +75,7 @@ impl Keywords {
             "charuthanenkil",
             "charuthanekil",
             "ചെറുതാണെകിൽ",
-            "ചെറുതാണെങ്കിൽ"
+            "ചെറുതാണെങ്കിൽ",
         ] {
             list.insert(cheruth_aane.to_string(), TokenType::LessThan);
         }
