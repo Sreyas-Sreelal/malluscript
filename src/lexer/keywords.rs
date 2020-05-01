@@ -36,7 +36,7 @@ impl Keywords {
             list.insert(da_pidi.to_string(), TokenType::Write);
         }
 
-        for &seriano_mone in &["seriyano_mwone", "seriyano", "ശെരിയാണോ_മോനെ"]
+        for &seriano_mone in &["seriyano_mwone", "seriyano", "ശെരിയാണോ_മോനെ","ശെരിയാണോ"]
         {
             list.insert(seriano_mone.to_string(), TokenType::If);
         }
