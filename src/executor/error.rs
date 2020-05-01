@@ -1,5 +1,6 @@
 use std::fmt;
 
+#[derive(Debug)]
 pub enum RunTimeErrors {
     UndefinedSymbol(String),
     SymbolAlreadyDefined(String),
