@@ -1,4 +1,4 @@
-use crate::executor::{Executor,DataTypes};
+use crate::executor::{DataTypes, Executor};
 use crate::lexer::Lexer;
 use crate::parser::parse;
 use std::collections::HashMap;
@@ -35,8 +35,14 @@ fn arithmetic_test() {
         j = i % 3;
     ";
     let exec = get_executor(code).unwrap();
-    assert_eq!(exec.symbol_table[&exec.symbol_lookup_table["i"]],DataTypes::Integer(162));
-    assert_eq!(exec.symbol_table[&exec.symbol_lookup_table["j"]],DataTypes::Integer(0));
+    assert_eq!(
+        exec.symbol_table[&exec.symbol_lookup_table["i"]],
+        DataTypes::Integer(162)
+    );
+    assert_eq!(
+        exec.symbol_table[&exec.symbol_lookup_table["j"]],
+        DataTypes::Integer(0)
+    );
 }
 #[test]
 fn malayalam_test() {
@@ -53,14 +59,16 @@ fn malayalam_test() {
         }
     ";
     let exec = get_executor(code).unwrap();
-    assert_eq!(exec.symbol_table[&exec.symbol_lookup_table["നമ്പർ"]],DataTypes::Integer(10));
+    assert_eq!(
+        exec.symbol_table[&exec.symbol_lookup_table["നമ്പർ"]],
+        DataTypes::Integer(10)
+    );
 }
 
-fn get_executor(code:&str) -> Result<Executor,()> {
+fn get_executor(code: &str) -> Result<Executor, ()> {
     let mut lex = Lexer::new(&code, HashMap::new(), 0);
     let parsed = parse(&code, &mut lex);
     let mut exec = Executor::new(lex.literal_table, lex.symbol_lookup);
     exec.execute(&parsed.unwrap()).unwrap();
     Ok(exec)
 }
-

@@ -17,11 +17,10 @@ macro_rules! keywordize {
 
 impl Keywords {
     pub fn new() -> Self {
-        
         // The following list contain keywords that are named meme_style
         // Last word will be in മലയാളലിപി(Malayalalipi)
         let list = keywordize!(
-            ["pwoli_sadhanam", "pwoli_sanam", "pwoli_saanam", "poli_sadhanam", 
+            ["pwoli_sadhanam", "pwoli_sanam", "pwoli_saanam", "poli_sadhanam",
             "poli_sanam", "poli_saanam", "പൊളിസാധനം", ] => TokenType::Declaration,
             ["address_thada", "അഡ്രസ്_താടാ"] => TokenType::InputString,
             ["number_thada", "നമ്പർ_താടാ"] => TokenType::InputNumber,
