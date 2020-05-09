@@ -6,7 +6,7 @@ on:
 name: release
 
 env:
-  RELEASE_BIN: gh-actions-template
+  RELEASE_BIN: malluscript
   RELEASE_ADDS: README.md LICENSE
 
 jobs:
