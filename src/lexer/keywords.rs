@@ -6,7 +6,7 @@ pub struct Keywords {
     pub list: HashMap<String, TokenType>,
 }
 
-// Macro definition to decrease lines of code
+// Fancy macro for ease of adding new keywords
 macro_rules! keywordize {
     ($( $words:expr => $func:expr ), *) => {{
         let mut list = HashMap::new();
