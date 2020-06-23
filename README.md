@@ -7,10 +7,10 @@
 <a href="https://github.com/Sreyas-Sreelal/malluscript/blob/master/LICENSE"><img alt="GitHub issues" src="https://img.shields.io/github/license/sreyas-sreelal/malluscript"></a>
 </p>
 
-Malluscript is an esoteric scripting language based on manglish and malayalam memes.The language uses trending malayalam memetic words as keywords.The language is not strictly type safe and uses only two datatypes strings and integers.Currently malluscript is on development phase and undergoing vigorous changes.Always check the release section for pre built binaries for interpreter.
+Malluscript is an esoteric scripting language based on manglish and malayalam memes. The language uses trending Malayalam memetic words as keywords. The language is not strictly type-safe and uses only two datatypes strings and integers. Currently, malluscript is on the development phase and undergoing vigorous changes. Always check the release section for pre-built binaries for the interpreter.
 
 ## Installation
-Either download pre compiled binaries from release page or clone this repository
+Either download precompiled binaries from release page or clone this repository
 
 `git clone https://github.com/sreyas-sreelal/malluscript.git`
 
@@ -21,12 +21,12 @@ The interpreter can be compiled as follows
 cd malluscript
 cargo build --release
 ```
-Note: You require rust compiler installed on your machine inorder to compile the interpreter
+Note: You require rust compiler installed on your machine in order to compile the interpreter
 
 ## Executing malluscript programs
 Malluscript can be used in two ways
 ### Interactive shell
-To start interactive shell,just run following in terminal
+To start the interactive shell, just run following in the terminal
 
 ```
 ./malluscript
@@ -40,7 +40,7 @@ Mallu Script Version 0.1.0
 Here you can start writing your malluscript codes on the way!
 
 ### Run malluscript program files
-Write the code in file with `.ms` extension and execute it as follows
+Write the code in the file with `.ms` extension and execute it as follows
 
 ```
 ./malluscript file_name.ms
@@ -48,7 +48,7 @@ Write the code in file with `.ms` extension and execute it as follows
 
 ## Language Syntax And Grammar
 
-Basic aritmetic operations can be done using `+`,`-`,`*`,`/`,`%` (modulo).Every expression is end with `;`. `{` and `}` introduces new block like c like languages.Every keywords have alternate ones too,each with different dialects and also in Malayalam unicodes.
+Basic arithmetic operations can be done using `+`,`-`,`*`,`/`,`%` (modulo). Every expression ends with `;`. `{` and `}` introduces a new block like c like languages. Every keyword has alternate ones too, each with different dialects and also in Malayalam unicodes.
 
 ### Basic I/O operations
 * Printing or writing to console is done as follows
@@ -60,7 +60,7 @@ Basic aritmetic operations can be done using `+`,`-`,`*`,`/`,`%` (modulo).Every 
   * Alternate Keywords
     * `ദേ_പിടിച്ചോ`
 
-* In order to get keyboard input from user
+* In order to get keyboard input from the user
   
   For integer inputs
   ```
@@ -77,9 +77,9 @@ Basic aritmetic operations can be done using `+`,`-`,`*`,`/`,`%` (modulo).Every 
     * `അഡ്രസ്_താടാ`
 
 ### Datatypes and Storage
-Malluscript is not strictly type safe.The language,currently,supports only integers and string literals as datatypes.
+Malluscript is not strictly type-safe.The language, currently, supports only integers and string literals as datatypes.
 
-Inorder to declare a variable
+In order to declare a variable
 ```
 pwoli_sadhanam variable_name
 ```
@@ -98,8 +98,8 @@ variable_name = 1;
 second_var = "ente string";
 ```
 
-## Conditional Statments And Expressions
-The conditional expression has following syintax
+## Conditional Statements And Expressions
+The conditional expression has the following syntax
 
 ```
 seriyano i um 0 um same_aane {
@@ -108,7 +108,7 @@ seriyano i um 0 um same_aane {
 
 }
 ```
-The above snippet checks whether i is equals to 0 and if yes the code in first block will execute otherwise block defined by `seri_allel` will get executed.
+The above snippet checks whether i equal to 0 and if yes the code in the first block will execute otherwise block defined by `seri_allel` will get executed.
 
 In general
 * `i um 0 um same_aane` checks if i is equals to 0
@@ -154,9 +154,9 @@ In general
       * `ചെറുതാണെകിൽ`
       * `ചെറുതാണെങ്കിൽ`
 
-## Iterative Statments Or Loops
+## Iterative Statements Or Loops
 
-The loops in malluscript looks as follows
+The loops in malluscript look as follows
 ```
 repeat_adi 0 nekal i veluthane {
   i = i-1;
@@ -202,6 +202,6 @@ Same in pure Malayalam would be
 More examples can be found in [examples](examples)
 
 ## Notes
-The language as mentioned above is under development phase and it's structure can change overnight,suddenly.This language is not meant to disrespect anyone and wrote just for fun.
+The language as mentioned above is under the development phase and its structure can change overnight, suddenly. This language is not meant to disrespect anyone and wrote just for fun.
 
-Any kind of contribution is always welcome.If you have any ideas or improvements to provide for this project open a pull request or if you have any difficulties using this language open an issue :) 
+Any kind of contribution is always welcome. If you have any ideas or improvements to provide for this project open a pull request or if you have any difficulties using this language open an issue :) 
