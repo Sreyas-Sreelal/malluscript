@@ -1,10 +1,10 @@
 
-function poli(a,b,c){
-    dhe_pidicho "heloo world\n"+ a + b + c;
+function gg(n) {
+    pwoli_sadhanam x;
+    seriyano n um 0 um same_alle {
+        gg(n-1);
+        dhe_pidicho n +"\n";
+    }
 }
-function hh(a,b,c) {
-    dhe_pidicho "different world\n"+ a + b + c;
-}
-poli(" sreyas passed",3," and this");
-hh(" sreyas passed",4," and this");
-dhe_pidicho "\n"+a;
+
+gg(5);

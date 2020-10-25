@@ -92,8 +92,6 @@ extern {
         "/" => TokenType::Divide,
         "(" => TokenType::OpenParantheses,
         ")" => TokenType::CloseParantheses,
-        "[" => TokenType::RectO,
-        "]" => TokenType::RectC,
         Write => TokenType::Write,
         If => TokenType::If,
         Else => TokenType::Else,

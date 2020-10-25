@@ -9,12 +9,13 @@ use ast::*;
 use error::RunTimeErrors;
 use std::collections::HashMap;
 use std::io::{stdin, stdout, Write};
+use multimap::MultiMap;
 
 use crate::executor::datatype::{to_bool, DataTypes};
 use crate::lexer::tokens::TokenType;
 
 pub struct Executor {
-    symbol_table: HashMap<usize, DataTypes>,
+    symbol_table: MultiMap<usize, DataTypes>,
     literal_table: HashMap<usize, String>,
     symbol_lookup_table: HashMap<String, usize>,
     function_table: HashMap<String, (Vec<Expression>, SourceUnit)>,
@@ -26,7 +27,7 @@ impl Executor {
         symbol_lookup_table: HashMap<String, usize>,
     ) -> Self {
         Executor {
-            symbol_table: HashMap::new(),
+            symbol_table: MultiMap::new(),
             literal_table,
             symbol_lookup_table,
             function_table: HashMap::new(),
@@ -63,7 +64,7 @@ impl Executor {
                     if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = symbol {
                         if self
                             .symbol_table
-                            .insert(*address, DataTypes::Unknown)
+                            .get(address)
                             .is_some()
                         {
                             return Err((
@@ -72,6 +73,8 @@ impl Executor {
                                     self.get_symbol_name(*address).unwrap(),
                                 ),
                             ));
+                        } else {
+                            self.symbol_table.insert(*address, DataTypes::Unknown);
                         }
                     }
                 }
@@ -121,31 +124,40 @@ impl Executor {
                             self.get_symbol_name(*address).unwrap(),
                             (parameters.to_vec(), body.clone()),
                         );
-                        for cc in parameters {
-                            if let Expression::Symbol(_, TokenType::Symbol(x)) = cc {
-                                dbg!("{}", self.get_symbol_name(*x));
-                            }
-                        }
                         //unimplemented!();
                     }
                 }
                 Statement::FunctionCall((p, q), l, args) => {
                     if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = l {
-                        let name = self.get_symbol_name(*address).unwrap().clone();
-                        if let Some(mut function) = self.function_table.get(&name).clone() {
+                        let name = self.get_symbol_name(*address).unwrap();
+                        if let Some(function) = self.function_table.get(&name) {
+                            // See: https://github.com/rust-lang/rust/issues/59159
+                            let function = function.clone();
+
                             let parameters = &function.0;
                             if parameters.len() != args.len() {
-                                dbg!("Error argument number doesnot match paramteters numbber");
+                                dbg!("Error argument number doesnot match paramteters number");
                             }
                             for (x, y) in args.iter().zip(parameters.iter()) {
                                 if let Expression::Symbol(_, TokenType::Symbol(y)) = y {
+                                    // allocation
                                     self.symbol_table
                                         .insert(*y, self.eval_arithmetic_logic_expression(x)?);
                                 } else {
                                     dbg!(x, y);
                                 }
                             }
-                            self.execute(&function.1.clone())?;
+                            // execute the function
+                            self.execute(&function.1)?;
+                            // deallocate the variables
+
+                            for y in parameters {
+                                if let Expression::Symbol(_, TokenType::Symbol(y)) = y {
+                                   self.symbol_table.get_vec_mut(y).unwrap().pop();
+                                } else {
+                                    dbg!(x, y);
+                                }
+                            }
                         }
                     // NOTE: TO WORK ON:
                     // using expression without a statement
@@ -224,7 +236,7 @@ impl Executor {
                         RunTimeErrors::UndefinedSymbol(self.get_symbol_name(*address).unwrap()),
                     ));
                 }
-                match self.symbol_table.get(address).unwrap() {
+                match self.symbol_table.get_vec(address).unwrap().last().unwrap() {
                     DataTypes::Integer(number) => Ok(DataTypes::Integer(*number)),
                     DataTypes::String(data) => Ok(DataTypes::String(data.to_string())),
                     _ => Err((

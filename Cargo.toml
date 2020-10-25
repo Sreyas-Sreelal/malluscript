@@ -10,6 +10,7 @@ description = "Scripting language based on manglish and malayalam memes"
 lalrpop-util = "0.18.1"
 clap = "2.33"
 rustyline = "6.1"
+multimap = "0.8"
 
 [build-dependencies]
 lalrpop = "0.18"

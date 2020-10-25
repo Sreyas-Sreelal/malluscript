@@ -7,8 +7,6 @@ pub enum TokenType {
     InputNumber,
     LeftBrace,
     RightBrace,
-    RectO,
-    RectC,
     If,
     Else,
     Loop,
@@ -68,8 +66,6 @@ impl std::fmt::Display for TokenType {
             TokenType::Symbol(symbol) => write!(f, "{}", symbol),
             TokenType::Function => write!(f, "function"),
             TokenType::Comma => write!(f, ","),
-            TokenType::RectO => write!(f, "["),
-            TokenType::RectC => write!(f, "]"),
         }
     }
 }

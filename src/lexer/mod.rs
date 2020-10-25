@@ -10,6 +10,7 @@ use keywords::Keywords;
 use std::collections::HashMap;
 use std::str::CharIndices;
 use tokens::TokenType;
+use multimap::MultiMap;
 
 #[derive(Clone, Debug)]
 pub struct Lexer<'input> {
@@ -74,8 +75,6 @@ impl<'input> Iterator for &mut Lexer<'input> {
                     continue;
                 }
                 Some((i, '=')) => return Some(Ok((i, TokenType::Assignment, i + 1))),
-                Some((i, '[')) => return Some(Ok((i, TokenType::RectO, i + 1))),
-                Some((i, ']')) => return Some(Ok((i, TokenType::RectC, i + 1))),
                 Some((i, '{')) => return Some(Ok((i, TokenType::LeftBrace, i + 1))),
                 Some((i, '}')) => return Some(Ok((i, TokenType::RightBrace, i + 1))),
                 Some((i, '+')) => return Some(Ok((i, TokenType::Plus, i + 1))),

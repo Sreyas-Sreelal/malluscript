@@ -2,7 +2,6 @@ use crate::executor::{DataTypes, Executor};
 use crate::lexer::Lexer;
 use crate::parser::parse;
 use std::collections::HashMap;
-
 #[test]
 fn primary_test() {
     let code = "
