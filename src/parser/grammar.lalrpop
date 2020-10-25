@@ -12,14 +12,27 @@ SourceUnitPart:SourceUnitPart = {
     Statement => SourceUnitPart::Statement(<>),
 };
 
+pub Expressions = Comma<Expression>;
+Comma<T>:Vec<T> = {
+    <v:(<T> ",")*> <e:T?> => match e {
+        None => v,
+        Some(e) => {
+            let mut v = v;
+            v.push(e);
+            v
+        }
+    }
+}
 Statement:Statement = {
     <a:@L> Declaration <id:Expression> ";" <b:@R> => Statement::Declaration((a,b),id),
     <a:@L> <l:Expression> "=" <r:Expression> ";" <b:@R> => Statement::Assignment((a,b),l,r),
     <a:@L> Write <e:Expression> ";" <b:@R> => Statement::Write((a,b),e),
     <a:@L> If <condition:Conditional> "{" <s:SourceUnit> "}" <b:@R> => Statement::Conditional((a,b),condition,s,None),
     <a:@L> If <condition:Conditional> "{" <s:SourceUnit> "}" Else "{" <f:SourceUnit> "}" <b:@R> => Statement::Conditional((a,b),condition,s,Some(f)),
+    <a:@L> Function <name:Expression> "(" <params:Expressions> ")" "{" <s:SourceUnit> "}" <b:@R> => Statement::FunctionDeclaration((a,b),name,params,s),
+    <a:@L> <id:Expression> "(" <args:Expressions> ")" ";" <b:@R>  => Statement::FunctionCall((a,b),id,args),
     <a:@L> Loop <condition:Conditional> "{" <s:SourceUnit> "}" <b:@R> => Statement::Loop((a,b),condition,s)
-};
+}; 
 
 Expression:Expression= {
     ArithExpression
@@ -79,6 +92,8 @@ extern {
         "/" => TokenType::Divide,
         "(" => TokenType::OpenParantheses,
         ")" => TokenType::CloseParantheses,
+        "[" => TokenType::RectO,
+        "]" => TokenType::RectC,
         Write => TokenType::Write,
         If => TokenType::If,
         Else => TokenType::Else,
@@ -91,6 +106,8 @@ extern {
         "%" => TokenType::Modulo,
         "um" => TokenType::Um,
         "ne_kal" => TokenType::Nekal,
+        Function => TokenType::Function,
+        "," => TokenType::Comma,
         Loop => TokenType::Loop,
         InputNumber => TokenType::InputNumber,
         InputString => TokenType::InputString,

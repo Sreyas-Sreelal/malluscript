@@ -49,7 +49,11 @@ impl<'input> Lexer<'input> {
             || c == '%'
             || c == '\n'
             || c == ')'
+            || c == '('
+            || c == '['
+            || c == ']'
             || c == '='
+            || c == ','
             || c == '\n'
     }
 
@@ -66,10 +70,12 @@ impl<'input> Iterator for &mut Lexer<'input> {
     fn next(&mut self) -> Option<Self::Item> {
         loop {
             match self.chars.next() {
-                Some((_, ' ')) | Some((_, '\n')) => {
+                Some((_, ' ')) | Some((_, '\n')) | Some((_, '\r')) => {
                     continue;
                 }
                 Some((i, '=')) => return Some(Ok((i, TokenType::Assignment, i + 1))),
+                Some((i, '[')) => return Some(Ok((i, TokenType::RectO, i + 1))),
+                Some((i, ']')) => return Some(Ok((i, TokenType::RectC, i + 1))),
                 Some((i, '{')) => return Some(Ok((i, TokenType::LeftBrace, i + 1))),
                 Some((i, '}')) => return Some(Ok((i, TokenType::RightBrace, i + 1))),
                 Some((i, '+')) => return Some(Ok((i, TokenType::Plus, i + 1))),
@@ -80,6 +86,7 @@ impl<'input> Iterator for &mut Lexer<'input> {
                 Some((i, ';')) => return Some(Ok((i, TokenType::SemiColon, i + 1))),
                 Some((i, '(')) => return Some(Ok((i, TokenType::OpenParantheses, i + 1))),
                 Some((i, ')')) => return Some(Ok((i, TokenType::CloseParantheses, i + 1))),
+                Some((i, ',')) => return Some(Ok((i, TokenType::Comma, i + 1))),
                 Some((i, '"')) => {
                     let (start, mut end) = (i + 1, 0);
                     let mut ch = ' ';
@@ -153,7 +160,8 @@ impl<'input> Iterator for &mut Lexer<'input> {
                         )));
                     }
                 }
-                Some((i, _)) => {
+                Some((i, c)) => {
+                    dbg!("ssss{}///", c);
                     return Some(Err(LexicalError::UnknownToken(i, i + 1)));
                 }
                 None => return None,

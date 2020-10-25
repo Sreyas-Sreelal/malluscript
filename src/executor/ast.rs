@@ -13,7 +13,9 @@ pub enum Statement {
     Conditional((usize, usize), Expression, SourceUnit, Option<SourceUnit>),
     Loop((usize, usize), Expression, SourceUnit),
     Declaration((usize, usize), Expression),
+    FunctionDeclaration((usize, usize), Expression, Vec<Expression>, SourceUnit),
     Assignment((usize, usize), Expression, Expression),
+    FunctionCall((usize, usize), Expression, Vec<Expression>),
     Write((usize, usize), Expression),
 }
 
@@ -34,6 +36,7 @@ pub enum Expression {
     Integer((usize, usize), TokenType),
     Float((usize, usize), TokenType),
     Symbol((usize, usize), TokenType),
+
     StringLiteral((usize, usize), TokenType),
     InputString((usize, usize)),
     InputNumber((usize, usize)),

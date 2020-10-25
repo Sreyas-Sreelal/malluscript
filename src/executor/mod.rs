@@ -17,6 +17,7 @@ pub struct Executor {
     symbol_table: HashMap<usize, DataTypes>,
     literal_table: HashMap<usize, String>,
     symbol_lookup_table: HashMap<String, usize>,
+    function_table: HashMap<String, (Vec<Expression>, SourceUnit)>,
 }
 
 impl Executor {
@@ -28,6 +29,7 @@ impl Executor {
             symbol_table: HashMap::new(),
             literal_table,
             symbol_lookup_table,
+            function_table: HashMap::new(),
         }
     }
 
@@ -106,10 +108,51 @@ impl Executor {
                                 ),
                             ));
                         }
-                        self.symbol_table
-                            .insert(*address, self.eval_arithmetic_logic_expression(&*r)?);
+                        let data = self.eval_arithmetic_logic_expression(r)?;
+                        self.symbol_table.insert(*address, data);
                     } else {
                         return Err(((*p, *q), RunTimeErrors::InvalidAssignment));
+                    }
+                }
+
+                Statement::FunctionDeclaration(_, name, parameters, body) => {
+                    if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = name {
+                        self.function_table.insert(
+                            self.get_symbol_name(*address).unwrap(),
+                            (parameters.to_vec(), body.clone()),
+                        );
+                        for cc in parameters {
+                            if let Expression::Symbol(_, TokenType::Symbol(x)) = cc {
+                                dbg!("{}", self.get_symbol_name(*x));
+                            }
+                        }
+                        //unimplemented!();
+                    }
+                }
+                Statement::FunctionCall((p, q), l, args) => {
+                    if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = l {
+                        let name = self.get_symbol_name(*address).unwrap().clone();
+                        if let Some(mut function) = self.function_table.get(&name).clone() {
+                            let parameters = &function.0;
+                            if parameters.len() != args.len() {
+                                dbg!("Error argument number doesnot match paramteters numbber");
+                            }
+                            for (x, y) in args.iter().zip(parameters.iter()) {
+                                if let Expression::Symbol(_, TokenType::Symbol(y)) = y {
+                                    self.symbol_table
+                                        .insert(*y, self.eval_arithmetic_logic_expression(x)?);
+                                } else {
+                                    dbg!(x, y);
+                                }
+                            }
+                            self.execute(&function.1.clone())?;
+                        }
+                    // NOTE: TO WORK ON:
+                    // using expression without a statement
+                    // return statements
+                    // static scoping
+                    } else {
+                        return Err(((*p, *q), RunTimeErrors::InvalidExpression));
                     }
                 }
             }
@@ -190,6 +233,7 @@ impl Executor {
                     )),
                 }
             }
+
             Expression::Symbol((a, b), _) => Err(((*a, *b), RunTimeErrors::InvalidExpression)),
 
             Expression::StringLiteral((a, b), value) => {

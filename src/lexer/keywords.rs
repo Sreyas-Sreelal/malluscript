@@ -35,7 +35,8 @@ impl Keywords {
             "charuthanenkil", "charuthanekil", "ചെറുതാണെകിൽ", "ചെറുതാണെങ്കിൽ", ] => TokenType::LessThan,
             ["same_aane", "സെയിം_ആണേ"] => TokenType::EqualTo,
             ["um", "ഉം"] => TokenType::Um,
-            ["ne_kal", "നെകാൾ"] => TokenType::Nekal
+            ["ne_kal", "നെകാൾ"] => TokenType::Nekal,
+            ["function"] => TokenType::Function
         );
 
         Self { list }
