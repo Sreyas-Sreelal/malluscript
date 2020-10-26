@@ -21,6 +21,7 @@ pub struct Executor {
     symbol_lookup_table: HashMap<String, usize>,
     function_table: HashMap<String, (Vec<Expression>, SourceUnit)>,
     scope_level: u64,
+    return_storage: DataTypes
 }
 
 impl Executor {
@@ -34,6 +35,7 @@ impl Executor {
             symbol_lookup_table,
             function_table: HashMap::new(),
             scope_level:0,
+            return_storage:DataTypes::Unknown,
         }
     }
 
@@ -179,7 +181,11 @@ impl Executor {
                         return Err(((*p, *q), RunTimeErrors::InvalidExpression));
                     }
                 }
+                Statement::Return((_,_),expr) => {
+                    self.return_storage = self.eval_arithmetic_logic_expression(expr)?;
+                }
             }
+            
         }
         Ok(())
     }

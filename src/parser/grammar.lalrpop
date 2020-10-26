@@ -31,6 +31,7 @@ Statement:Statement = {
     <a:@L> If <condition:Conditional> "{" <s:SourceUnit> "}" Else "{" <f:SourceUnit> "}" <b:@R> => Statement::Conditional((a,b),condition,s,Some(f)),
     <a:@L> Function <name:Expression> "(" <params:Expressions> ")" "{" <s:SourceUnit> "}" <b:@R> => Statement::FunctionDeclaration((a,b),name,params,s),
     <a:@L> <id:Expression> "(" <args:Expressions> ")" ";" <b:@R>  => Statement::FunctionCall((a,b),id,args),
+    <a:@L> Return <expr:Expression> ";" <b:@R>  => Statement::Return((a,b),expr),
     <a:@L> Loop <condition:Conditional> "{" <s:SourceUnit> "}" <b:@R> => Statement::Loop((a,b),condition,s)
 }; 
 
@@ -109,6 +110,6 @@ extern {
         Loop => TokenType::Loop,
         InputNumber => TokenType::InputNumber,
         InputString => TokenType::InputString,
-        
+        Return => TokenType::Return,
     }
 }

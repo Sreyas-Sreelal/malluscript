@@ -16,6 +16,7 @@ pub enum Statement {
     FunctionDeclaration((usize, usize), Expression, Vec<Expression>, SourceUnit),
     Assignment((usize, usize), Expression, Expression),
     FunctionCall((usize, usize), Expression, Vec<Expression>),
+    Return((usize,usize), Expression),
     Write((usize, usize), Expression),
 }
 

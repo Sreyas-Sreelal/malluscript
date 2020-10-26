@@ -31,6 +31,7 @@ pub enum TokenType {
     Integer(i64),
     Float(f64),
     Symbol(usize),
+    Return,
 }
 
 impl std::fmt::Display for TokenType {
@@ -66,6 +67,7 @@ impl std::fmt::Display for TokenType {
             TokenType::Symbol(symbol) => write!(f, "{}", symbol),
             TokenType::Function => write!(f, "function"),
             TokenType::Comma => write!(f, ","),
+            TokenType::Return => write!(f,"return"),
         }
     }
 }
