@@ -1,10 +1,9 @@
 
-function gg(n) {
-    pwoli_sadhanam x;
-    seriyano n um 0 um same_alle {
-        return n;   
+function factorial(n) {
+    seriyano n um 0 um same_aane {
+        return 1;   
     }
-    return 0;
+    return  n * factorial<n-1>;
 }
 
-gg(5);
+dhe_pidicho "Output " + factorial<5>;

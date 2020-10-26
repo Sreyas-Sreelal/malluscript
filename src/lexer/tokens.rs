@@ -27,6 +27,8 @@ pub enum TokenType {
     Nekal,
     Function,
     Comma,
+    AngleOpen,
+    AngleClose,
     Literal(usize),
     Integer(i64),
     Float(f64),
@@ -68,6 +70,8 @@ impl std::fmt::Display for TokenType {
             TokenType::Function => write!(f, "function"),
             TokenType::Comma => write!(f, ","),
             TokenType::Return => write!(f,"return"),
+            TokenType::AngleOpen => write!(f,"<"),
+            TokenType::AngleClose => write!(f,">"),
         }
     }
 }

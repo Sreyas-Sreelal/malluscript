@@ -15,7 +15,7 @@ pub enum Statement {
     Declaration((usize, usize), Expression),
     FunctionDeclaration((usize, usize), Expression, Vec<Expression>, SourceUnit),
     Assignment((usize, usize), Expression, Expression),
-    FunctionCall((usize, usize), Expression, Vec<Expression>),
+    
     Return((usize,usize), Expression),
     Write((usize, usize), Expression),
 }
@@ -41,4 +41,6 @@ pub enum Expression {
     StringLiteral((usize, usize), TokenType),
     InputString((usize, usize)),
     InputNumber((usize, usize)),
+
+    FunctionCall((usize, usize), Box<Expression>, Vec<Expression>),
 }

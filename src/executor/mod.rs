@@ -16,26 +16,29 @@ use crate::lexer::tokens::TokenType;
 pub type ScopeLevel = u64;
 
 pub struct Executor {
-    symbol_table: HashMap<(ScopeLevel,usize), DataTypes>,
+    symbol_table: HashMap<(ScopeLevel, usize), DataTypes>,
     literal_table: HashMap<usize, String>,
     symbol_lookup_table: HashMap<String, usize>,
     function_table: HashMap<String, (Vec<Expression>, SourceUnit)>,
     scope_level: u64,
-    return_storage: DataTypes
+    return_storage: DataTypes,
+    subroutine_exit_flag:bool,
 }
 
 impl Executor {
     pub fn new(
         literal_table: HashMap<usize, String>,
         symbol_lookup_table: HashMap<String, usize>,
+        
     ) -> Self {
         Executor {
             symbol_table: HashMap::new(),
             literal_table,
             symbol_lookup_table,
             function_table: HashMap::new(),
-            scope_level:0,
-            return_storage:DataTypes::Unknown,
+            scope_level: 0,
+            subroutine_exit_flag:false,
+            return_storage: DataTypes::Integer(1),
         }
     }
 
@@ -63,14 +66,18 @@ impl Executor {
         unit: &SourceUnit,
     ) -> Result<(), ((usize, usize), error::RunTimeErrors)> {
         //println!("{:?}",unit);
+        
         for x in &unit.0 {
+            if self.subroutine_exit_flag {
+               continue; //return Ok(())
+            }
             let SourceUnitPart::Statement(stmt) = x;
             match stmt {
                 Statement::Declaration((p, q), symbol) => {
                     if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = symbol {
                         if self
                             .symbol_table
-                            .get(&(self.scope_level,*address))
+                            .get(&(self.scope_level, *address))
                             .is_some()
                         {
                             return Err((
@@ -80,7 +87,8 @@ impl Executor {
                                 ),
                             ));
                         } else {
-                            self.symbol_table.insert((self.scope_level,*address), DataTypes::Unknown);
+                            self.symbol_table
+                                .insert((self.scope_level, *address), DataTypes::Unknown);
                         }
                     }
                 }
@@ -109,7 +117,10 @@ impl Executor {
 
                 Statement::Assignment((p, q), l, r) => {
                     if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = l {
-                        if !self.symbol_table.contains_key(&(self.scope_level,*address)) {
+                        if !self
+                            .symbol_table
+                            .contains_key(&(self.scope_level, *address))
+                        {
                             return Err((
                                 (*p, *q),
                                 RunTimeErrors::UndefinedSymbol(
@@ -118,7 +129,7 @@ impl Executor {
                             ));
                         }
                         let data = self.eval_arithmetic_logic_expression(r)?;
-                        self.symbol_table.insert((self.scope_level,*address), data);
+                        self.symbol_table.insert((self.scope_level, *address), data);
                     } else {
                         return Err(((*p, *q), RunTimeErrors::InvalidAssignment));
                     }
@@ -130,68 +141,24 @@ impl Executor {
                             self.get_symbol_name(*address).unwrap(),
                             (parameters.to_vec(), body.clone()),
                         );
-                        //unimplemented!();
+                    //unimplemented!();
                     } else {
                         dbg!("Invalid Function declaration!");
                         unimplemented!();
                     }
                 }
-                Statement::FunctionCall((p, q), l, args) => {
-                    if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = l {
-                        let name = self.get_symbol_name(*address).unwrap();
-                        if let Some(function) = self.function_table.get(&name) {
-                            // See: https://github.com/rust-lang/rust/issues/59159
-                            let function = function.clone();
 
-                            let parameters = &function.0;
-                            if parameters.len() != args.len() {
-                               dbg!("Error argument number doesnot match paramteters number");
-                               unimplemented!();
-                            }
-                            
-                            for (x, y) in args.iter().zip(parameters.iter()) {
-                                if let Expression::Symbol(_, TokenType::Symbol(y)) = y {
-                                    // allocation
-                                    self.symbol_table
-                                        .insert((self.scope_level+1,*y), self.eval_arithmetic_logic_expression(x)?);
-                                } else {
-                                    //dbg!(x, y);
-                                }
-                            }
-
-                            self.scope_level += 1;
-                            // execute the function
-                            self.execute(&function.1)?;
-                            // deallocate the variables
-                            
-                            for y in parameters {
-                                if let Expression::Symbol(_, TokenType::Symbol(y)) = y {
-                                   self.symbol_table.remove_entry(&(self.scope_level,*y));
-                                } else {
-                                    //dbg!(x, y);
-                                }
-                            }
-                            self.scope_level -= 1;
-                        }
-                    // NOTE: TO WORK ON:
-                    // using expression without a statement
-                    // return statements
-                    // static scoping
-                    } else {
-                        return Err(((*p, *q), RunTimeErrors::InvalidExpression));
-                    }
-                }
-                Statement::Return((_,_),expr) => {
+                Statement::Return((_, _), expr) => {
                     self.return_storage = self.eval_arithmetic_logic_expression(expr)?;
+                    self.subroutine_exit_flag = true;
                 }
             }
-            
         }
         Ok(())
     }
 
     fn eval_arithmetic_logic_expression(
-        &self,
+        &mut self,
         expr: &Expression,
     ) -> Result<DataTypes, ((usize, usize), RunTimeErrors)> {
         match expr {
@@ -247,13 +214,16 @@ impl Executor {
                 _ => Err(((*a, *b), RunTimeErrors::InvalidExpression)),
             },
             Expression::Symbol((a, b), TokenType::Symbol(address)) => {
-                if !self.symbol_table.contains_key(&(self.scope_level,*address)) {
+                if !self
+                    .symbol_table
+                    .contains_key(&(self.scope_level, *address))
+                {
                     return Err((
                         (*a, *b),
                         RunTimeErrors::UndefinedSymbol(self.get_symbol_name(*address).unwrap()),
                     ));
                 }
-                match self.symbol_table.get(&(self.scope_level,*address)) {
+                match self.symbol_table.get(&(self.scope_level, *address)) {
                     Some(DataTypes::Integer(number)) => Ok(DataTypes::Integer(*number)),
                     Some(DataTypes::String(data)) => Ok(DataTypes::String(data.to_string())),
                     _ => Err((
@@ -293,6 +263,53 @@ impl Executor {
                 let mut input = String::new();
                 stdin().read_line(&mut input).expect("Unable to read input");
                 Ok(DataTypes::String(input))
+            }
+
+            Expression::FunctionCall((p, q), l, args) => {
+                if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = **l {
+                    let name = self.get_symbol_name(address).unwrap();
+                    if let Some(function) = self.function_table.get(&name) {
+                        // See: https://github.com/rust-lang/rust/issues/59159
+                        let function = function.clone();
+
+                        let parameters = &function.0;
+                        if parameters.len() != args.len() {
+                            dbg!("Error argument number doesnot match paramteters number");
+                            unimplemented!();
+                        }
+                        for (x, y) in args.iter().zip(parameters.iter()) {
+                            if let Expression::Symbol(_, TokenType::Symbol(y)) = y {
+                                // allocation
+                                let data = self.eval_arithmetic_logic_expression(x)?.clone();
+                                self.symbol_table.insert((self.scope_level + 1, *y), data);
+                            } else {
+                                //dbg!(x, y);
+                            }
+                        }
+
+                        self.scope_level += 1;
+                        //self.return_storage = DataTypes::Unknown;
+                        // execute the function
+                        self.execute(&function.1)?;
+                        // deallocate the variables
+                        for y in parameters {
+                            if let Expression::Symbol(_, TokenType::Symbol(y)) = y {
+                                self.symbol_table.remove_entry(&(self.scope_level, *y));
+                            } else {
+                                //dbg!(x, y);
+                            }
+                        }
+                        self.scope_level -= 1;
+                    }
+                    // NOTE: TO WORK ON:
+                    // using expression without a statement
+                    // return statements
+                    // static scoping
+                    self.subroutine_exit_flag = false;
+                    return Ok(self.return_storage.clone());
+                } else {
+                    return Err(((*p, *q), RunTimeErrors::InvalidExpression));
+                }
             }
         }
     }

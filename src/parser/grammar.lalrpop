@@ -30,7 +30,6 @@ Statement:Statement = {
     <a:@L> If <condition:Conditional> "{" <s:SourceUnit> "}" <b:@R> => Statement::Conditional((a,b),condition,s,None),
     <a:@L> If <condition:Conditional> "{" <s:SourceUnit> "}" Else "{" <f:SourceUnit> "}" <b:@R> => Statement::Conditional((a,b),condition,s,Some(f)),
     <a:@L> Function <name:Expression> "(" <params:Expressions> ")" "{" <s:SourceUnit> "}" <b:@R> => Statement::FunctionDeclaration((a,b),name,params,s),
-    <a:@L> <id:Expression> "(" <args:Expressions> ")" ";" <b:@R>  => Statement::FunctionCall((a,b),id,args),
     <a:@L> Return <expr:Expression> ";" <b:@R>  => Statement::Return((a,b),expr),
     <a:@L> Loop <condition:Conditional> "{" <s:SourceUnit> "}" <b:@R> => Statement::Loop((a,b),condition,s)
 }; 
@@ -72,6 +71,7 @@ Term: Expression= {
     <a:@L> <string:StringLiteral> <b:@R> => Expression::StringLiteral((a,b),string),
     <a:@L> <d:InputNumber> <b:@R> => Expression::InputNumber((a,b)),
     <a:@L> <d:InputString> <b:@R> => Expression::InputString((a,b)),
+    <a:@L> <id:Term> "Open" <args:Expressions> "Close"  <b:@R>  => Expression::FunctionCall((a,b),Box::new(id),args),
     "(" <e:Expression> ")" => e
 };
 
@@ -108,6 +108,8 @@ extern {
         Function => TokenType::Function,
         "," => TokenType::Comma,
         Loop => TokenType::Loop,
+        "Open" => TokenType::AngleOpen,
+        "Close" => TokenType::AngleClose,
         InputNumber => TokenType::InputNumber,
         InputString => TokenType::InputString,
         Return => TokenType::Return,
