@@ -1,9 +1,9 @@
 
-function factorial(n) {
-    seriyano n um 0 um same_aane {
+function ഫാക്ടോറിയൽ(n) {
+    ശെരിയാണോ n ഉം 0 ഉം സെയിം_ആണേ {
         return 1;   
     }
-    return  n * factorial<n-1>;
+    return  n * ഫാക്ടോറിയൽ<n-1>;
 }
 
-dhe_pidicho "Output " + factorial<5>;
+ദേ_പിടിച്ചോ "Output " + ഫാക്ടോറിയൽ<5>;

@@ -300,6 +300,8 @@ impl Executor {
                             }
                         }
                         self.scope_level -= 1;
+                    } else {
+                        return Err(((*p, *q), RunTimeErrors::UndefinedSymbol(name)));
                     }
                     // NOTE: TO WORK ON:
                     // using expression without a statement
