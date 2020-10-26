@@ -5,7 +5,6 @@ mod parser;
 use rustyline::error::ReadlineError;
 use rustyline::Editor;
 use std::collections::HashMap;
-use multimap::MultiMap;
 
 pub fn run_file(source: &str) {
     let mut tokens = lexer::Lexer::new(&source, HashMap::new(), 0);

@@ -10,7 +10,6 @@ use keywords::Keywords;
 use std::collections::HashMap;
 use std::str::CharIndices;
 use tokens::TokenType;
-use multimap::MultiMap;
 
 #[derive(Clone, Debug)]
 pub struct Lexer<'input> {
