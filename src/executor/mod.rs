@@ -135,16 +135,14 @@ impl Executor {
                     }
                 }
 
-                Statement::FunctionDeclaration(_, name, parameters, body) => {
+                Statement::FunctionDeclaration((p,q), name, parameters, body) => {
                     if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = name {
                         self.function_table.insert(
                             self.get_symbol_name(*address).unwrap(),
                             (parameters.to_vec(), body.clone()),
                         );
-                    //unimplemented!();
                     } else {
-                        dbg!("Invalid Function declaration!");
-                        unimplemented!();
+                        return Err(((*p,*q),RunTimeErrors::InvalidFunctionDeclaration));
                     }
                 }
 
@@ -274,39 +272,29 @@ impl Executor {
 
                         let parameters = &function.0;
                         if parameters.len() != args.len() {
-                            dbg!("Error argument number doesnot match paramteters number");
-                            unimplemented!();
+                            return Err(((*p,*q),RunTimeErrors::ArgumentCountMismatch));
                         }
                         for (x, y) in args.iter().zip(parameters.iter()) {
                             if let Expression::Symbol(_, TokenType::Symbol(y)) = y {
                                 // allocation
                                 let data = self.eval_arithmetic_logic_expression(x)?.clone();
                                 self.symbol_table.insert((self.scope_level + 1, *y), data);
-                            } else {
-                                //dbg!(x, y);
                             }
                         }
 
                         self.scope_level += 1;
-                        //self.return_storage = DataTypes::Unknown;
-                        // execute the function
+                        self.return_storage = DataTypes::Unknown;
                         self.execute(&function.1)?;
-                        // deallocate the variables
+
                         for y in parameters {
                             if let Expression::Symbol(_, TokenType::Symbol(y)) = y {
                                 self.symbol_table.remove_entry(&(self.scope_level, *y));
-                            } else {
-                                //dbg!(x, y);
                             }
                         }
                         self.scope_level -= 1;
                     } else {
                         return Err(((*p, *q), RunTimeErrors::UndefinedSymbol(name)));
                     }
-                    // NOTE: TO WORK ON:
-                    // using expression without a statement
-                    // return statements
-                    // static scoping
                     self.subroutine_exit_flag = false;
                     return Ok(self.return_storage.clone());
                 } else {
