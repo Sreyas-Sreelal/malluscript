@@ -13,14 +13,14 @@ use std::io::{stdin, stdout, Write};
 use crate::executor::datatype::{to_bool, DataTypes};
 use crate::lexer::tokens::TokenType;
 
-pub type ScopeLevel = u64;
+pub type ScopeLevel = i64;
 
 pub struct Executor {
     symbol_table: HashMap<(ScopeLevel, usize), DataTypes>,
     literal_table: HashMap<usize, String>,
     symbol_lookup_table: HashMap<String, usize>,
     function_table: HashMap<String, (Vec<Expression>, SourceUnit)>,
-    scope_level: u64,
+    scope_level: ScopeLevel,
     return_storage: DataTypes,
     subroutine_exit_flag: bool,
 }
@@ -213,18 +213,25 @@ impl Executor {
                 _ => Err(((*a, *b), RunTimeErrors::InvalidExpression)),
             },
             Expression::Symbol((a, b), TokenType::Symbol(address)) => {
-                if !self
-                    .symbol_table
-                    .contains_key(&(self.scope_level, *address))
-                {
+                let mut level = self.scope_level.clone();
+                while level > -1 {
+                    if !self.symbol_table.contains_key(&(level, *address)) {
+                        level -= 1;
+                    } else {
+                        break;
+                    }
+                }
+                if level == -1 {
                     return Err((
                         (*a, *b),
                         RunTimeErrors::UndefinedSymbol(self.get_symbol_name(*address).unwrap()),
                     ));
                 }
-                match self.symbol_table.get(&(self.scope_level, *address)) {
-                    Some(DataTypes::Integer(number)) => Ok(DataTypes::Integer(*number)),
-                    Some(DataTypes::String(data)) => Ok(DataTypes::String(data.to_string())),
+                match self.symbol_table.get(&(level, *address)) {
+                    Some(DataTypes::Integer(number)) => return Ok(DataTypes::Integer(*number)),
+                    Some(DataTypes::String(data)) => {
+                        return Ok(DataTypes::String(data.to_string()))
+                    }
                     _ => Err((
                         (*a, *b),
                         RunTimeErrors::UnInitialzedData(self.get_symbol_name(*address).unwrap()),
