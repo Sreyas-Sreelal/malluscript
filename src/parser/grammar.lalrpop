@@ -12,7 +12,7 @@ SourceUnitPart:SourceUnitPart = {
     Statement => SourceUnitPart::Statement(<>),
 };
 
-pub Expressions = Comma<Expression>;
+Expressions = Comma<Expression>;
 Comma<T>:Vec<T> = {
     <v:(<T> ",")*> <e:T?> => match e {
         None => v,
