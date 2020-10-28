@@ -15,14 +15,13 @@ pub enum Statement {
     Declaration((usize, usize), Expression),
     FunctionDeclaration((usize, usize), Expression, Vec<Expression>, SourceUnit),
     Assignment((usize, usize), Expression, Expression),
-    
+    EmptyExpression((usize,usize), Expression),
     Return((usize,usize), Expression),
     Write((usize, usize), Expression),
 }
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Expression {
-    //    Empty,
     Add((usize, usize), Box<Expression>, Box<Expression>),
     Subtract((usize, usize), Box<Expression>, Box<Expression>),
     Multiply((usize, usize), Box<Expression>, Box<Expression>),

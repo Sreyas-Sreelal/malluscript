@@ -134,7 +134,9 @@ impl Executor {
                         return Err(((*p, *q), RunTimeErrors::InvalidAssignment));
                     }
                 }
-
+                Statement::EmptyExpression((p,q),expr) => {
+                    self.eval_arithmetic_logic_expression(expr)?;
+                }
                 Statement::FunctionDeclaration((p,q), name, parameters, body) => {
                     if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = name {
                         self.function_table.insert(

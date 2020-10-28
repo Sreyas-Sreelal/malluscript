@@ -160,8 +160,7 @@ impl<'input> Iterator for &mut Lexer<'input> {
                         )));
                     }
                 }
-                Some((i, c)) => {
-                    dbg!("ssss{}///", c);
+                Some((i, _c)) => {
                     return Some(Err(LexicalError::UnknownToken(i, i + 1)));
                 }
                 None => return None,

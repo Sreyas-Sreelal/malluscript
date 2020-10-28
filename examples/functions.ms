@@ -6,4 +6,8 @@ function ഫാക്ടോറിയൽ(n) {
     return  n * ഫാക്ടോറിയൽ<n-1>;
 }
 
+function print(s) {
+    dhe_pidicho s;
+}
+
 ദേ_പിടിച്ചോ "Output " + ഫാക്ടോറിയൽ<5>;
