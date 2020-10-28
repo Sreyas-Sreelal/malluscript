@@ -213,7 +213,7 @@ impl Executor {
                 _ => Err(((*a, *b), RunTimeErrors::InvalidExpression)),
             },
             Expression::Symbol((a, b), TokenType::Symbol(address)) => {
-                let mut level = self.scope_level.clone();
+                let mut level = self.scope_level;
                 while level > -1 {
                     if !self.symbol_table.contains_key(&(level, *address)) {
                         level -= 1;
@@ -228,10 +228,8 @@ impl Executor {
                     ));
                 }
                 match self.symbol_table.get(&(level, *address)) {
-                    Some(DataTypes::Integer(number)) => return Ok(DataTypes::Integer(*number)),
-                    Some(DataTypes::String(data)) => {
-                        return Ok(DataTypes::String(data.to_string()))
-                    }
+                    Some(DataTypes::Integer(number)) => Ok(DataTypes::Integer(*number)),
+                    Some(DataTypes::String(data)) => Ok(DataTypes::String(data.to_string())),
                     _ => Err((
                         (*a, *b),
                         RunTimeErrors::UnInitialzedData(self.get_symbol_name(*address).unwrap()),
@@ -304,9 +302,9 @@ impl Executor {
                         return Err(((*p, *q), RunTimeErrors::UndefinedSymbol(name)));
                     }
                     self.subroutine_exit_flag = false;
-                    return Ok(self.return_storage.clone());
+                    Ok(self.return_storage.clone())
                 } else {
-                    return Err(((*p, *q), RunTimeErrors::InvalidExpression));
+                    Err(((*p, *q), RunTimeErrors::InvalidExpression))
                 }
             }
         }

@@ -7,12 +7,12 @@ build = "build.rs"
 description = "Scripting language based on manglish and malayalam memes"
 
 [dependencies]
-lalrpop-util = "0.18.1"
+lalrpop-util = "0.19.1"
 clap = "2.33"
 rustyline = "6.1"
 
 [build-dependencies]
-lalrpop = "0.18"
+lalrpop = "0.19"
 
 [profile.release]
 lto = true
