@@ -69,9 +69,9 @@ impl std::fmt::Display for TokenType {
             TokenType::Symbol(symbol) => write!(f, "{}", symbol),
             TokenType::Function => write!(f, "function"),
             TokenType::Comma => write!(f, ","),
-            TokenType::Return => write!(f,"return"),
-            TokenType::AngleOpen => write!(f,"<"),
-            TokenType::AngleClose => write!(f,">"),
+            TokenType::Return => write!(f, "return"),
+            TokenType::AngleOpen => write!(f, "<"),
+            TokenType::AngleClose => write!(f, ">"),
         }
     }
 }

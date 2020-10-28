@@ -22,14 +22,13 @@ pub struct Executor {
     function_table: HashMap<String, (Vec<Expression>, SourceUnit)>,
     scope_level: u64,
     return_storage: DataTypes,
-    subroutine_exit_flag:bool,
+    subroutine_exit_flag: bool,
 }
 
 impl Executor {
     pub fn new(
         literal_table: HashMap<usize, String>,
         symbol_lookup_table: HashMap<String, usize>,
-        
     ) -> Self {
         Executor {
             symbol_table: HashMap::new(),
@@ -37,7 +36,7 @@ impl Executor {
             symbol_lookup_table,
             function_table: HashMap::new(),
             scope_level: 0,
-            subroutine_exit_flag:false,
+            subroutine_exit_flag: false,
             return_storage: DataTypes::Integer(1),
         }
     }
@@ -66,10 +65,10 @@ impl Executor {
         unit: &SourceUnit,
     ) -> Result<(), ((usize, usize), error::RunTimeErrors)> {
         //println!("{:?}",unit);
-        
+
         for x in &unit.0 {
             if self.subroutine_exit_flag {
-               continue; //return Ok(())
+                continue; //return Ok(())
             }
             let SourceUnitPart::Statement(stmt) = x;
             match stmt {
@@ -134,17 +133,17 @@ impl Executor {
                         return Err(((*p, *q), RunTimeErrors::InvalidAssignment));
                     }
                 }
-                Statement::EmptyExpression((p,q),expr) => {
+                Statement::EmptyExpression((_p, _q), expr) => {
                     self.eval_arithmetic_logic_expression(expr)?;
                 }
-                Statement::FunctionDeclaration((p,q), name, parameters, body) => {
+                Statement::FunctionDeclaration((p, q), name, parameters, body) => {
                     if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = name {
                         self.function_table.insert(
                             self.get_symbol_name(*address).unwrap(),
                             (parameters.to_vec(), body.clone()),
                         );
                     } else {
-                        return Err(((*p,*q),RunTimeErrors::InvalidFunctionDeclaration));
+                        return Err(((*p, *q), RunTimeErrors::InvalidFunctionDeclaration));
                     }
                 }
 
@@ -274,7 +273,7 @@ impl Executor {
 
                         let parameters = &function.0;
                         if parameters.len() != args.len() {
-                            return Err(((*p,*q),RunTimeErrors::ArgumentCountMismatch));
+                            return Err(((*p, *q), RunTimeErrors::ArgumentCountMismatch));
                         }
                         for (x, y) in args.iter().zip(parameters.iter()) {
                             if let Expression::Symbol(_, TokenType::Symbol(y)) = y {

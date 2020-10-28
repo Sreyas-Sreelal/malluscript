@@ -37,7 +37,7 @@ impl Keywords {
             ["um", "ഉം"] => TokenType::Um,
             ["ne_kal", "നെകാൾ"] => TokenType::Nekal,
             ["function"] => TokenType::Function,
-            ["return"] => TokenType::Return  
+            ["return"] => TokenType::Return
         );
 
         Self { list }

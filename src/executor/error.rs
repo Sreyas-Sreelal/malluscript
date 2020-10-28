@@ -36,8 +36,13 @@ impl fmt::Display for RunTimeErrors {
                 "[Error]: Invalid integer data has been provided as input"
             ),
             RunTimeErrors::ErrorReadingStdin => write!(f, "[Error]: Cannot read input"),
-            RunTimeErrors::InvalidFunctionDeclaration => write!(f,"[Error]: Invalid function declaration"),
-            RunTimeErrors::ArgumentCountMismatch => write!(f,"[Error]: Argument number doesnot match paramteters number")
+            RunTimeErrors::InvalidFunctionDeclaration => {
+                write!(f, "[Error]: Invalid function declaration")
+            }
+            RunTimeErrors::ArgumentCountMismatch => write!(
+                f,
+                "[Error]: Argument number doesnot match paramteters number"
+            ),
         }
     }
 }
