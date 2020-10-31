@@ -138,10 +138,12 @@ impl Executor {
                 }
                 Statement::FunctionDeclaration((p, q), name, parameters, body) => {
                     if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = name {
-                        self.function_table.insert(
-                            self.get_symbol_name(*address).unwrap(),
-                            (parameters.to_vec(), body.clone()),
-                        );
+                        let name = self.get_symbol_name(*address).unwrap();
+                        if self.function_table.contains_key(&name) {
+                            return Err(((*p, *q), RunTimeErrors::SymbolAlreadyDefined(name)));
+                        }
+                        self.function_table
+                            .insert(name, (parameters.to_vec(), body.clone()));
                     } else {
                         return Err(((*p, *q), RunTimeErrors::InvalidFunctionDeclaration));
                     }
