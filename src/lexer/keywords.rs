@@ -36,7 +36,7 @@ impl Keywords {
             ["same_aane", "സെയിം_ആണേ"] => TokenType::EqualTo,
             ["um", "ഉം"] => TokenType::Um,
             ["ne_kal", "നെകാൾ"] => TokenType::Nekal,
-            ["return"] => TokenType::Return
+            ["koduthek","കൊടുത്തേക്","കൊടുത്തെക്"] => TokenType::Return
         );
 
         Self { list }
