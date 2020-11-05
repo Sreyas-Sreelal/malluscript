@@ -7,6 +7,7 @@ build = "build.rs"
 description = "Scripting language based on manglish and malayalam memes"
 
 [dependencies]
+serde = "1.0.117"
 lalrpop-util = "0.19.1"
 clap = "2.33"
 rustyline = "6.1"
