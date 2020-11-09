@@ -287,6 +287,8 @@ impl Executor {
                                 // allocation
                                 let data = self.eval_arithmetic_logic_expression(x)?.clone();
                                 self.symbol_table.insert((self.scope_level + 1, *y), data);
+                            } else {
+                                return Err(((*p, *q), RunTimeErrors::InvalidFunctionDeclaration));
                             }
                         }
 
