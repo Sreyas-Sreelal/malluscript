@@ -1,9 +1,10 @@
-#![allow(clippy::all)]
+#[allow(clippy::all)]
+#[cfg_attr(rustfmt, rustfmt_skip)]
 mod grammar;
+
 use crate::executor::ast;
 use crate::lexer::tokens::TokenType;
 use crate::lexer::Lexer;
-pub use grammar::SourceUnitParser;
 use lalrpop_util::ParseError;
 use std::collections::HashMap;
 
@@ -71,7 +72,7 @@ fn get_symbol_name(table: &HashMap<String, usize>, address: usize) -> String {
             None
         }
     }) {
-        name.to_string()
+        name
     } else {
         "<invalid-entry-in-symbol-table>".to_string()
     }

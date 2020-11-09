@@ -12,14 +12,28 @@ SourceUnitPart:SourceUnitPart = {
     Statement => SourceUnitPart::Statement(<>),
 };
 
+Expressions = Comma<Expression>;
+Comma<T>:Vec<T> = {
+    <v:(<T> ",")*> <e:T?> => match e {
+        None => v,
+        Some(e) => {
+            let mut v = v;
+            v.push(e);
+            v
+        }
+    }
+}
 Statement:Statement = {
     <a:@L> Declaration <id:Expression> ";" <b:@R> => Statement::Declaration((a,b),id),
     <a:@L> <l:Expression> "=" <r:Expression> ";" <b:@R> => Statement::Assignment((a,b),l,r),
     <a:@L> Write <e:Expression> ";" <b:@R> => Statement::Write((a,b),e),
     <a:@L> If <condition:Conditional> "{" <s:SourceUnit> "}" <b:@R> => Statement::Conditional((a,b),condition,s,None),
     <a:@L> If <condition:Conditional> "{" <s:SourceUnit> "}" Else "{" <f:SourceUnit> "}" <b:@R> => Statement::Conditional((a,b),condition,s,Some(f)),
+    <a:@L> <name:Expression> "(" <params:Expressions> ")" "{" <s:SourceUnit> "}" <b:@R> => Statement::FunctionDeclaration((a,b),name,params,s),
+    <a:@L> Return <expr:Expression> ";" <b:@R>  => Statement::Return((a,b),expr),
+    <a:@L> <expr:Expression> ";" <b:@R>  => Statement::EmptyExpression((a,b),expr),
     <a:@L> Loop <condition:Conditional> "{" <s:SourceUnit> "}" <b:@R> => Statement::Loop((a,b),condition,s)
-};
+}; 
 
 Expression:Expression= {
     ArithExpression
@@ -58,6 +72,7 @@ Term: Expression= {
     <a:@L> <string:StringLiteral> <b:@R> => Expression::StringLiteral((a,b),string),
     <a:@L> <d:InputNumber> <b:@R> => Expression::InputNumber((a,b)),
     <a:@L> <d:InputString> <b:@R> => Expression::InputString((a,b)),
+    <a:@L> <id:Term> "Open" <args:Expressions> "Close"  <b:@R>  => Expression::FunctionCall((a,b),Box::new(id),args),
     "(" <e:Expression> ")" => e
 };
 
@@ -91,9 +106,12 @@ extern {
         "%" => TokenType::Modulo,
         "um" => TokenType::Um,
         "ne_kal" => TokenType::Nekal,
+        "," => TokenType::Comma,
         Loop => TokenType::Loop,
+        "Open" => TokenType::AngleOpen,
+        "Close" => TokenType::AngleClose,
         InputNumber => TokenType::InputNumber,
         InputString => TokenType::InputString,
-        
+        Return => TokenType::Return,
     }
 }

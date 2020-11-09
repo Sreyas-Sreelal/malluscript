@@ -165,6 +165,31 @@ repeat_adi 0 nekal i veluthane {
   * Alternative Keywords
     * `റിപീറ്റടി`
 
+## Functions
+The functions definition in malluscript are defined as follows.
+```
+ente_function(variable1,variable2) {
+  dhe_pidicho variable1 + variable2;
+}
+```
+The functions can also return values.
+```
+factorial(n) {
+    seriyano n um 0 um same_aane {
+        koduthek 1;   
+    }
+    koduthek n * factorial<n-1>;
+}
+```
+  * Alterative keywords for `koduthek`
+    * `കൊടുത്തേക്`
+    * `കൊടുത്തെക്`
+
+To call a function function name followed by angle brackets are used.
+```
+my_function<arg1,arg2>;
+```
+
 ## Example
 A simple program to find factorial in malluscript would be 
 

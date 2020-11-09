@@ -25,10 +25,14 @@ pub enum TokenType {
     CloseParantheses,
     Um,
     Nekal,
+    Comma,
+    AngleOpen,
+    AngleClose,
     Literal(usize),
     Integer(i64),
     Float(f64),
     Symbol(usize),
+    Return,
 }
 
 impl std::fmt::Display for TokenType {
@@ -62,6 +66,10 @@ impl std::fmt::Display for TokenType {
             TokenType::Integer(number) => write!(f, "{}", number),
             TokenType::Float(number) => write!(f, "{}", number),
             TokenType::Symbol(symbol) => write!(f, "{}", symbol),
+            TokenType::Comma => write!(f, ","),
+            TokenType::Return => write!(f, "return"),
+            TokenType::AngleOpen => write!(f, "<"),
+            TokenType::AngleClose => write!(f, ">"),
         }
     }
 }

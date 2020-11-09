@@ -49,7 +49,11 @@ impl<'input> Lexer<'input> {
             || c == '%'
             || c == '\n'
             || c == ')'
+            || c == '('
+            || c == '<'
+            || c == '>'
             || c == '='
+            || c == ','
             || c == '\n'
     }
 
@@ -66,7 +70,7 @@ impl<'input> Iterator for &mut Lexer<'input> {
     fn next(&mut self) -> Option<Self::Item> {
         loop {
             match self.chars.next() {
-                Some((_, ' ')) | Some((_, '\n')) => {
+                Some((_, ' ')) | Some((_, '\n')) | Some((_, '\r')) => {
                     continue;
                 }
                 Some((i, '=')) => return Some(Ok((i, TokenType::Assignment, i + 1))),
@@ -80,6 +84,9 @@ impl<'input> Iterator for &mut Lexer<'input> {
                 Some((i, ';')) => return Some(Ok((i, TokenType::SemiColon, i + 1))),
                 Some((i, '(')) => return Some(Ok((i, TokenType::OpenParantheses, i + 1))),
                 Some((i, ')')) => return Some(Ok((i, TokenType::CloseParantheses, i + 1))),
+                Some((i, ',')) => return Some(Ok((i, TokenType::Comma, i + 1))),
+                Some((i, '<')) => return Some(Ok((i, TokenType::AngleOpen, i + 1))),
+                Some((i, '>')) => return Some(Ok((i, TokenType::AngleClose, i + 1))),
                 Some((i, '"')) => {
                     let (start, mut end) = (i + 1, 0);
                     let mut ch = ' ';
@@ -153,7 +160,7 @@ impl<'input> Iterator for &mut Lexer<'input> {
                         )));
                     }
                 }
-                Some((i, _)) => {
+                Some((i, _c)) => {
                     return Some(Err(LexicalError::UnknownToken(i, i + 1)));
                 }
                 None => return None,
