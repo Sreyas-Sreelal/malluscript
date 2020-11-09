@@ -226,7 +226,7 @@ Same in pure Malayalam would be
 
 More examples can be found in [examples](examples)
 
-## Notes 
+## Notes
 The language as mentioned above is under the development phase and its structure can change overnight, suddenly. This language is not meant to disrespect anyone and wrote just for fun.
 
 Any kind of contribution is always welcome. If you have any ideas or improvements to provide for this project open a pull request or if you have any difficulties using this language open an issue :) 
