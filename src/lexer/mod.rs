@@ -40,21 +40,21 @@ impl<'input> Lexer<'input> {
     }
 
     fn is_operator(&self, c: char) -> bool {
-        c == ' '
+        c.is_whitespace()
+            || c == '\n'
+            || c == '\r'
             || c == ';'
             || c == '+'
             || c == '-'
             || c == '*'
             || c == '/'
             || c == '%'
-            || c == '\n'
             || c == ')'
             || c == '('
             || c == '<'
             || c == '>'
             || c == '='
             || c == ','
-            || c == '\n'
     }
 
     fn is_valid_name(&self, c: char) -> bool {
@@ -70,9 +70,6 @@ impl<'input> Iterator for &mut Lexer<'input> {
     fn next(&mut self) -> Option<Self::Item> {
         loop {
             match self.chars.next() {
-                Some((_, ' ')) | Some((_, '\n')) | Some((_, '\r')) => {
-                    continue;
-                }
                 Some((i, '=')) => return Some(Ok((i, TokenType::Assignment, i + 1))),
                 Some((i, '{')) => return Some(Ok((i, TokenType::LeftBrace, i + 1))),
                 Some((i, '}')) => return Some(Ok((i, TokenType::RightBrace, i + 1))),
@@ -160,8 +157,12 @@ impl<'input> Iterator for &mut Lexer<'input> {
                         )));
                     }
                 }
-                Some((i, _c)) => {
-                    return Some(Err(LexicalError::UnknownToken(i, i + 1)));
+                Some((i, c)) => {
+                    if c.is_whitespace() || c == '\n' || c == '\r' {
+                        continue;
+                    } else {
+                        return Some(Err(LexicalError::UnknownToken(i, i + 1)));
+                    }
                 }
                 None => return None,
             }
