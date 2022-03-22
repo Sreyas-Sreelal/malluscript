@@ -7,9 +7,9 @@ use rustyline::Editor;
 use std::collections::HashMap;
 
 pub fn run_file(source: &str) {
-    let mut tokens = lexer::Lexer::new(&source, HashMap::new(), 0);
+    let mut tokens = lexer::Lexer::new(source, HashMap::new(), 0);
 
-    match parser::parse(&source, &mut tokens) {
+    match parser::parse(source, &mut tokens) {
         Ok(parsed) => {
             let mut exec = executor::Executor::new(tokens.literal_table, tokens.symbol_lookup);
             if let Err(message) = exec.execute(&parsed) {

@@ -95,16 +95,16 @@ impl Executor {
                 Statement::Conditional((_p, _q), expr, truebody, falsebody) => {
                     let truth = to_bool(self.eval_arithmetic_logic_expression(expr)?);
                     if truth {
-                        self.execute(&truebody)?;
+                        self.execute(truebody)?;
                     } else if let Some(body) = falsebody {
-                        self.execute(&body)?;
+                        self.execute(body)?;
                     }
                 }
 
                 Statement::Loop((_p, _q), expr, body) => {
                     let mut truth = to_bool(self.eval_arithmetic_logic_expression(expr)?);
                     while truth {
-                        self.execute(&body)?;
+                        self.execute(body)?;
                         truth = to_bool(self.eval_arithmetic_logic_expression(expr)?);
                     }
                 }

@@ -12,7 +12,7 @@ use std::collections::HashMap;
 mod test;
 
 pub fn parse<'a>(src: &'a str, mut tokens: &mut Lexer<'a>) -> Result<ast::SourceUnit, String> {
-    match grammar::SourceUnitParser::new().parse(&src, &mut tokens) {
+    match grammar::SourceUnitParser::new().parse(src, &mut tokens) {
         Ok(parsed) => Ok(parsed),
         Err(err) => match err {
             ParseError::InvalidToken { location } => {
@@ -47,7 +47,7 @@ pub fn parse<'a>(src: &'a str, mut tokens: &mut Lexer<'a>) -> Result<ast::Source
                 expected.join(", ")
             )),
 
-            ParseError::User { error } => Err(format!("Unexpected error {}", error.to_string())),
+            ParseError::User { error } => Err(format!("Unexpected error {}", error)),
             ParseError::ExtraToken { token } => Err(format!(
                 "{}\nExtra token `{}' encountered",
                 &src[token.0..=token.2].trim(),

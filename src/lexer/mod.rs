@@ -91,7 +91,7 @@ impl<'input> Iterator for &mut Lexer<'input> {
                     let (start, mut end) = (i + 1, 0);
                     let mut ch = ' ';
                     let mut word = String::new();
-                    while let Some((_, c)) = self.chars.next() {
+                    for (_, c) in self.chars.by_ref() {
                         ch = c;
                         if c == '"' {
                             break;
