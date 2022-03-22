@@ -15,7 +15,7 @@ use tokens::TokenType;
 pub struct Lexer<'input> {
     chars: CharIndices<'input>,
     keywords: Keywords,
-    src: &'input str,
+    pub src: &'input str,
     pub literal_table: HashMap<usize, String>,
     pub symbol_lookup: HashMap<String, usize>,
     pub lookup_count: usize,
