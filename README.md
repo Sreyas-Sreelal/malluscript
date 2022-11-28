@@ -5,9 +5,12 @@
 <a href="https://github.com/Sreyas-Sreelal/malluscript/pulls"><img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/sreyas-sreelal/malluscript"></a>
 <a href="https://github.com/Sreyas-Sreelal/malluscript/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/sreyas-sreelal/malluscript"></a>
 <a href="https://github.com/Sreyas-Sreelal/malluscript/blob/master/LICENSE"><img alt="GitHub issues" src="https://img.shields.io/github/license/sreyas-sreelal/malluscript"></a>
+<div align="center"><a href="https://discord.gg/5CMMf4ckuk"><img alt="Discord - Malluscript" src="https://img.shields.io/discord/965284035985305680?label=Discord&logo=discord&style=for-the-badge"></a></div>
 </p>
 
 Malluscript is an esoteric scripting language based on manglish and malayalam memes. The language uses trending Malayalam memetic words as keywords. The language is not strictly type-safe and uses only two datatypes strings and integers. Currently, malluscript is on the development phase and undergoing vigorous changes. Always check the release section for pre-built binaries for the interpreter.
+
+**Note:** For support please join our [Discord](https://discord.gg/5CMMf4ckuk).
 
 ## Installation
 Either download precompiled binaries from release page or clone this repository
