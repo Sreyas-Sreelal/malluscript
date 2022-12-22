@@ -23,6 +23,7 @@ pub struct Executor {
     scope_level: ScopeLevel,
     return_storage: DataTypes,
     subroutine_exit_flag: bool,
+    pub output:Vec<String>
 }
 
 impl Executor {
@@ -38,6 +39,7 @@ impl Executor {
             scope_level: 0,
             subroutine_exit_flag: false,
             return_storage: DataTypes::Integer(1),
+            output:Vec::new()
         }
     }
 
@@ -110,7 +112,10 @@ impl Executor {
                 }
 
                 Statement::Write((_p, _q), expr) => {
-                    print!("{}", self.eval_arithmetic_logic_expression(expr)?);
+                    let result = self.eval_arithmetic_logic_expression(expr)?;
+
+                    print!("{}", result);
+                    self.output.push(format!("{}",result));
                     let _ = stdout().flush();
                 }
 

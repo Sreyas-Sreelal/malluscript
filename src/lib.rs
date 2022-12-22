@@ -26,7 +26,36 @@ pub fn run_file(source: &str) {
         }
     }
 }
+pub fn store_result(source: &str) -> Vec<String> {
+    let mut tokens = lexer::Lexer::new(source, HashMap::new(), 0);
 
+    match parser::parse(source, &mut tokens) {
+        Ok(parsed) => {
+            let mut exec = executor::Executor::new(tokens.literal_table, tokens.symbol_lookup);
+            match exec.execute(&parsed) {
+                Err(message) => {
+                    println!("\n**[Execution Failed]**");
+                    if let Some(region) = source.get((message.0).0..=(message.0).1) {
+                        println!("{}", region);
+                    }
+                    let mut output =  Vec::new();
+                    output.push(format!("^^^^{}", message.1));
+                    return output;
+                }
+                Ok(_) => {
+                    return exec.output;
+                }
+            }
+        }
+        Err(message) => {
+            println!("{}", message);
+            let mut output =  Vec::new();
+            output.push(format!("^^^^{}", message));
+            return output;
+
+        }
+    }
+}
 pub fn run_interactive_shell() {
     println!(
         "
