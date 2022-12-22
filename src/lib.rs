@@ -38,7 +38,7 @@ pub fn store_result(source: &str) -> Vec<String> {
                     if let Some(region) = source.get((message.0).0..=(message.0).1) {
                         println!("{}", region);
                     }
-                    let mut output =  Vec::new();
+                    let mut output = Vec::new();
                     output.push(format!("^^^^{}", message.1));
                     return output;
                 }
@@ -49,10 +49,9 @@ pub fn store_result(source: &str) -> Vec<String> {
         }
         Err(message) => {
             println!("{}", message);
-            let mut output =  Vec::new();
+            let mut output = Vec::new();
             output.push(format!("^^^^{}", message));
             return output;
-
         }
     }
 }

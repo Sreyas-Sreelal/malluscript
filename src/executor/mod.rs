@@ -23,7 +23,7 @@ pub struct Executor {
     scope_level: ScopeLevel,
     return_storage: DataTypes,
     subroutine_exit_flag: bool,
-    pub output:Vec<String>
+    pub output: Vec<String>,
 }
 
 impl Executor {
@@ -39,7 +39,7 @@ impl Executor {
             scope_level: 0,
             subroutine_exit_flag: false,
             return_storage: DataTypes::Integer(1),
-            output:Vec::new()
+            output: Vec::new(),
         }
     }
 
@@ -115,7 +115,7 @@ impl Executor {
                     let result = self.eval_arithmetic_logic_expression(expr)?;
 
                     print!("{}", result);
-                    self.output.push(format!("{}",result));
+                    self.output.push(format!("{}", result));
                     let _ = stdout().flush();
                 }
 
