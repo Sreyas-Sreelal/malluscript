@@ -7,7 +7,7 @@ mod test;
 
 use ast::*;
 use error::RunTimeErrors;
-use std::collections::HashMap;
+use std::collections::{BTreeMap, HashMap};
 use std::io::{stdin, stdout, Write};
 
 use crate::executor::datatype::{to_bool, DataTypes};
@@ -16,7 +16,7 @@ use crate::lexer::tokens::TokenType;
 pub type ScopeLevel = i64;
 
 pub struct Executor {
-    symbol_table: HashMap<(ScopeLevel, usize), DataTypes>,
+    symbol_table: BTreeMap<(ScopeLevel, usize), DataTypes>,
     literal_table: HashMap<usize, String>,
     symbol_lookup_table: HashMap<String, usize>,
     function_table: HashMap<String, (Vec<Expression>, SourceUnit)>,
@@ -31,7 +31,7 @@ impl Executor {
         symbol_lookup_table: HashMap<String, usize>,
     ) -> Self {
         Executor {
-            symbol_table: HashMap::new(),
+            symbol_table: BTreeMap::new(),
             literal_table,
             symbol_lookup_table,
             function_table: HashMap::new(),
@@ -296,11 +296,9 @@ impl Executor {
                         self.return_storage = DataTypes::Unknown;
                         self.execute(&function.1)?;
 
-                        for y in parameters {
-                            if let Expression::Symbol(_, TokenType::Symbol(y)) = y {
-                                self.symbol_table.remove_entry(&(self.scope_level, *y));
-                            }
-                        }
+                        let scope = self.scope_level;
+                        self.symbol_table
+                            .retain(|(scope_level, _), _| *scope_level != scope);
                         self.scope_level -= 1;
                     } else {
                         return Err(((*p, *q), RunTimeErrors::UndefinedSymbol(name)));
