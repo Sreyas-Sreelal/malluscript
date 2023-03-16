@@ -247,9 +247,7 @@ impl Executor {
 
             Expression::StringLiteral((a, b), value) => {
                 if let TokenType::Literal(address) = value {
-                    Ok(DataTypes::String(
-                        (&self.literal_table[address]).to_string(),
-                    ))
+                    Ok(DataTypes::String(self.literal_table[address].to_string()))
                 } else {
                     Err(((*a, *b), RunTimeErrors::InvalidExpression))
                 }

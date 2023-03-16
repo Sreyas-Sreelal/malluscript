@@ -133,7 +133,7 @@ impl<'input> Iterator for &mut Lexer<'input> {
                     )));
                 }
 
-                Some((i, c)) if c.is_digit(10) => {
+                Some((i, c)) if c.is_ascii_digit() => {
                     let mut word = String::new();
                     word.push(c);
                     while let Some((_, c)) = self.chars.clone().peekable().peek() {
