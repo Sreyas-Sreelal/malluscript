@@ -7,7 +7,7 @@ mod test;
 
 use ast::*;
 use error::RunTimeErrors;
-use std::collections::HashMap;
+use std::collections::{BTreeMap, HashMap};
 use std::io::{stdin, stdout, Write};
 
 use crate::executor::datatype::{to_bool, DataTypes};
@@ -16,7 +16,7 @@ use crate::lexer::tokens::TokenType;
 pub type ScopeLevel = i64;
 
 pub struct Executor {
-    symbol_table: HashMap<(ScopeLevel, usize), DataTypes>,
+    symbol_table: BTreeMap<(ScopeLevel, usize), DataTypes>,
     literal_table: HashMap<usize, String>,
     symbol_lookup_table: HashMap<String, usize>,
     function_table: HashMap<String, (Vec<Expression>, SourceUnit)>,
@@ -31,7 +31,7 @@ impl Executor {
         symbol_lookup_table: HashMap<String, usize>,
     ) -> Self {
         Executor {
-            symbol_table: HashMap::new(),
+            symbol_table: BTreeMap::new(),
             literal_table,
             symbol_lookup_table,
             function_table: HashMap::new(),
@@ -72,22 +72,26 @@ impl Executor {
             }
             let SourceUnitPart::Statement(stmt) = x;
             match stmt {
-                Statement::Declaration((p, q), symbol) => {
-                    if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = symbol {
-                        if self
-                            .symbol_table
-                            .get(&(self.scope_level, *address))
-                            .is_some()
-                        {
-                            return Err((
-                                (*p, *q),
-                                RunTimeErrors::SymbolAlreadyDefined(
-                                    self.get_symbol_name(*address).unwrap(),
-                                ),
-                            ));
+                Statement::Declaration((p, q), symbols) => {
+                    for symbol in symbols {
+                        if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = symbol {
+                            if self
+                                .symbol_table
+                                .get(&(self.scope_level, *address))
+                                .is_some()
+                            {
+                                return Err((
+                                    (*p, *q),
+                                    RunTimeErrors::SymbolAlreadyDefined(
+                                        self.get_symbol_name(*address).unwrap(),
+                                    ),
+                                ));
+                            } else {
+                                self.symbol_table
+                                    .insert((self.scope_level, *address), DataTypes::Unknown);
+                            }
                         } else {
-                            self.symbol_table
-                                .insert((self.scope_level, *address), DataTypes::Unknown);
+                            return Err(((*p, *q), RunTimeErrors::InvalidAssignment));
                         }
                     }
                 }
@@ -296,11 +300,9 @@ impl Executor {
                         self.return_storage = DataTypes::Unknown;
                         self.execute(&function.1)?;
 
-                        for y in parameters {
-                            if let Expression::Symbol(_, TokenType::Symbol(y)) = y {
-                                self.symbol_table.remove_entry(&(self.scope_level, *y));
-                            }
-                        }
+                        let scope = self.scope_level;
+                        self.symbol_table
+                            .retain(|(scope_level, _), _| *scope_level != scope);
                         self.scope_level -= 1;
                     } else {
                         return Err(((*p, *q), RunTimeErrors::UndefinedSymbol(name)));
