@@ -39,7 +39,6 @@ jobs:
     - name: Install Rust (macos)
       run: |
         curl https://sh.rustup.rs | sh -s -- -y
-        echo "##[add-path]$HOME/.cargo/bin"
       if: matrix.os == 'macos-latest'
 
     - name: Build
