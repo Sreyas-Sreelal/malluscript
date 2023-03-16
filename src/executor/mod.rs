@@ -72,22 +72,26 @@ impl Executor {
             }
             let SourceUnitPart::Statement(stmt) = x;
             match stmt {
-                Statement::Declaration((p, q), symbol) => {
-                    if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = symbol {
-                        if self
-                            .symbol_table
-                            .get(&(self.scope_level, *address))
-                            .is_some()
-                        {
-                            return Err((
-                                (*p, *q),
-                                RunTimeErrors::SymbolAlreadyDefined(
-                                    self.get_symbol_name(*address).unwrap(),
-                                ),
-                            ));
+                Statement::Declaration((p, q), symbols) => {
+                    for symbol in symbols {
+                        if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = symbol {
+                            if self
+                                .symbol_table
+                                .get(&(self.scope_level, *address))
+                                .is_some()
+                            {
+                                return Err((
+                                    (*p, *q),
+                                    RunTimeErrors::SymbolAlreadyDefined(
+                                        self.get_symbol_name(*address).unwrap(),
+                                    ),
+                                ));
+                            } else {
+                                self.symbol_table
+                                    .insert((self.scope_level, *address), DataTypes::Unknown);
+                            }
                         } else {
-                            self.symbol_table
-                                .insert((self.scope_level, *address), DataTypes::Unknown);
+                            return Err(((*p, *q), RunTimeErrors::InvalidAssignment));
                         }
                     }
                 }
