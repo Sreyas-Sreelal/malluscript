@@ -13,6 +13,7 @@ pub enum RunTimeErrors {
     ErrorReadingStdin,
     InvalidFunctionDeclaration,
     ArgumentCountMismatch,
+    IntegerOverFlow,
 }
 
 impl fmt::Display for RunTimeErrors {
@@ -42,6 +43,10 @@ impl fmt::Display for RunTimeErrors {
             RunTimeErrors::ArgumentCountMismatch => write!(
                 f,
                 "[Error]: Argument number doesnot match paramteters number"
+            ),
+            RunTimeErrors::IntegerOverFlow => write!(
+                f,
+                "[Error]: Integer OverFlow, attempt to arithmetic operation that leads to overflow"
             ),
         }
     }

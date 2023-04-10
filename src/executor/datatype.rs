@@ -1,6 +1,44 @@
 use crate::executor::error::{raise_error, RunTimeErrors};
 use std::fmt;
 
+macro_rules! safe_operation {
+    ($l:ident + $r:ident) => {
+        if let Some(result) = $l.checked_add($r) {
+            result
+        } else {
+            raise_error(RunTimeErrors::IntegerOverFlow)
+        }
+    };
+    ($l:ident - $r:ident) => {
+        if let Some(result) = $l.checked_sub($r) {
+            result
+        } else {
+            raise_error(RunTimeErrors::IntegerOverFlow)
+        }
+    };
+    ($l:ident * $r:ident) => {
+        if let Some(result) = $l.checked_mul($r) {
+            result
+        } else {
+            raise_error(RunTimeErrors::IntegerOverFlow)
+        }
+    };
+    ($l:ident / $r:ident) => {
+        if let Some(result) = $l.checked_div($r) {
+            result
+        } else {
+            raise_error(RunTimeErrors::IntegerOverFlow)
+        }
+    };
+    ($l:ident % $r:ident) => {
+        if let Some(result) = $l.checked_rem($r) {
+            result
+        } else {
+            raise_error(RunTimeErrors::IntegerOverFlow)
+        }
+    };
+}
+
 #[derive(Debug, PartialEq, Clone, PartialOrd)]
 pub enum DataTypes {
     String(String),
@@ -25,7 +63,9 @@ impl std::ops::Add for DataTypes {
     type Output = Self;
     fn add(self, rhs: DataTypes) -> Self {
         match (self, rhs) {
-            (DataTypes::Integer(l), DataTypes::Integer(r)) => DataTypes::Integer(l + r),
+            (DataTypes::Integer(l), DataTypes::Integer(r)) => {
+                DataTypes::Integer(safe_operation!(l + r))
+            }
             (DataTypes::Float(l), DataTypes::Float(r)) => DataTypes::Float(l + r),
             (DataTypes::Float(l), DataTypes::Integer(r)) => DataTypes::Float(l + r as f64),
             (DataTypes::Integer(l), DataTypes::Float(r)) => DataTypes::Float(l as f64 + r),
@@ -49,7 +89,9 @@ impl std::ops::Sub for DataTypes {
     type Output = Self;
     fn sub(self, rhs: DataTypes) -> Self {
         match (self, rhs) {
-            (DataTypes::Integer(l), DataTypes::Integer(r)) => DataTypes::Integer(l - r),
+            (DataTypes::Integer(l), DataTypes::Integer(r)) => {
+                DataTypes::Integer(safe_operation!(l - r))
+            }
             (DataTypes::Float(l), DataTypes::Float(r)) => DataTypes::Float(l - r),
             (DataTypes::Float(l), DataTypes::Integer(r)) => DataTypes::Float(l - r as f64),
             (DataTypes::Integer(l), DataTypes::Float(r)) => DataTypes::Float(l as f64 - r),
@@ -62,7 +104,9 @@ impl std::ops::Mul for DataTypes {
     type Output = Self;
     fn mul(self, rhs: DataTypes) -> Self {
         match (self, rhs) {
-            (DataTypes::Integer(l), DataTypes::Integer(r)) => DataTypes::Integer(l * r),
+            (DataTypes::Integer(l), DataTypes::Integer(r)) => {
+                DataTypes::Integer(safe_operation!(l * r))
+            }
             (DataTypes::Float(l), DataTypes::Float(r)) => DataTypes::Float(l * r),
             (DataTypes::Float(l), DataTypes::Integer(r)) => DataTypes::Float(l * r as f64),
             (DataTypes::Integer(l), DataTypes::Float(r)) => DataTypes::Float(l as f64 * r),
@@ -78,7 +122,9 @@ impl std::ops::Div for DataTypes {
             raise_error(RunTimeErrors::DivisionByZero);
         }
         match (self, rhs) {
-            (DataTypes::Integer(l), DataTypes::Integer(r)) => DataTypes::Integer(l / r),
+            (DataTypes::Integer(l), DataTypes::Integer(r)) => {
+                DataTypes::Integer(safe_operation!(l / r))
+            }
             (DataTypes::Float(l), DataTypes::Float(r)) => DataTypes::Float(l / r),
             (DataTypes::Float(l), DataTypes::Integer(r)) => DataTypes::Float(l / r as f64),
             (DataTypes::Integer(l), DataTypes::Float(r)) => DataTypes::Float(l as f64 / r),
@@ -94,7 +140,9 @@ impl std::ops::Rem for DataTypes {
             raise_error(RunTimeErrors::DivisionByZero);
         }
         match (self, rhs) {
-            (DataTypes::Integer(l), DataTypes::Integer(r)) => DataTypes::Integer(l % r),
+            (DataTypes::Integer(l), DataTypes::Integer(r)) => {
+                DataTypes::Integer(safe_operation!(l % r))
+            }
             (DataTypes::Float(l), DataTypes::Float(r)) => DataTypes::Float(l % r),
             (DataTypes::Float(l), DataTypes::Integer(r)) => DataTypes::Float(l % r as f64),
             (DataTypes::Integer(l), DataTypes::Float(r)) => DataTypes::Float(l as f64 % r),

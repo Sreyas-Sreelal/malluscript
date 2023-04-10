@@ -235,6 +235,7 @@ impl Executor {
                 }
                 match self.symbol_table.get(&(level, *address)) {
                     Some(DataTypes::Integer(number)) => Ok(DataTypes::Integer(*number)),
+                    Some(DataTypes::Float(number)) => Ok(DataTypes::Float(*number)),
                     Some(DataTypes::String(data)) => Ok(DataTypes::String(data.to_string())),
                     _ => Err((
                         (*a, *b),
@@ -262,6 +263,8 @@ impl Executor {
 
                 if let Ok(data) = input.trim().parse() {
                     Ok(DataTypes::Integer(data))
+                } else if let Ok(data) = input.trim().parse() {
+                    Ok(DataTypes::Float(data))
                 } else {
                     Err(((*a, *b), RunTimeErrors::InvalidNumberInput))
                 }
