@@ -6,7 +6,7 @@ use std::fs::File;
 use std::io::prelude::*;
 
 fn main() {
-    let matches = App::new("guhiki")
+    let matches = App::new("Malluscript")
         .version(env!("CARGO_PKG_VERSION"))
         .author(env!("CARGO_PKG_AUTHORS"))
         .about(env!("CARGO_PKG_DESCRIPTION"))
