@@ -82,7 +82,6 @@ extern {
     enum TokenType {
         Identifier => TokenType::Symbol(usize),
         ";" => TokenType::SemiColon,
-        Declaration => TokenType::Declaration,
         "=" => TokenType::Assignment,
         Integer => TokenType::Integer(i64),
         Float => TokenType::Float(f64),
