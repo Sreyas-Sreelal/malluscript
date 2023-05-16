@@ -1,12 +1,10 @@
-pwoli_sadhanam num;
-pwoli_sadhanam factorial;
-dhe_pidicho "Input number:";
-num = number_thada;
+kanikuga "Input number:";
+num = akam_vangikuga;
 factorial = 1;
 
-repeat_adi 0 um num um same_alle {
+0 um num um thullyamalla enkil avarthikuga {
     factorial = factorial * num;
     num = num -1;
 }
 
-dhe_pidicho "Factoral is : " + factorial + "\n";
+kanikuga "Factoral is : " + factorial + "\n";
