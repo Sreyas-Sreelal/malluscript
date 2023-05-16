@@ -27,9 +27,13 @@ impl Keywords {
             ["adhallengil","adhallangil", "അതല്ലെങ്കിൽ"] => TokenType::Else,
             ["aavarthikuga","avarthikuga","ആവർത്തിക്കുക",""] => TokenType::Loop,
             ["veluthan","വലുതാണ്"] => TokenType::GreaterThan,
+            ["veluthanenkil","വലുതാണെങ്കിൽ"] => TokenType::IfGreaterThan,
             ["thullyamalla","onnalla", "തുല്യമല്ല","ഒന്നല്ല"] => TokenType::NotEqual,
+            ["thullyamallenkil","onnallenkil", "തുല്യമല്ലെങ്കിൽ","ഒന്നല്ലെങ്കിൽ"] => TokenType::IfNotEqual,
             ["cheruthan", "ചെറുതാണ്", ] => TokenType::LessThan,
+            ["cheruthanenkil", "ചെറുതാണെങ്കിൽ", ] => TokenType::IfLessThan,
             ["thullyaman","onnan", "തുല്യമാണ്","ഒന്നാണ്"] => TokenType::EqualTo,
+            ["thullyamanenkil","onnanenkil", "തുല്യമാണെങ്കിൽ","ഒന്നാണെങ്കിൽ"] => TokenType::IfEqualTo,
             ["um", "ഉം"] => TokenType::Um,
             ["ne_kal", "നെകാൾ"] => TokenType::Nekal,
             ["kodukuga","kodukuka","madakiayakuga","കൊടുക്കുക","മടക്കിഅയയ്ക്കുക"] => TokenType::Return

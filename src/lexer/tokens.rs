@@ -32,6 +32,10 @@ pub enum TokenType {
     Float(f64),
     Symbol(usize),
     Return,
+    IfGreaterThan,
+    IfNotEqual,
+    IfLessThan,
+    IfEqualTo,
 }
 
 impl std::fmt::Display for TokenType {
@@ -68,6 +72,10 @@ impl std::fmt::Display for TokenType {
             TokenType::Return => write!(f, "kodukuga"),
             TokenType::AngleOpen => write!(f, "<"),
             TokenType::AngleClose => write!(f, ">"),
+            TokenType::IfGreaterThan => write!(f, "veluthanenkil"),
+            TokenType::IfNotEqual => write!(f, "thullyamallenkil"),
+            TokenType::IfLessThan => write!(f, "cheruthanenkil"),
+            TokenType::IfEqualTo => write!(f, "thullyamanenkil"),
         }
     }
 }

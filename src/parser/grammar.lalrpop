@@ -28,6 +28,8 @@ Statement:Statement = {
     <a:@L> Write <e:Expression> ";" <b:@R> => Statement::Write((a,b),e),
     <a:@L> <condition:Conditional> If "{" <s:SourceUnit> "}" <b:@R> => Statement::Conditional((a,b),condition,s,None),
     <a:@L> <condition:Conditional> If "{" <s:SourceUnit> "}" Else "{" <f:SourceUnit> "}" <b:@R> => Statement::Conditional((a,b),condition,s,Some(f)),
+    <a:@L> <condition:ConditionalWithAgglutination> "{" <s:SourceUnit> "}" <b:@R> => Statement::Conditional((a,b),condition,s,None),
+    <a:@L> <condition:ConditionalWithAgglutination> "{" <s:SourceUnit> "}" Else "{" <f:SourceUnit> "}" <b:@R> => Statement::Conditional((a,b),condition,s,Some(f)),
     <a:@L> <name:Expression> "(" <params:Expressions> ")" "{" <s:SourceUnit> "}" <b:@R> => Statement::FunctionDeclaration((a,b),name,params,s),
     <a:@L> Return <expr:Expression> ";" <b:@R>  => Statement::Return((a,b),expr),
     <a:@L> <expr:Expression> ";" <b:@R>  => Statement::EmptyExpression((a,b),expr),
@@ -37,7 +39,13 @@ Statement:Statement = {
 Expression:Expression= {
     ArithExpression
 }
-
+ConditionalWithAgglutination:Expression = {
+    <l:Expression> "um"  <r:Expression> "um" <a:@L> IfEqualTo <b:@R> => Expression::Equals((a,b),Box::new(l),Box::new(r)),
+    <l:Expression>  "um" <r:Expression> "um" <a:@L> IfNotEqual <b:@R>  => Expression::NotEquals((a,b),Box::new(l),Box::new(r)),
+    <r:Expression>  "ne_kal" <l:Expression> <a:@L> IfGreaterThan <b:@R> => Expression::GreaterThan((a,b),Box::new(l),Box::new(r)),
+    <r:Expression>  "ne_kal" <l:Expression> <a:@L> IfLessThan <b:@R> => Expression::LessThan((a,b),Box::new(l),Box::new(r)),
+    Conditional,
+}
 Conditional:Expression = {
     <l:Expression> "um"  <r:Expression> "um" <a:@L> "==" <b:@R> => Expression::Equals((a,b),Box::new(l),Box::new(r)),
     <l:Expression>  "um" <r:Expression> "um" <a:@L> "!=" <b:@R>  => Expression::NotEquals((a,b),Box::new(l),Box::new(r)),
@@ -111,5 +119,9 @@ extern {
         InputNumber => TokenType::InputNumber,
         InputString => TokenType::InputString,
         Return => TokenType::Return,
+        IfGreaterThan => TokenType::IfGreaterThan,
+        IfNotEqual => TokenType::IfNotEqual,
+        IfLessThan => TokenType::IfLessThan,
+        IfEqualTo => TokenType::IfEqualTo,
     }
 }
