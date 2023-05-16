@@ -53,7 +53,7 @@ pub fn parse<'a>(src: &'a str, mut tokens: &mut Lexer<'a>) -> Result<ast::Source
                 &src[token.0..=token.2].trim(),
                 token.1
             )),
-            ParseError::UnrecognizedEOF {
+            ParseError::UnrecognizedEof {
                 location: _,
                 expected,
             } => Err(format!(
