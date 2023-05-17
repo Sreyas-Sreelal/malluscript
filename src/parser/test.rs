@@ -29,7 +29,10 @@ fn parser_test() {
     println!("{:?}", parsed);
     let expected = SourceUnit(
         [
-            Statement(Declaration((9, 26), Symbol((24, 24), TokenType::Symbol(1)))),
+            Statement(Declaration(
+                (9, 26),
+                [Symbol((24, 24), TokenType::Symbol(1))].to_vec(),
+            )),
             Statement(Assignment(
                 (35, 39),
                 Symbol((35, 35), TokenType::Symbol(1)),

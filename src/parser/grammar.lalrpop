@@ -24,7 +24,7 @@ Comma<T>:Vec<T> = {
     }
 }
 Statement:Statement = {
-    <a:@L> Declaration <id:Expression> ";" <b:@R> => Statement::Declaration((a,b),id),
+    <a:@L> Declaration <vars:Expressions> ";" <b:@R> => Statement::Declaration((a,b),vars),
     <a:@L> <l:Expression> "=" <r:Expression> ";" <b:@R> => Statement::Assignment((a,b),l,r),
     <a:@L> Write <e:Expression> ";" <b:@R> => Statement::Write((a,b),e),
     <a:@L> If <condition:Conditional> "{" <s:SourceUnit> "}" <b:@R> => Statement::Conditional((a,b),condition,s,None),

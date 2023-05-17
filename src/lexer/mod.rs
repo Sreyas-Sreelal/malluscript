@@ -55,6 +55,8 @@ impl<'input> Lexer<'input> {
             || c == '>'
             || c == '='
             || c == ','
+            || c == '{'
+            || c == '}'
     }
 
     fn is_valid_name(&self, c: char) -> bool {
@@ -133,7 +135,7 @@ impl<'input> Iterator for &mut Lexer<'input> {
                     )));
                 }
 
-                Some((i, c)) if c.is_digit(10) => {
+                Some((i, c)) if c.is_ascii_digit() => {
                     let mut word = String::new();
                     word.push(c);
                     while let Some((_, c)) = self.chars.clone().peekable().peek() {

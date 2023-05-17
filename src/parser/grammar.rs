@@ -1,5 +1,5 @@
-// auto-generated: "lalrpop 0.19.1"
-// sha256: 872a476240afad2d9b10b2e954c8557ee19d3b543c1c290ff1cd52769feb522
+// auto-generated: "lalrpop 0.19.8"
+// sha3: 290d26898dac53069927e900eb28be0c4c2a1c63324f0c3c0257866bc44da942
 use crate::lexer::tokens::*;
 use crate::lexer::LexicalError;
 use crate::executor::ast::*;
@@ -7,10 +7,12 @@ use crate::executor::ast::*;
 extern crate lalrpop_util as __lalrpop_util;
 #[allow(unused_imports)]
 use self::__lalrpop_util::state_machine as __state_machine;
+extern crate core;
+extern crate alloc;
 
 #[cfg_attr(rustfmt, rustfmt_skip)]
 mod __parse__SourceUnit {
-    #![allow(non_snake_case, non_camel_case_types, unused_mut, unused_variables, unused_imports, unused_parens)]
+    #![allow(non_snake_case, non_camel_case_types, unused_mut, unused_variables, unused_imports, unused_parens, clippy::all)]
 
     use crate::lexer::tokens::*;
     use crate::lexer::LexicalError;
@@ -19,19 +21,21 @@ mod __parse__SourceUnit {
     extern crate lalrpop_util as __lalrpop_util;
     #[allow(unused_imports)]
     use self::__lalrpop_util::state_machine as __state_machine;
+    extern crate core;
+    extern crate alloc;
     use super::__ToTriple;
     #[allow(dead_code)]
-    pub enum __Symbol<>
+    pub(crate) enum __Symbol<>
      {
         Variant0(TokenType),
         Variant1(Expression),
-        Variant2(::std::vec::Vec<Expression>),
+        Variant2(alloc::vec::Vec<Expression>),
         Variant3(usize),
         Variant4(Vec<Expression>),
-        Variant5(::std::option::Option<Expression>),
+        Variant5(core::option::Option<Expression>),
         Variant6(SourceUnit),
         Variant7(SourceUnitPart),
-        Variant8(::std::vec::Vec<SourceUnitPart>),
+        Variant8(alloc::vec::Vec<SourceUnitPart>),
         Variant9(Statement),
     }
     const __ACTION: &[i8] = &[
@@ -44,7 +48,7 @@ mod __parse__SourceUnit {
         // State 3
         0, 0, 3, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 33, 34, 0, 35, 36, 37, 0, 0, 38, 0,
         // State 4
-        0, 0, 3, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 33, 34, 0, 35, 36, 37, 0, 0, 38, 0,
+        0, 0, 3, 0, 0, 0, 0, 4, 0, -12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 33, 34, 0, 35, 36, 37, 0, 0, 38, 0,
         // State 5
         0, 0, 3, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 33, 34, 0, 35, 36, 37, 0, 0, 38, 0,
         // State 6
@@ -70,7 +74,7 @@ mod __parse__SourceUnit {
         // State 16
         0, 0, 3, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, -12, 0, 0, 0, 0, 0, 0, 0, 33, 34, 0, 35, 36, 37, 0, 0, 38, 0,
         // State 17
-        0, 0, 3, -14, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, -14, 0, 0, 0, 0, 0, 0, 0, 33, 34, 0, 35, 36, 37, 0, 0, 38, 0,
+        0, 0, 3, -14, 0, 0, 0, 4, 0, -14, 0, 0, 0, 0, -14, 0, 0, 0, 0, 0, 0, 0, 33, 34, 0, 35, 36, 37, 0, 0, 38, 0,
         // State 18
         0, 0, 3, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 33, 34, 6, 35, 36, 37, 7, 8, 38, 9,
         // State 19
@@ -120,27 +124,27 @@ mod __parse__SourceUnit {
         // State 41
         0, -49, -49, -49, -49, -49, -49, -49, -49, -49, -49, -49, 0, -49, -49, 0, -49, -49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 42
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 61, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, -23, 0, 0, 0, 0, 0, -23, 0, 0, 0, 0, -23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 43
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, -11, 0, 0, 62, 0, 0, -11, 0, 0, 0, 0, -11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 44
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        // State 45
-        0, -50, 0, 0, -50, -50, 0, -50, -50, 0, 0, 0, 0, 0, 0, 17, -50, -50, -19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        // State 46
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        // State 47
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 62, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        // State 48
         0, 0, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        // State 45
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        // State 46
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        // State 47
+        0, -50, 0, 0, -50, -50, 0, -50, -50, 0, 0, 0, 0, 0, 0, 17, -50, -50, -19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        // State 48
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 49
-        0, 14, -8, -8, 15, -8, -8, -8, 16, -8, -8, -8, 0, -8, -8, 0, -8, -8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 64, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 50
-        0, 14, -9, -9, 15, -9, -9, -9, 16, -9, -9, -9, 0, -9, -9, 0, -9, -9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 51
-        0, 0, 0, -23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 14, -8, -8, 15, -8, -8, -8, 16, -8, -8, -8, 0, -8, -8, 0, -8, -8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 52
-        0, 0, 0, -11, 0, 0, 65, 0, 0, 0, 0, 0, 0, 0, -11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 14, -9, -9, 15, -9, -9, -9, 16, -9, -9, -9, 0, -9, -9, 0, -9, -9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 53
         0, 0, 0, 66, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 54
@@ -156,15 +160,15 @@ mod __parse__SourceUnit {
         // State 59
         0, -48, -48, -48, -48, -48, -48, -48, -48, -48, -48, -48, 0, -48, -48, -48, -48, -48, -48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 60
-        0, 0, -32, 0, 0, 0, 0, -32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -32, -32, 0, -32, -32, -32, -32, -32, -32, -32, -32, -32, -32,
+        0, 0, 0, -13, 0, 0, 69, 0, 0, -13, 0, 0, 0, 0, -13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 61
-        0, 0, -38, 0, 0, 0, 0, -38, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -38, -38, 0, -38, -38, -38, -38, -38, -38, -38, -38, -38, -38,
+        0, 0, -4, -4, 0, 0, 0, -4, 0, -4, 0, 0, 0, 0, -4, 0, 0, 0, 0, 0, 0, 0, -4, -4, 0, -4, -4, -4, 0, 0, -4, 0,
         // State 62
-        0, 0, -34, 0, 0, 0, 0, -34, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -34, -34, 0, -34, -34, -34, -34, -34, -34, -34, -34, -34, -34,
+        0, 0, -32, 0, 0, 0, 0, -32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -32, -32, 0, -32, -32, -32, -32, -32, -32, -32, -32, -32, -32,
         // State 63
-        0, 0, 0, -13, 0, 0, 73, 0, 0, 0, 0, 0, 0, 0, -13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, -38, 0, 0, 0, 0, -38, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -38, -38, 0, -38, -38, -38, -38, -38, -38, -38, -38, -38, -38,
         // State 64
-        0, 0, -4, -4, 0, 0, 0, -4, 0, 0, 0, 0, 0, 0, -4, 0, 0, 0, 0, 0, 0, 0, -4, -4, 0, -4, -4, -4, 0, 0, -4, 0,
+        0, 0, -34, 0, 0, 0, 0, -34, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -34, -34, 0, -34, -34, -34, -34, -34, -34, -34, -34, -34, -34,
         // State 65
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 66
@@ -172,15 +176,15 @@ mod __parse__SourceUnit {
         // State 67
         0, -47, -47, -47, -47, -47, -47, -47, -47, -47, -47, -47, 0, -47, -47, -47, -47, -47, -47, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 68
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 74, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, -5, -5, 0, 0, 0, -5, 0, -5, 0, 0, 0, 0, -5, 0, 0, 0, 0, 0, 0, 0, -5, -5, 0, -5, -5, -5, 0, 0, -5, 0,
         // State 69
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 75, 0, 0, 76, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 74, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 70
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 77, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 75, 0, 0, 76, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 71
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 78, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 77, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 72
-        0, 0, -5, -5, 0, 0, 0, -5, 0, 0, 0, 0, 0, 0, -5, 0, 0, 0, 0, 0, 0, 0, -5, -5, 0, -5, -5, -5, 0, 0, -5, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 78, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 73
         0, 0, -35, 0, 0, 0, 0, -35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -35, -35, 80, -35, -35, -35, -35, -35, -35, -35, -35, -35, -35,
         // State 74
@@ -331,15 +335,15 @@ mod __parse__SourceUnit {
         // State 59
         0,
         // State 60
-        -32,
+        0,
         // State 61
-        -38,
+        0,
         // State 62
-        -34,
+        -32,
         // State 63
-        0,
+        -38,
         // State 64
-        0,
+        -34,
         // State 65
         0,
         // State 66
@@ -385,36 +389,36 @@ mod __parse__SourceUnit {
         match nt {
             2 => 17,
             5 => 24,
-            6 => 51,
+            6 => 42,
             7 => match state {
-                6 => 46,
-                _ => 43,
+                6 => 48,
+                _ => 45,
             },
             8 => match state {
                 2 => 40,
-                4 => 42,
-                5..=6 => 44,
-                7 => 47,
-                8 => 48,
-                11 | 16 => 52,
+                4 | 11 | 16 => 43,
+                5..=6 => 46,
+                7 => 49,
+                8 => 50,
                 12 => 54,
-                17 => 63,
-                19 => 69,
-                20 => 70,
+                17 => 60,
+                19 => 70,
+                20 => 71,
                 _ => 25,
             },
             10 => match state {
+                11 => 53,
                 16 => 58,
-                _ => 53,
+                _ => 44,
             },
             11 => match state {
-                9 => 49,
-                10 => 50,
+                9 => 51,
+                10 => 52,
                 _ => 26,
             },
             12 => match state {
-                18 => 68,
-                21 => 71,
+                18 => 69,
+                21 => 72,
                 22 => 78,
                 23 => 83,
                 _ => 27,
@@ -426,7 +430,7 @@ mod __parse__SourceUnit {
             14 => 1,
             15 => 29,
             16 => match state {
-                5..=6 => 45,
+                5..=6 => 47,
                 _ => 30,
             },
             17 => match state {
@@ -439,7 +443,7 @@ mod __parse__SourceUnit {
             _ => 0,
         }
     }
-    fn __expected_tokens(__state: i8) -> Vec<::std::string::String> {
+    fn __expected_tokens(__state: i8) -> alloc::vec::Vec<alloc::string::String> {
         const __TERMINAL: &[&str] = &[
             r###""!=""###,
             r###""%""###,
@@ -479,15 +483,15 @@ mod __parse__SourceUnit {
             if next_state == 0 {
                 None
             } else {
-                Some(terminal.to_string())
+                Some(alloc::string::ToString::to_string(terminal))
             }
         }).collect()
     }
-    pub struct __StateMachine<'__0>
+    pub(crate) struct __StateMachine<'__0>
     where 
     {
         input: &'__0 str,
-        __phantom: ::std::marker::PhantomData<()>,
+        __phantom: core::marker::PhantomData<()>,
     }
     impl<'__0> __state_machine::ParserDefinition for __StateMachine<'__0>
     where 
@@ -515,7 +519,7 @@ mod __parse__SourceUnit {
 
         #[inline]
         fn token_to_index(&self, token: &Self::Token) -> Option<usize> {
-            __token_to_integer(token, ::std::marker::PhantomData::<()>)
+            __token_to_integer(token, core::marker::PhantomData::<()>)
         }
 
         #[inline]
@@ -539,10 +543,10 @@ mod __parse__SourceUnit {
         }
 
         fn token_to_symbol(&self, token_index: usize, token: Self::Token) -> Self::Symbol {
-            __token_to_symbol(token_index, token, ::std::marker::PhantomData::<()>)
+            __token_to_symbol(token_index, token, core::marker::PhantomData::<()>)
         }
 
-        fn expected_tokens(&self, state: i8) -> Vec<String> {
+        fn expected_tokens(&self, state: i8) -> alloc::vec::Vec<alloc::string::String> {
             __expected_tokens(state)
         }
 
@@ -563,8 +567,8 @@ mod __parse__SourceUnit {
             &mut self,
             action: i8,
             start_location: Option<&Self::Location>,
-            states: &mut Vec<i8>,
-            symbols: &mut Vec<__state_machine::SymbolTriple<Self>>,
+            states: &mut alloc::vec::Vec<i8>,
+            symbols: &mut alloc::vec::Vec<__state_machine::SymbolTriple<Self>>,
         ) -> Option<__state_machine::ParseResult<Self>> {
             __reduce(
                 self.input,
@@ -572,7 +576,7 @@ mod __parse__SourceUnit {
                 start_location,
                 states,
                 symbols,
-                ::std::marker::PhantomData::<()>,
+                core::marker::PhantomData::<()>,
             )
         }
 
@@ -583,7 +587,7 @@ mod __parse__SourceUnit {
     fn __token_to_integer<
     >(
         __token: &TokenType,
-        _: ::std::marker::PhantomData<()>,
+        _: core::marker::PhantomData<()>,
     ) -> Option<usize>
     {
         match *__token {
@@ -626,7 +630,7 @@ mod __parse__SourceUnit {
     >(
         __token_index: usize,
         __token: TokenType,
-        _: ::std::marker::PhantomData<()>,
+        _: core::marker::PhantomData<()>,
     ) -> __Symbol<>
     {
         match __token_index {
@@ -660,7 +664,7 @@ mod __parse__SourceUnit {
             __state_machine::Parser::drive(
                 __StateMachine {
                     input,
-                    __phantom: ::std::marker::PhantomData::<()>,
+                    __phantom: core::marker::PhantomData::<()>,
                 },
                 __tokens,
             )
@@ -671,161 +675,161 @@ mod __parse__SourceUnit {
         input: &str,
         __action: i8,
         __lookahead_start: Option<&usize>,
-        __states: &mut ::std::vec::Vec<i8>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __states: &mut alloc::vec::Vec<i8>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> Option<Result<SourceUnit,__lalrpop_util::ParseError<usize, TokenType, LexicalError>>>
     {
         let (__pop_states, __nonterminal) = match __action {
             0 => {
-                __reduce0(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce0(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             1 => {
-                __reduce1(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce1(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             2 => {
-                __reduce2(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce2(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             3 => {
-                __reduce3(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce3(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             4 => {
-                __reduce4(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce4(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             5 => {
-                __reduce5(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce5(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             6 => {
-                __reduce6(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce6(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             7 => {
-                __reduce7(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce7(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             8 => {
-                __reduce8(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce8(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             9 => {
-                __reduce9(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce9(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             10 => {
-                __reduce10(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce10(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             11 => {
-                __reduce11(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce11(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             12 => {
-                __reduce12(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce12(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             13 => {
-                __reduce13(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce13(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             14 => {
-                __reduce14(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce14(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             15 => {
-                __reduce15(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce15(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             16 => {
-                __reduce16(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce16(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             17 => {
-                __reduce17(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce17(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             18 => {
-                __reduce18(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce18(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             19 => {
-                __reduce19(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce19(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             20 => {
-                __reduce20(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce20(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             21 => {
-                __reduce21(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce21(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             22 => {
-                __reduce22(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce22(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             23 => {
-                __reduce23(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce23(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             24 => {
-                __reduce24(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce24(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             25 => {
-                __reduce25(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce25(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             26 => {
-                __reduce26(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce26(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             27 => {
-                __reduce27(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce27(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             28 => {
-                __reduce28(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce28(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             29 => {
-                __reduce29(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce29(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             30 => {
-                __reduce30(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce30(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             31 => {
-                __reduce31(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce31(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             32 => {
-                __reduce32(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce32(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             33 => {
-                __reduce33(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce33(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             34 => {
-                __reduce34(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce34(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             35 => {
-                __reduce35(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce35(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             36 => {
-                __reduce36(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce36(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             37 => {
-                __reduce37(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce37(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             38 => {
-                __reduce38(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce38(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             39 => {
-                __reduce39(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce39(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             40 => {
-                __reduce40(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce40(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             41 => {
-                __reduce41(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce41(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             42 => {
-                __reduce42(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce42(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             43 => {
-                __reduce43(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce43(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             44 => {
-                __reduce44(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce44(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             45 => {
-                __reduce45(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce45(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             46 => {
-                __reduce46(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce46(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             47 => {
-                __reduce47(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce47(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             48 => {
-                __reduce48(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce48(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             49 => {
-                __reduce49(input, __lookahead_start, __symbols, ::std::marker::PhantomData::<()>)
+                __reduce49(input, __lookahead_start, __symbols, core::marker::PhantomData::<()>)
             }
             50 => {
                 // __SourceUnit = SourceUnit => ActionFn(0);
@@ -850,7 +854,7 @@ mod __parse__SourceUnit {
     }
     fn __pop_Variant1<
     >(
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>
     ) -> (usize, Expression, usize)
      {
         match __symbols.pop() {
@@ -860,7 +864,7 @@ mod __parse__SourceUnit {
     }
     fn __pop_Variant6<
     >(
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>
     ) -> (usize, SourceUnit, usize)
      {
         match __symbols.pop() {
@@ -870,7 +874,7 @@ mod __parse__SourceUnit {
     }
     fn __pop_Variant7<
     >(
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>
     ) -> (usize, SourceUnitPart, usize)
      {
         match __symbols.pop() {
@@ -880,7 +884,7 @@ mod __parse__SourceUnit {
     }
     fn __pop_Variant9<
     >(
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>
     ) -> (usize, Statement, usize)
      {
         match __symbols.pop() {
@@ -890,7 +894,7 @@ mod __parse__SourceUnit {
     }
     fn __pop_Variant0<
     >(
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>
     ) -> (usize, TokenType, usize)
      {
         match __symbols.pop() {
@@ -900,7 +904,7 @@ mod __parse__SourceUnit {
     }
     fn __pop_Variant4<
     >(
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>
     ) -> (usize, Vec<Expression>, usize)
      {
         match __symbols.pop() {
@@ -908,30 +912,10 @@ mod __parse__SourceUnit {
             _ => __symbol_type_mismatch()
         }
     }
-    fn __pop_Variant3<
-    >(
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>
-    ) -> (usize, usize, usize)
-     {
-        match __symbols.pop() {
-            Some((__l, __Symbol::Variant3(__v), __r)) => (__l, __v, __r),
-            _ => __symbol_type_mismatch()
-        }
-    }
-    fn __pop_Variant5<
-    >(
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>
-    ) -> (usize, ::std::option::Option<Expression>, usize)
-     {
-        match __symbols.pop() {
-            Some((__l, __Symbol::Variant5(__v), __r)) => (__l, __v, __r),
-            _ => __symbol_type_mismatch()
-        }
-    }
     fn __pop_Variant2<
     >(
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>
-    ) -> (usize, ::std::vec::Vec<Expression>, usize)
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>
+    ) -> (usize, alloc::vec::Vec<Expression>, usize)
      {
         match __symbols.pop() {
             Some((__l, __Symbol::Variant2(__v), __r)) => (__l, __v, __r),
@@ -940,11 +924,31 @@ mod __parse__SourceUnit {
     }
     fn __pop_Variant8<
     >(
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>
-    ) -> (usize, ::std::vec::Vec<SourceUnitPart>, usize)
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>
+    ) -> (usize, alloc::vec::Vec<SourceUnitPart>, usize)
      {
         match __symbols.pop() {
             Some((__l, __Symbol::Variant8(__v), __r)) => (__l, __v, __r),
+            _ => __symbol_type_mismatch()
+        }
+    }
+    fn __pop_Variant5<
+    >(
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>
+    ) -> (usize, core::option::Option<Expression>, usize)
+     {
+        match __symbols.pop() {
+            Some((__l, __Symbol::Variant5(__v), __r)) => (__l, __v, __r),
+            _ => __symbol_type_mismatch()
+        }
+    }
+    fn __pop_Variant3<
+    >(
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>
+    ) -> (usize, usize, usize)
+     {
+        match __symbols.pop() {
+            Some((__l, __Symbol::Variant3(__v), __r)) => (__l, __v, __r),
             _ => __symbol_type_mismatch()
         }
     }
@@ -952,8 +956,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // (<Expression> ",") = Expression, "," => ActionFn(45);
@@ -970,8 +974,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // (<Expression> ",")* =  => ActionFn(43);
@@ -985,8 +989,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // (<Expression> ",")* = (<Expression> ",")+ => ActionFn(44);
@@ -1001,8 +1005,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // (<Expression> ",")+ = Expression, "," => ActionFn(48);
@@ -1019,8 +1023,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // (<Expression> ",")+ = (<Expression> ",")+, Expression, "," => ActionFn(49);
@@ -1038,8 +1042,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // @L =  => ActionFn(37);
@@ -1053,8 +1057,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // @R =  => ActionFn(36);
@@ -1068,8 +1072,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // ArithExpression = ArithExpression, "+", Factor => ActionFn(78);
@@ -1087,8 +1091,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // ArithExpression = ArithExpression, "-", Factor => ActionFn(79);
@@ -1106,8 +1110,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // ArithExpression = Factor => ActionFn(21);
@@ -1122,8 +1126,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Comma<Expression> = Expression => ActionFn(104);
@@ -1138,8 +1142,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Comma<Expression> =  => ActionFn(105);
@@ -1153,8 +1157,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Comma<Expression> = (<Expression> ",")+, Expression => ActionFn(106);
@@ -1171,8 +1175,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Comma<Expression> = (<Expression> ",")+ => ActionFn(107);
@@ -1187,8 +1191,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Conditional = Expression, "um", Expression, "um", "==" => ActionFn(80);
@@ -1208,8 +1212,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Conditional = Expression, "um", Expression, "um", "!=" => ActionFn(81);
@@ -1229,8 +1233,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Conditional = Expression, "ne_kal", Expression, ">" => ActionFn(82);
@@ -1249,8 +1253,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Conditional = Expression, "ne_kal", Expression, "<" => ActionFn(83);
@@ -1269,8 +1273,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Conditional = Term => ActionFn(18);
@@ -1285,8 +1289,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Expression = ArithExpression => ActionFn(13);
@@ -1301,8 +1305,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Expression? = Expression => ActionFn(41);
@@ -1317,8 +1321,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Expression? =  => ActionFn(42);
@@ -1332,8 +1336,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Expressions = Comma<Expression> => ActionFn(3);
@@ -1348,8 +1352,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Factor = Factor, "*", Unary => ActionFn(84);
@@ -1367,8 +1371,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Factor = Factor, "/", Unary => ActionFn(85);
@@ -1386,8 +1390,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Factor = Factor, "%", Unary => ActionFn(86);
@@ -1405,8 +1409,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Factor = Unary => ActionFn(25);
@@ -1421,8 +1425,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // SourceUnit = SourceUnitPart+ => ActionFn(1);
@@ -1437,8 +1441,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // SourceUnitPart = Statement => ActionFn(2);
@@ -1453,8 +1457,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // SourceUnitPart+ = SourceUnitPart => ActionFn(39);
@@ -1469,8 +1473,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // SourceUnitPart+ = SourceUnitPart+, SourceUnitPart => ActionFn(40);
@@ -1487,14 +1491,14 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
-        // Statement = Declaration, Expression, ";" => ActionFn(87);
+        // Statement = Declaration, Expressions, ";" => ActionFn(87);
         assert!(__symbols.len() >= 3);
         let __sym2 = __pop_Variant0(__symbols);
-        let __sym1 = __pop_Variant1(__symbols);
+        let __sym1 = __pop_Variant4(__symbols);
         let __sym0 = __pop_Variant0(__symbols);
         let __start = __sym0.0.clone();
         let __end = __sym2.2.clone();
@@ -1506,8 +1510,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Statement = Expression, "=", Expression, ";" => ActionFn(88);
@@ -1526,8 +1530,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Statement = Write, Expression, ";" => ActionFn(89);
@@ -1545,8 +1549,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Statement = If, Conditional, "{", SourceUnit, "}" => ActionFn(90);
@@ -1566,8 +1570,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Statement = If, Conditional, "{", SourceUnit, "}", Else, "{", SourceUnit, "}" => ActionFn(91);
@@ -1591,8 +1595,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Statement = Expression, "(", Expressions, ")", "{", SourceUnit, "}" => ActionFn(92);
@@ -1614,8 +1618,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Statement = Return, Expression, ";" => ActionFn(93);
@@ -1633,8 +1637,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Statement = Expression, ";" => ActionFn(94);
@@ -1651,8 +1655,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Statement = Loop, Conditional, "{", SourceUnit, "}" => ActionFn(95);
@@ -1672,8 +1676,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Term = Integer => ActionFn(96);
@@ -1688,8 +1692,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Term = Float => ActionFn(97);
@@ -1704,8 +1708,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Term = Identifier => ActionFn(98);
@@ -1720,8 +1724,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Term = StringLiteral => ActionFn(99);
@@ -1736,8 +1740,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Term = InputNumber => ActionFn(100);
@@ -1752,8 +1756,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Term = InputString => ActionFn(101);
@@ -1768,8 +1772,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Term = Term, "Open", Expressions, "Close" => ActionFn(102);
@@ -1788,8 +1792,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Term = "(", Expression, ")" => ActionFn(35);
@@ -1807,8 +1811,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Unary = "-", Unary => ActionFn(103);
@@ -1825,8 +1829,8 @@ mod __parse__SourceUnit {
     >(
         input: &str,
         __lookahead_start: Option<&usize>,
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<>,usize)>,
-        _: ::std::marker::PhantomData<()>,
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<>,usize)>,
+        _: core::marker::PhantomData<()>,
     ) -> (usize, usize)
     {
         // Unary = Term => ActionFn(27);
@@ -1854,7 +1858,7 @@ fn __action0<
 fn __action1<
 >(
     input: &str,
-    (_, __0, _): (usize, ::std::vec::Vec<SourceUnitPart>, usize),
+    (_, __0, _): (usize, alloc::vec::Vec<SourceUnitPart>, usize),
 ) -> SourceUnit
 {
     SourceUnit(__0)
@@ -1886,12 +1890,12 @@ fn __action4<
     input: &str,
     (_, a, _): (usize, usize, usize),
     (_, _, _): (usize, TokenType, usize),
-    (_, id, _): (usize, Expression, usize),
+    (_, vars, _): (usize, Vec<Expression>, usize),
     (_, _, _): (usize, TokenType, usize),
     (_, b, _): (usize, usize, usize),
 ) -> Statement
 {
-    Statement::Declaration((a,b),id)
+    Statement::Declaration((a,b),vars)
 }
 
 #[allow(unused_variables)]
@@ -2340,8 +2344,8 @@ fn __action37<
 fn __action38<
 >(
     input: &str,
-    (_, v, _): (usize, ::std::vec::Vec<Expression>, usize),
-    (_, e, _): (usize, ::std::option::Option<Expression>, usize),
+    (_, v, _): (usize, alloc::vec::Vec<Expression>, usize),
+    (_, e, _): (usize, core::option::Option<Expression>, usize),
 ) -> Vec<Expression>
 {
     match e {
@@ -2359,18 +2363,18 @@ fn __action39<
 >(
     input: &str,
     (_, __0, _): (usize, SourceUnitPart, usize),
-) -> ::std::vec::Vec<SourceUnitPart>
+) -> alloc::vec::Vec<SourceUnitPart>
 {
-    vec![__0]
+    alloc::vec![__0]
 }
 
 #[allow(unused_variables)]
 fn __action40<
 >(
     input: &str,
-    (_, v, _): (usize, ::std::vec::Vec<SourceUnitPart>, usize),
+    (_, v, _): (usize, alloc::vec::Vec<SourceUnitPart>, usize),
     (_, e, _): (usize, SourceUnitPart, usize),
-) -> ::std::vec::Vec<SourceUnitPart>
+) -> alloc::vec::Vec<SourceUnitPart>
 {
     { let mut v = v; v.push(e); v }
 }
@@ -2380,7 +2384,7 @@ fn __action41<
 >(
     input: &str,
     (_, __0, _): (usize, Expression, usize),
-) -> ::std::option::Option<Expression>
+) -> core::option::Option<Expression>
 {
     Some(__0)
 }
@@ -2391,7 +2395,7 @@ fn __action42<
     input: &str,
     __lookbehind: &usize,
     __lookahead: &usize,
-) -> ::std::option::Option<Expression>
+) -> core::option::Option<Expression>
 {
     None
 }
@@ -2402,17 +2406,17 @@ fn __action43<
     input: &str,
     __lookbehind: &usize,
     __lookahead: &usize,
-) -> ::std::vec::Vec<Expression>
+) -> alloc::vec::Vec<Expression>
 {
-    vec![]
+    alloc::vec![]
 }
 
 #[allow(unused_variables)]
 fn __action44<
 >(
     input: &str,
-    (_, v, _): (usize, ::std::vec::Vec<Expression>, usize),
-) -> ::std::vec::Vec<Expression>
+    (_, v, _): (usize, alloc::vec::Vec<Expression>, usize),
+) -> alloc::vec::Vec<Expression>
 {
     v
 }
@@ -2433,18 +2437,18 @@ fn __action46<
 >(
     input: &str,
     (_, __0, _): (usize, Expression, usize),
-) -> ::std::vec::Vec<Expression>
+) -> alloc::vec::Vec<Expression>
 {
-    vec![__0]
+    alloc::vec![__0]
 }
 
 #[allow(unused_variables)]
 fn __action47<
 >(
     input: &str,
-    (_, v, _): (usize, ::std::vec::Vec<Expression>, usize),
+    (_, v, _): (usize, alloc::vec::Vec<Expression>, usize),
     (_, e, _): (usize, Expression, usize),
-) -> ::std::vec::Vec<Expression>
+) -> alloc::vec::Vec<Expression>
 {
     { let mut v = v; v.push(e); v }
 }
@@ -2455,7 +2459,7 @@ fn __action48<
     input: &str,
     __0: (usize, Expression, usize),
     __1: (usize, TokenType, usize),
-) -> ::std::vec::Vec<Expression>
+) -> alloc::vec::Vec<Expression>
 {
     let __start0 = __0.0.clone();
     let __end0 = __1.2.clone();
@@ -2475,10 +2479,10 @@ fn __action48<
 fn __action49<
 >(
     input: &str,
-    __0: (usize, ::std::vec::Vec<Expression>, usize),
+    __0: (usize, alloc::vec::Vec<Expression>, usize),
     __1: (usize, Expression, usize),
     __2: (usize, TokenType, usize),
-) -> ::std::vec::Vec<Expression>
+) -> alloc::vec::Vec<Expression>
 {
     let __start0 = __1.0.clone();
     let __end0 = __2.2.clone();
@@ -2499,7 +2503,7 @@ fn __action49<
 fn __action50<
 >(
     input: &str,
-    __0: (usize, ::std::option::Option<Expression>, usize),
+    __0: (usize, core::option::Option<Expression>, usize),
 ) -> Vec<Expression>
 {
     let __start0 = __0.0.clone();
@@ -2521,8 +2525,8 @@ fn __action50<
 fn __action51<
 >(
     input: &str,
-    __0: (usize, ::std::vec::Vec<Expression>, usize),
-    __1: (usize, ::std::option::Option<Expression>, usize),
+    __0: (usize, alloc::vec::Vec<Expression>, usize),
+    __1: (usize, core::option::Option<Expression>, usize),
 ) -> Vec<Expression>
 {
     let __start0 = __0.0.clone();
@@ -2808,7 +2812,7 @@ fn __action61<
 >(
     input: &str,
     __0: (usize, TokenType, usize),
-    __1: (usize, Expression, usize),
+    __1: (usize, Vec<Expression>, usize),
     __2: (usize, TokenType, usize),
     __3: (usize, usize, usize),
 ) -> Statement
@@ -3534,7 +3538,7 @@ fn __action87<
 >(
     input: &str,
     __0: (usize, TokenType, usize),
-    __1: (usize, Expression, usize),
+    __1: (usize, Vec<Expression>, usize),
     __2: (usize, TokenType, usize),
 ) -> Statement
 {
@@ -4021,7 +4025,7 @@ fn __action105<
 fn __action106<
 >(
     input: &str,
-    __0: (usize, ::std::vec::Vec<Expression>, usize),
+    __0: (usize, alloc::vec::Vec<Expression>, usize),
     __1: (usize, Expression, usize),
 ) -> Vec<Expression>
 {
@@ -4043,7 +4047,7 @@ fn __action106<
 fn __action107<
 >(
     input: &str,
-    __0: (usize, ::std::vec::Vec<Expression>, usize),
+    __0: (usize, alloc::vec::Vec<Expression>, usize),
 ) -> Vec<Expression>
 {
     let __start0 = __0.2.clone();
@@ -4061,16 +4065,19 @@ fn __action107<
     )
 }
 
-pub trait __ToTriple<> {
+pub trait __ToTriple<>
+{
     fn to_triple(value: Self) -> Result<(usize,TokenType,usize), __lalrpop_util::ParseError<usize, TokenType, LexicalError>>;
 }
 
-impl<> __ToTriple<> for (usize, TokenType, usize) {
+impl<> __ToTriple<> for (usize, TokenType, usize)
+{
     fn to_triple(value: Self) -> Result<(usize,TokenType,usize), __lalrpop_util::ParseError<usize, TokenType, LexicalError>> {
         Ok(value)
     }
 }
-impl<> __ToTriple<> for Result<(usize, TokenType, usize), LexicalError> {
+impl<> __ToTriple<> for Result<(usize, TokenType, usize), LexicalError>
+{
     fn to_triple(value: Self) -> Result<(usize,TokenType,usize), __lalrpop_util::ParseError<usize, TokenType, LexicalError>> {
         match value {
             Ok(v) => Ok(v),
