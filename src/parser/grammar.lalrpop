@@ -33,7 +33,8 @@ Statement:Statement = {
     <a:@L> <name:Expression> "(" <params:Expressions> ")" "{" <s:SourceUnit> "}" <b:@R> => Statement::FunctionDeclaration((a,b),name,params,s),
     <a:@L> Return <expr:Expression> ";" <b:@R>  => Statement::Return((a,b),expr),
     <a:@L> <expr:Expression> ";" <b:@R>  => Statement::EmptyExpression((a,b),expr),
-    <a:@L> <condition:Conditional> If Loop "{" <s:SourceUnit> "}" <b:@R> => Statement::Loop((a,b),condition,s)
+    <a:@L> <condition:Conditional> If Loop "{" <s:SourceUnit> "}" <b:@R> => Statement::Loop((a,b),condition,s),
+    <a:@L> <condition:ConditionalWithAgglutination> Loop "{" <s:SourceUnit> "}" <b:@R> => Statement::Loop((a,b),condition,s)
 }; 
 
 Expression:Expression= {
