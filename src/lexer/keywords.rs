@@ -20,12 +20,12 @@ impl Keywords {
         // The following list contain keywords that are named meme_style
         // Last word will be in മലയാളലിപി(Malayalalipi)
         let list = keywordize!(
-            ["vachaakam_vangikuga","വാചകംവാങ്ങിക്കുക"] => TokenType::InputString,
-            ["akam_vangikuga", "അക്കംവാങ്ങിക്കുക"] => TokenType::InputNumber,
+            ["vachakam_vangikuga","vachakam_vangikuka","vachagam_vangikuga","vachagam_vangikuka","വാചകംവാങ്ങിക്കുക"] => TokenType::InputString,
+            ["akam_vangikuga", "akkam_vangikuga","അക്കംവാങ്ങിക്കുക"] => TokenType::InputNumber,
             ["ezhuthuka","ezhuthuga","kanikuka","kanikuga","എഴുതുക","കാണിക്കുക"] => TokenType::Write,
-            ["enkil", "എങ്കിൽ"] => TokenType::If,
+            ["enkil","engil" ,"എങ്കിൽ"] => TokenType::If,
             ["adhallengil","adhallangil", "അതല്ലെങ്കിൽ"] => TokenType::Else,
-            ["aavarthikuga","avarthikuga","ആവർത്തിക്കുക",""] => TokenType::Loop,
+            ["aavarthikuga","avarthikuga","aavarthikuka","avarthikuka","ആവർത്തിക്കുക"] => TokenType::Loop,
             ["veluthan","വലുതാണ്"] => TokenType::GreaterThan,
             ["veluthanenkil","വലുതാണെങ്കിൽ"] => TokenType::IfGreaterThan,
             ["thullyamalla","onnalla", "തുല്യമല്ല","ഒന്നല്ല"] => TokenType::NotEqual,
@@ -36,7 +36,7 @@ impl Keywords {
             ["thullyamanenkil","onnanenkil", "തുല്യമാണെങ്കിൽ","ഒന്നാണെങ്കിൽ"] => TokenType::IfEqualTo,
             ["um", "ഉം"] => TokenType::Um,
             ["ne_kal", "നെകാൾ"] => TokenType::Nekal,
-            ["kodukuga","kodukuka","madakiayakuga","കൊടുക്കുക","മടക്കിഅയയ്ക്കുക"] => TokenType::Return
+            ["kodukuga","kodukuka","madakiayakuga","madakiayakuka","കൊടുക്കുക","മടക്കിഅയയ്ക്കുക"] => TokenType::Return
         );
 
         Self { list }
