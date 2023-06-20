@@ -140,6 +140,12 @@ In general
       * `വലുതാണ്`
     * **cheruthan**
       * `ചെറുതാണ്`
+    * **adhallengil**
+      * `adhallenkil`
+      * `അതല്ലെങ്കിൽ`
+
+#### Agglutination of conditional statements
+Conditional statements like `thullyaman enkil` can be agglutinated together like `thullyamanenkil`
 
 ## Iterative Statements Or Loops
 
