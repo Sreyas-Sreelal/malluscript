@@ -1,7 +1,6 @@
 use std::fmt::Formatter;
 #[derive(Clone, Debug, PartialEq, PartialOrd)]
 pub enum TokenType {
-    Declaration,
     Write,
     InputString,
     InputNumber,
@@ -33,30 +32,33 @@ pub enum TokenType {
     Float(f64),
     Symbol(usize),
     Return,
+    IfGreaterThan,
+    IfNotEqual,
+    IfLessThan,
+    IfEqualTo,
 }
 
 impl std::fmt::Display for TokenType {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            TokenType::Declaration => write!(f, "pwoli_sadhanam"),
-            TokenType::Write => write!(f, "dhe_pidicho"),
-            TokenType::InputString => write!(f, "address_thada"),
-            TokenType::InputNumber => write!(f, "number_thada"),
+            TokenType::Write => write!(f, "ezhuthuka"),
+            TokenType::InputString => write!(f, "vachaakam_vangikuga"),
+            TokenType::InputNumber => write!(f, "akam_vangikuga"),
             TokenType::LeftBrace => write!(f, "{{"),
             TokenType::RightBrace => write!(f, "}}"),
-            TokenType::If => write!(f, "seriyano_mwone"),
-            TokenType::Else => write!(f, "seri_allel"),
-            TokenType::Loop => write!(f, "repeat_adi"),
+            TokenType::If => write!(f, "enkil"),
+            TokenType::Else => write!(f, "adhallengil"),
+            TokenType::Loop => write!(f, "aavarthikuga"),
             TokenType::Assignment => write!(f, "="),
             TokenType::Plus => write!(f, "+"),
             TokenType::Minus => write!(f, "-"),
             TokenType::Product => write!(f, "*"),
             TokenType::Divide => write!(f, "/"),
             TokenType::Modulo => write!(f, "%"),
-            TokenType::GreaterThan => write!(f, "veluthane"),
-            TokenType::LessThan => write!(f, "cheruthane"),
-            TokenType::EqualTo => write!(f, "same_aane"),
-            TokenType::NotEqual => write!(f, "same_alle"),
+            TokenType::GreaterThan => write!(f, "veluthan"),
+            TokenType::LessThan => write!(f, "cheruthan"),
+            TokenType::EqualTo => write!(f, "thullyaman"),
+            TokenType::NotEqual => write!(f, "thullyamalla"),
             TokenType::SemiColon => write!(f, ";"),
             TokenType::OpenParantheses => write!(f, "("),
             TokenType::CloseParantheses => write!(f, ")"),
@@ -67,9 +69,13 @@ impl std::fmt::Display for TokenType {
             TokenType::Float(number) => write!(f, "{}", number),
             TokenType::Symbol(symbol) => write!(f, "{}", symbol),
             TokenType::Comma => write!(f, ","),
-            TokenType::Return => write!(f, "return"),
+            TokenType::Return => write!(f, "kodukuga"),
             TokenType::AngleOpen => write!(f, "<"),
             TokenType::AngleClose => write!(f, ">"),
+            TokenType::IfGreaterThan => write!(f, "veluthanenkil"),
+            TokenType::IfNotEqual => write!(f, "thullyamallenkil"),
+            TokenType::IfLessThan => write!(f, "cheruthanenkil"),
+            TokenType::IfEqualTo => write!(f, "thullyamanenkil"),
         }
     }
 }

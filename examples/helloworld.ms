@@ -1,6 +1,4 @@
-pwoli_sadhanam name;
+kanikuga "Please Enter Your Name: ";
+name = vachakam_vangikuga;
 
-dhe_pidicho "Please Enter Your Name: ";
-name = address_thada;
-
-dhe_pidicho "Swagatham Undei "+name+"\n";
+kanikuga "Swagatham "+name+"\n";

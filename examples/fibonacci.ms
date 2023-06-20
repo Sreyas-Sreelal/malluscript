@@ -1,17 +1,11 @@
-pwoli_sadhanam limit;
-pwoli_sadhanam a;
-pwoli_sadhanam b;
-pwoli_sadhanam c;
-pwoli_sadhanam i;
-
-dhe_pidicho "Input limit: ";
-limit = number_thada;
+kanikuga "Input limit: ";
+limit = akam_vangikuga;
 i = 0;
 a = 0;
 b = 1;
 
-repeat_adi limit ne_kal i cheruthane {
-    dhe_pidicho a + " ";
+limit ne_kal i cheruthan enkil avarthikuga {
+    kanikuga a + " ";
     c = a+b;
     a = b;
     b = c;

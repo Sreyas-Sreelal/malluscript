@@ -1,11 +1,10 @@
-pwoli_sadhanam age;
-dhe_pidicho "Input age: ";
-age=number_thada;
-seriyano 18 ne_kal age cheruthane
+kanikuga "Input age: ";
+age=akam_vangikuga;
+18 ne_kal age cheruthan enkil
 {
-    dhe_pidicho "You are not eligible to vote.\n";
+    kanikuga "You are not eligible to vote.\n";
 }
-seri_allel
+adhallengil
 {
-        dhe_pidicho "You are eligible to vote.\n"; 
+    kanikuga "You are eligible to vote.\n"; 
 }

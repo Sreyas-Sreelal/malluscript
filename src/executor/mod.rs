@@ -72,30 +72,6 @@ impl Executor {
             }
             let SourceUnitPart::Statement(stmt) = x;
             match stmt {
-                Statement::Declaration((p, q), symbols) => {
-                    for symbol in symbols {
-                        if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = symbol {
-                            if self
-                                .symbol_table
-                                .get(&(self.scope_level, *address))
-                                .is_some()
-                            {
-                                return Err((
-                                    (*p, *q),
-                                    RunTimeErrors::SymbolAlreadyDefined(
-                                        self.get_symbol_name(*address).unwrap(),
-                                    ),
-                                ));
-                            } else {
-                                self.symbol_table
-                                    .insert((self.scope_level, *address), DataTypes::Unknown);
-                            }
-                        } else {
-                            return Err(((*p, *q), RunTimeErrors::InvalidAssignment));
-                        }
-                    }
-                }
-
                 Statement::Conditional((_p, _q), expr, truebody, falsebody) => {
                     let truth = to_bool(self.eval_arithmetic_logic_expression(expr)?);
                     if truth {
@@ -120,17 +96,9 @@ impl Executor {
 
                 Statement::Assignment((p, q), l, r) => {
                     if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = l {
-                        if !self
-                            .symbol_table
-                            .contains_key(&(self.scope_level, *address))
-                        {
-                            return Err((
-                                (*p, *q),
-                                RunTimeErrors::UndefinedSymbol(
-                                    self.get_symbol_name(*address).unwrap(),
-                                ),
-                            ));
-                        }
+                        self.symbol_table
+                            .entry((self.scope_level, *address))
+                            .or_insert(DataTypes::Unknown);
                         let data = self.eval_arithmetic_logic_expression(r)?;
                         self.symbol_table.insert((self.scope_level, *address), data);
                     } else {
@@ -167,47 +135,43 @@ impl Executor {
         expr: &Expression,
     ) -> Result<DataTypes, ((usize, usize), RunTimeErrors)> {
         match expr {
-            Expression::Add((_a, _b), l, r) => Ok(self.eval_arithmetic_logic_expression(&**l)?
-                + self.eval_arithmetic_logic_expression(&**r)?),
+            Expression::Add((_a, _b), l, r) => Ok(self.eval_arithmetic_logic_expression(l)?
+                + self.eval_arithmetic_logic_expression(r)?),
 
-            Expression::Multiply((_a, _b), l, r) => Ok(self
-                .eval_arithmetic_logic_expression(&**l)?
-                * self.eval_arithmetic_logic_expression(&**r)?),
+            Expression::Multiply((_a, _b), l, r) => Ok(self.eval_arithmetic_logic_expression(l)?
+                * self.eval_arithmetic_logic_expression(r)?),
 
-            Expression::Subtract((_a, _b), l, r) => Ok(self
-                .eval_arithmetic_logic_expression(&**l)?
-                - self.eval_arithmetic_logic_expression(&**r)?),
+            Expression::Subtract((_a, _b), l, r) => Ok(self.eval_arithmetic_logic_expression(l)?
+                - self.eval_arithmetic_logic_expression(r)?),
 
-            Expression::Divide((_a, _b), l, r) => Ok(self
-                .eval_arithmetic_logic_expression(&**l)?
-                / self.eval_arithmetic_logic_expression(&**r)?),
+            Expression::Divide((_a, _b), l, r) => Ok(self.eval_arithmetic_logic_expression(l)?
+                / self.eval_arithmetic_logic_expression(r)?),
 
-            Expression::Modulo((_a, _b), l, r) => Ok(self
-                .eval_arithmetic_logic_expression(&**l)?
-                % self.eval_arithmetic_logic_expression(&**r)?),
+            Expression::Modulo((_a, _b), l, r) => Ok(self.eval_arithmetic_logic_expression(l)?
+                % self.eval_arithmetic_logic_expression(r)?),
 
             Expression::UnaryMinus((_a, _b), r) => {
-                Ok(DataTypes::Integer(-1) * self.eval_arithmetic_logic_expression(&**r)?)
+                Ok(DataTypes::Integer(-1) * self.eval_arithmetic_logic_expression(r)?)
             }
 
             Expression::Equals((_a, _b), l, r) => Ok(DataTypes::Bool(
-                self.eval_arithmetic_logic_expression(&**l)?
-                    == self.eval_arithmetic_logic_expression(&**r)?,
+                self.eval_arithmetic_logic_expression(l)?
+                    == self.eval_arithmetic_logic_expression(r)?,
             )),
 
             Expression::NotEquals((_a, _b), l, r) => Ok(DataTypes::Bool(
-                self.eval_arithmetic_logic_expression(&**l)?
-                    != self.eval_arithmetic_logic_expression(&**r)?,
+                self.eval_arithmetic_logic_expression(l)?
+                    != self.eval_arithmetic_logic_expression(r)?,
             )),
 
             Expression::GreaterThan((_a, _b), l, r) => Ok(DataTypes::Bool(
-                self.eval_arithmetic_logic_expression(&**l)?
-                    > self.eval_arithmetic_logic_expression(&**r)?,
+                self.eval_arithmetic_logic_expression(l)?
+                    > self.eval_arithmetic_logic_expression(r)?,
             )),
 
             Expression::LessThan((_a, _b), l, r) => Ok(DataTypes::Bool(
-                self.eval_arithmetic_logic_expression(&**l)?
-                    < self.eval_arithmetic_logic_expression(&**r)?,
+                self.eval_arithmetic_logic_expression(l)?
+                    < self.eval_arithmetic_logic_expression(r)?,
             )),
 
             Expression::Integer((a, b), l) => match l {
