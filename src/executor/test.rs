@@ -8,7 +8,7 @@ fn primary_test() {
         i=0;
         i um 0 um onnan enkil {
             i = 10;
-        } adhallangil {
+        } adhallengil {
             i = -1;
         }
         i um 0 um onnalla enkil avarthikuga {

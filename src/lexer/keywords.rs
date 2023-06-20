@@ -24,7 +24,7 @@ impl Keywords {
             ["akam_vangikuga", "akkam_vangikuga","അക്കംവാങ്ങിക്കുക"] => TokenType::InputNumber,
             ["ezhuthuka","ezhuthuga","kanikuka","kanikuga","എഴുതുക","കാണിക്കുക"] => TokenType::Write,
             ["enkil","engil" ,"എങ്കിൽ"] => TokenType::If,
-            ["adhallengil","adhallangil", "അതല്ലെങ്കിൽ"] => TokenType::Else,
+            ["adhallengil","adhallenkil", "അതല്ലെങ്കിൽ"] => TokenType::Else,
             ["aavarthikuga","avarthikuga","aavarthikuka","avarthikuka","ആവർത്തിക്കുക"] => TokenType::Loop,
             ["veluthan","വലുതാണ്"] => TokenType::GreaterThan,
             ["veluthanenkil","വലുതാണെങ്കിൽ"] => TokenType::IfGreaterThan,
