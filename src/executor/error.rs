@@ -1,4 +1,5 @@
 use std::fmt;
+use std::process;
 
 #[derive(Debug)]
 pub enum RunTimeErrors {
@@ -54,5 +55,5 @@ impl fmt::Display for RunTimeErrors {
 
 pub fn raise_error(error: RunTimeErrors) -> ! {
     println!("{}", error);
-    std::process::exit(0)
+    process::exit(0)
 }

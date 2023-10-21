@@ -1,4 +1,4 @@
-use std::fmt::Formatter;
+use std::fmt::{Display, Formatter, Result};
 #[derive(Clone, Debug, PartialEq, PartialOrd)]
 pub enum TokenType {
     Write,
@@ -38,8 +38,8 @@ pub enum TokenType {
     IfEqualTo,
 }
 
-impl std::fmt::Display for TokenType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+impl Display for TokenType {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         match self {
             TokenType::Write => write!(f, "ezhuthuka"),
             TokenType::InputString => write!(f, "vachaakam_vangikuga"),

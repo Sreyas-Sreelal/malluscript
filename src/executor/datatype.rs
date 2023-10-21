@@ -1,5 +1,6 @@
 use crate::executor::error::{raise_error, RunTimeErrors};
 use std::fmt;
+use std::ops;
 
 macro_rules! safe_operation {
     ($l:ident + $r:ident) => {
@@ -59,7 +60,7 @@ impl fmt::Display for DataTypes {
     }
 }
 
-impl std::ops::Add for DataTypes {
+impl ops::Add for DataTypes {
     type Output = Self;
     fn add(self, rhs: DataTypes) -> Self {
         match (self, rhs) {
@@ -85,7 +86,7 @@ impl From<bool> for DataTypes {
     }
 }
 
-impl std::ops::Sub for DataTypes {
+impl ops::Sub for DataTypes {
     type Output = Self;
     fn sub(self, rhs: DataTypes) -> Self {
         match (self, rhs) {
@@ -100,7 +101,7 @@ impl std::ops::Sub for DataTypes {
     }
 }
 
-impl std::ops::Mul for DataTypes {
+impl ops::Mul for DataTypes {
     type Output = Self;
     fn mul(self, rhs: DataTypes) -> Self {
         match (self, rhs) {
@@ -115,7 +116,7 @@ impl std::ops::Mul for DataTypes {
     }
 }
 
-impl std::ops::Div for DataTypes {
+impl ops::Div for DataTypes {
     type Output = Self;
     fn div(self, rhs: DataTypes) -> Self {
         if rhs == DataTypes::Integer(0) || rhs == DataTypes::Float(0.0) {
@@ -133,7 +134,7 @@ impl std::ops::Div for DataTypes {
     }
 }
 
-impl std::ops::Rem for DataTypes {
+impl ops::Rem for DataTypes {
     type Output = Self;
     fn rem(self, rhs: DataTypes) -> Self {
         if rhs == DataTypes::Integer(0) || rhs == DataTypes::Float(0.0) {
