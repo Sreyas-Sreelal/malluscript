@@ -15,12 +15,14 @@ use crate::lexer::tokens::TokenType;
 
 pub type ScopeLevel = i64;
 
+static GLOBAL_SCOPE: ScopeLevel = 0;
+
 pub struct Executor {
     symbol_table: BTreeMap<(ScopeLevel, usize), DataTypes>,
     literal_table: HashMap<usize, String>,
     symbol_lookup_table: HashMap<String, usize>,
     function_table: HashMap<String, (Vec<Expression>, SourceUnit)>,
-    scope_level: ScopeLevel,
+    frame_level: ScopeLevel,
     return_storage: DataTypes,
     subroutine_exit_flag: bool,
 }
@@ -35,7 +37,7 @@ impl Executor {
             literal_table,
             symbol_lookup_table,
             function_table: HashMap::new(),
-            scope_level: 0,
+            frame_level: GLOBAL_SCOPE,
             subroutine_exit_flag: false,
             return_storage: DataTypes::Integer(1),
         }
@@ -97,10 +99,10 @@ impl Executor {
                 Statement::Assignment((p, q), l, r) => match l {
                     Expression::Symbol((_a, _b), TokenType::Symbol(address)) => {
                         self.symbol_table
-                            .entry((self.scope_level, *address))
+                            .entry((self.frame_level, *address))
                             .or_insert(DataTypes::Unknown);
                         let data = self.eval_arithmetic_logic_expression(r)?;
-                        self.symbol_table.insert((self.scope_level, *address), data);
+                        self.symbol_table.insert((self.frame_level, *address), data);
                     }
                     Expression::ListSubScript((_a, _b), expr, index) => {
                         let data = self.eval_arithmetic_logic_expression(r)?;
@@ -111,11 +113,11 @@ impl Executor {
                             };
 
                             self.symbol_table
-                                .entry((self.scope_level, address))
+                                .entry((self.frame_level, address))
                                 .or_insert(DataTypes::Unknown);
                             let left = self
                                 .symbol_table
-                                .get_mut(&(self.scope_level, address))
+                                .get_mut(&(self.frame_level, address))
                                 .unwrap();
 
                             if let DataTypes::List(list) = left {
@@ -216,20 +218,12 @@ impl Executor {
                 _ => Err(((*a, *b), RunTimeErrors::InvalidExpression)),
             },
             Expression::Symbol((a, b), TokenType::Symbol(address)) => {
-                let mut level = self.scope_level;
-                while level > -1 {
-                    if !self.symbol_table.contains_key(&(level, *address)) {
-                        level -= 1;
-                    } else {
-                        break;
-                    }
+                let mut level = self.frame_level;
+
+                if !self.symbol_table.contains_key(&(level, *address)) {
+                    level = 0;
                 }
-                if level == -1 {
-                    return Err((
-                        (*a, *b),
-                        RunTimeErrors::UndefinedSymbol(self.get_symbol_name(*address).unwrap()),
-                    ));
-                }
+
                 match self.symbol_table.get(&(level, *address)) {
                     Some(DataTypes::Integer(number)) => Ok(DataTypes::Integer(*number)),
                     Some(DataTypes::Float(number)) => Ok(DataTypes::Float(*number)),
@@ -237,7 +231,7 @@ impl Executor {
                     Some(DataTypes::List(data)) => Ok(DataTypes::List(data.to_vec())),
                     _ => Err((
                         (*a, *b),
-                        RunTimeErrors::UnInitialzedData(self.get_symbol_name(*address).unwrap()),
+                        RunTimeErrors::UndefinedSymbol(self.get_symbol_name(*address).unwrap()),
                     )),
                 }
             }
@@ -289,20 +283,20 @@ impl Executor {
                             if let Expression::Symbol(_, TokenType::Symbol(y)) = y {
                                 // allocation
                                 let data = self.eval_arithmetic_logic_expression(x)?.clone();
-                                self.symbol_table.insert((self.scope_level + 1, *y), data);
+                                self.symbol_table.insert((self.frame_level + 1, *y), data);
                             } else {
                                 return Err(((*p, *q), RunTimeErrors::InvalidFunctionDeclaration));
                             }
                         }
 
-                        self.scope_level += 1;
+                        self.frame_level += 1;
                         self.return_storage = DataTypes::Unknown;
                         self.execute(&function.1)?;
 
-                        let scope = self.scope_level;
+                        let scope = self.frame_level;
                         self.symbol_table
-                            .retain(|(scope_level, _), _| *scope_level != scope);
-                        self.scope_level -= 1;
+                            .retain(|(frame_level, _), _| *frame_level != scope);
+                        self.frame_level -= 1;
                     } else {
                         return Err(((*p, *q), RunTimeErrors::UndefinedSymbol(name)));
                     }
@@ -329,7 +323,7 @@ impl Executor {
                         _ => return Err(((*p, *q), RunTimeErrors::IncompatibleOperation)),
                     };
 
-                    if let Some(data) = self.symbol_table.get_mut(&(self.scope_level, address)) {
+                    if let Some(data) = self.symbol_table.get_mut(&(self.frame_level, address)) {
                         if let DataTypes::List(list) = data {
                             if index < 0 || index > (list.len() - 1) as i64 {
                                 return Err((
