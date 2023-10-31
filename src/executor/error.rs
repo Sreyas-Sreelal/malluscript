@@ -15,6 +15,7 @@ pub enum RunTimeErrors {
     InvalidFunctionDeclaration,
     ArgumentCountMismatch,
     IntegerOverFlow,
+    IndexOutOfBounds(i64, i64),
 }
 
 impl fmt::Display for RunTimeErrors {
@@ -48,6 +49,10 @@ impl fmt::Display for RunTimeErrors {
             RunTimeErrors::IntegerOverFlow => write!(
                 f,
                 "[Error]: Integer OverFlow, attempt to arithmetic operation that leads to overflow"
+            ),
+            RunTimeErrors::IndexOutOfBounds(index,limit) => write!(
+                f,
+                "[Error]: Index Out Of Bounds, attempted to read/write at index {index} on {limit} sized data"
             ),
         }
     }

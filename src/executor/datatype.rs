@@ -46,6 +46,7 @@ pub enum DataTypes {
     Integer(i64),
     Bool(bool),
     Float(f64),
+    List(Vec<DataTypes>),
     Unknown,
 }
 
@@ -75,6 +76,10 @@ impl ops::Add for DataTypes {
             (DataTypes::Float(l), DataTypes::String(r)) => DataTypes::String(l.to_string() + &r),
             (DataTypes::String(l), DataTypes::Float(r)) => DataTypes::String(l + &r.to_string()),
             (DataTypes::String(l), DataTypes::String(r)) => DataTypes::String(l + &r),
+            (DataTypes::List(mut l), r) => {
+                l.push(r);
+                DataTypes::List(l)
+            }
             _ => raise_error(RunTimeErrors::IncompatibleOperation),
         }
     }

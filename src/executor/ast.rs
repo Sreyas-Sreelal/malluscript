@@ -41,4 +41,7 @@ pub enum Expression {
     InputNumber((usize, usize)),
 
     FunctionCall((usize, usize), Box<Expression>, Vec<Expression>),
+
+    ListExpression((usize, usize), Vec<Expression>),
+    ListSubScript((usize, usize), Box<Expression>, Box<Expression>),
 }

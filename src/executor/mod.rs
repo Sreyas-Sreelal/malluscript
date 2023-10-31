@@ -94,17 +94,50 @@ impl Executor {
                     let _ = stdout().flush();
                 }
 
-                Statement::Assignment((p, q), l, r) => {
-                    if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = l {
+                Statement::Assignment((p, q), l, r) => match l {
+                    Expression::Symbol((_a, _b), TokenType::Symbol(address)) => {
                         self.symbol_table
                             .entry((self.scope_level, *address))
                             .or_insert(DataTypes::Unknown);
                         let data = self.eval_arithmetic_logic_expression(r)?;
                         self.symbol_table.insert((self.scope_level, *address), data);
-                    } else {
+                    }
+                    Expression::ListSubScript((_a, _b), expr, index) => {
+                        let data = self.eval_arithmetic_logic_expression(r)?;
+                        if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = **expr {
+                            let index = match self.eval_arithmetic_logic_expression(index) {
+                                Ok(DataTypes::Integer(idx)) => idx,
+                                _ => return Err(((*p, *q), RunTimeErrors::IncompatibleOperation)),
+                            };
+
+                            self.symbol_table
+                                .entry((self.scope_level, address))
+                                .or_insert(DataTypes::Unknown);
+                            let left = self
+                                .symbol_table
+                                .get_mut(&(self.scope_level, address))
+                                .unwrap();
+
+                            if let DataTypes::List(list) = left {
+                                if index < 0 || index > (list.len() - 1) as i64 {
+                                    return Err((
+                                        (*p, *q),
+                                        RunTimeErrors::IndexOutOfBounds(index, list.len() as i64),
+                                    ));
+                                }
+
+                                list[index as usize] = data;
+                            } else {
+                                return Err(((*p, *q), RunTimeErrors::InvalidExpression));
+                            }
+                        } else {
+                            return Err(((*p, *q), RunTimeErrors::InvalidExpression));
+                        }
+                    }
+                    _ => {
                         return Err(((*p, *q), RunTimeErrors::InvalidAssignment));
                     }
-                }
+                },
                 Statement::EmptyExpression((_p, _q), expr) => {
                     self.eval_arithmetic_logic_expression(expr)?;
                 }
@@ -201,6 +234,7 @@ impl Executor {
                     Some(DataTypes::Integer(number)) => Ok(DataTypes::Integer(*number)),
                     Some(DataTypes::Float(number)) => Ok(DataTypes::Float(*number)),
                     Some(DataTypes::String(data)) => Ok(DataTypes::String(data.to_string())),
+                    Some(DataTypes::List(data)) => Ok(DataTypes::List(data.to_vec())),
                     _ => Err((
                         (*a, *b),
                         RunTimeErrors::UnInitialzedData(self.get_symbol_name(*address).unwrap()),
@@ -274,6 +308,44 @@ impl Executor {
                     }
                     self.subroutine_exit_flag = false;
                     Ok(self.return_storage.clone())
+                } else {
+                    Err(((*p, *q), RunTimeErrors::InvalidExpression))
+                }
+            }
+
+            Expression::ListExpression((_p, _q), items) => {
+                let mut list = Vec::new();
+                for item in items {
+                    let data = self.eval_arithmetic_logic_expression(item)?;
+                    list.push(data);
+                }
+                Ok(DataTypes::List(list))
+            }
+
+            Expression::ListSubScript((p, q), symbol, index) => {
+                if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = **symbol {
+                    let index = match self.eval_arithmetic_logic_expression(index) {
+                        Ok(DataTypes::Integer(idx)) => idx,
+                        _ => return Err(((*p, *q), RunTimeErrors::IncompatibleOperation)),
+                    };
+
+                    if let Some(data) = self.symbol_table.get_mut(&(self.scope_level, address)) {
+                        if let DataTypes::List(list) = data {
+                            if index < 0 || index > (list.len() - 1) as i64 {
+                                return Err((
+                                    (*p, *q),
+                                    RunTimeErrors::IndexOutOfBounds(index, list.len() as i64),
+                                ));
+                            }
+                            let value = &list[index as usize];
+                            Ok(value.clone())
+                        } else {
+                            Err(((*p, *q), RunTimeErrors::InvalidExpression))
+                        }
+                    } else {
+                        let name = self.get_symbol_name(address).unwrap();
+                        Err(((*p, *q), RunTimeErrors::UndefinedSymbol(name)))
+                    }
                 } else {
                     Err(((*p, *q), RunTimeErrors::InvalidExpression))
                 }
