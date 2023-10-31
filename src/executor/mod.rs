@@ -98,11 +98,17 @@ impl Executor {
 
                 Statement::Assignment((p, q), l, r) => match l {
                     Expression::Symbol((_a, _b), TokenType::Symbol(address)) => {
-                        self.symbol_table
-                            .entry((self.frame_level, *address))
-                            .or_insert(DataTypes::Unknown);
+                        let mut frame_level = self.frame_level;
+                        let mut data_address = *address;
+
+                        let left_type = self.symbol_table.get(&(self.frame_level, *address));
+                        if let Some(DataTypes::Ref((level, address))) = left_type {
+                            frame_level = *level;
+                            data_address = *address;
+                        }
+
                         let data = self.eval_arithmetic_logic_expression(r)?;
-                        self.symbol_table.insert((self.frame_level, *address), data);
+                        self.symbol_table.insert((frame_level, data_address), data);
                     }
                     Expression::ListSubScript((_a, _b), expr, index) => {
                         let data = self.eval_arithmetic_logic_expression(r)?;
@@ -112,15 +118,17 @@ impl Executor {
                                 _ => return Err(((*p, *q), RunTimeErrors::IncompatibleOperation)),
                             };
 
-                            self.symbol_table
-                                .entry((self.frame_level, address))
-                                .or_insert(DataTypes::Unknown);
-                            let left = self
-                                .symbol_table
-                                .get_mut(&(self.frame_level, address))
-                                .unwrap();
+                            let mut frame_level = self.frame_level;
+                            let mut data_address = address;
+                            let left_type = self.symbol_table.get(&(self.frame_level, address));
+                            if let Some(DataTypes::Ref((level, address))) = left_type {
+                                frame_level = *level;
+                                data_address = *address;
+                            }
 
-                            if let DataTypes::List(list) = left {
+                            let left = self.symbol_table.get_mut(&(frame_level, data_address));
+
+                            if let Some(DataTypes::List(list)) = left {
                                 if index < 0 || index > (list.len() - 1) as i64 {
                                     return Err((
                                         (*p, *q),
@@ -229,6 +237,9 @@ impl Executor {
                     Some(DataTypes::Float(number)) => Ok(DataTypes::Float(*number)),
                     Some(DataTypes::String(data)) => Ok(DataTypes::String(data.to_string())),
                     Some(DataTypes::List(data)) => Ok(DataTypes::List(data.to_vec())),
+                    Some(DataTypes::Ref((level, address))) => {
+                        Ok(self.symbol_table.get(&(*level, *address)).unwrap().clone())
+                    }
                     _ => Err((
                         (*a, *b),
                         RunTimeErrors::UndefinedSymbol(self.get_symbol_name(*address).unwrap()),
@@ -283,7 +294,15 @@ impl Executor {
                             if let Expression::Symbol(_, TokenType::Symbol(y)) = y {
                                 // allocation
                                 let data = self.eval_arithmetic_logic_expression(x)?.clone();
-                                self.symbol_table.insert((self.frame_level + 1, *y), data);
+                                if let DataTypes::List(_) = data {
+                                    // lists will be passed by reference by default
+                                    self.symbol_table.insert(
+                                        (self.frame_level + 1, *y),
+                                        DataTypes::Ref((self.frame_level, *y)),
+                                    );
+                                } else {
+                                    self.symbol_table.insert((self.frame_level + 1, *y), data);
+                                }
                             } else {
                                 return Err(((*p, *q), RunTimeErrors::InvalidFunctionDeclaration));
                             }
@@ -322,8 +341,14 @@ impl Executor {
                         Ok(DataTypes::Integer(idx)) => idx,
                         _ => return Err(((*p, *q), RunTimeErrors::IncompatibleOperation)),
                     };
-
-                    if let Some(data) = self.symbol_table.get_mut(&(self.frame_level, address)) {
+                    let mut frame_level = self.frame_level;
+                    let mut data_address = address;
+                    let left_type = self.symbol_table.get(&(self.frame_level, address));
+                    if let Some(DataTypes::Ref((level, address))) = left_type {
+                        frame_level = *level;
+                        data_address = *address;
+                    }
+                    if let Some(data) = self.symbol_table.get_mut(&(frame_level, data_address)) {
                         if let DataTypes::List(list) = data {
                             if index < 0 || index > (list.len() - 1) as i64 {
                                 return Err((
