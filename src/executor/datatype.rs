@@ -57,6 +57,23 @@ impl fmt::Display for DataTypes {
             DataTypes::String(s) => write!(f, "{}", literal_eval(s)),
             DataTypes::Integer(i) => write!(f, "{}", i),
             DataTypes::Float(n) => write!(f, "{}", n),
+            DataTypes::List(list) => {
+                let mut string = String::from("[");
+                let mut iter = list.iter().peekable();
+                while let Some(x) = iter.next() {
+                    if let DataTypes::String(_) = x {
+                        string += &("\"".to_owned() + &x.to_string() + "\"");
+                    } else {
+                        string += &x.to_string();
+                    }
+
+                    if let Some(_) = iter.peek() {
+                        string += ",";
+                    }
+                }
+                string += "]";
+                write!(f, "{}", string)
+            }
             _ => write!(f, "<Garbage:UnintialisedMemorySpace>"),
         }
     }
