@@ -112,12 +112,11 @@ impl Executor {
                     }
                     Expression::ListSubScript((_a, _b), expr, index) => {
                         let data = self.eval_arithmetic_logic_expression(r)?;
+                        let index = match self.eval_arithmetic_logic_expression(index) {
+                            Ok(DataTypes::Integer(idx)) => idx,
+                            _ => return Err(((*p, *q), RunTimeErrors::IncompatibleOperation)),
+                        };
                         if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = **expr {
-                            let index = match self.eval_arithmetic_logic_expression(index) {
-                                Ok(DataTypes::Integer(idx)) => idx,
-                                _ => return Err(((*p, *q), RunTimeErrors::IncompatibleOperation)),
-                            };
-
                             let mut frame_level = self.frame_level;
                             let mut data_address = address;
                             let left_type = self.symbol_table.get(&(self.frame_level, address));
@@ -140,6 +139,11 @@ impl Executor {
                             } else {
                                 return Err(((*p, *q), RunTimeErrors::InvalidExpression));
                             }
+                        } else if let Expression::ListSubScript((_a, _b), _, _) = **expr {
+                            let mut indices = Vec::new();
+                            indices.push(index);
+                            let reference = self.evaluate_list_subscript(&l, &mut indices)?;
+                            *reference = data;
                         } else {
                             return Err(((*p, *q), RunTimeErrors::InvalidExpression));
                         }
@@ -335,12 +339,12 @@ impl Executor {
                 Ok(DataTypes::List(list))
             }
 
-            Expression::ListSubScript((p, q), symbol, index) => {
-                if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = **symbol {
-                    let index = match self.eval_arithmetic_logic_expression(index) {
-                        Ok(DataTypes::Integer(idx)) => idx,
-                        _ => return Err(((*p, *q), RunTimeErrors::IncompatibleOperation)),
-                    };
+            Expression::ListSubScript((p, q), expr, index) => {
+                let index = match self.eval_arithmetic_logic_expression(index) {
+                    Ok(DataTypes::Integer(idx)) => idx,
+                    _ => return Err(((*p, *q), RunTimeErrors::IncompatibleOperation)),
+                };
+                if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = **expr {
                     let mut frame_level = self.frame_level;
                     let mut data_address = address;
                     let left_type = self.symbol_table.get(&(self.frame_level, address));
@@ -365,10 +369,61 @@ impl Executor {
                         let name = self.get_symbol_name(address).unwrap();
                         Err(((*p, *q), RunTimeErrors::UndefinedSymbol(name)))
                     }
+                } else if let Expression::ListSubScript(_, _, _) = **expr {
+                    let data = self.eval_arithmetic_logic_expression(&expr)?;
+                    if let DataTypes::List(list) = data {
+                        if index < 0 || index > (list.len() - 1) as i64 {
+                            return Err((
+                                (*p, *q),
+                                RunTimeErrors::IndexOutOfBounds(index, list.len() as i64),
+                            ));
+                        }
+                        let value = &list[index as usize];
+                        Ok(value.clone())
+                    } else {
+                        Err(((*p, *q), RunTimeErrors::InvalidExpression))
+                    }
                 } else {
                     Err(((*p, *q), RunTimeErrors::InvalidExpression))
                 }
             }
         }
+    }
+
+    pub fn evaluate_list_subscript(
+        &mut self,
+        expr: &Expression,
+        vec: &mut Vec<i64>,
+    ) -> Result<&mut DataTypes, ((usize, usize), error::RunTimeErrors)> {
+        if let Expression::ListSubScript((p, q), expr, index) = expr {
+            let index = match self.eval_arithmetic_logic_expression(&index) {
+                Ok(DataTypes::Integer(idx)) => idx,
+                _ => return Err(((*p, *q), RunTimeErrors::IncompatibleOperation)),
+            };
+            vec.push(index);
+            return self.evaluate_list_subscript(&expr, vec);
+        } else if let Expression::Symbol((a, b), TokenType::Symbol(address)) = expr {
+            let mut frame_level = self.frame_level;
+            let mut data_address = address;
+            let left_type = self.symbol_table.get(&(self.frame_level, *address));
+            if let Some(DataTypes::Ref((level, address))) = left_type {
+                frame_level = *level;
+                data_address = address;
+            }
+            let mut data = self.symbol_table.get_mut(&(frame_level, *data_address));
+            while let Some(index) = vec.pop() {
+                if let Some(DataTypes::List(list)) = data {
+                    if index < 0 || index > (list.len() - 1) as i64 {
+                        return Err((
+                            (*a, *b),
+                            RunTimeErrors::IndexOutOfBounds(index, list.len() as i64),
+                        ));
+                    }
+                    data = Some(&mut list[index as usize]);
+                }
+            }
+            return Ok(data.unwrap());
+        }
+        return Err(((0, 0), RunTimeErrors::InvalidExpression));
     }
 }
