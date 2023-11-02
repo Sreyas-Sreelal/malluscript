@@ -67,7 +67,7 @@ impl fmt::Display for DataTypes {
                         string += &x.to_string();
                     }
 
-                    if let Some(_) = iter.peek() {
+                    if iter.peek().is_some() {
                         string += ",";
                     }
                 }

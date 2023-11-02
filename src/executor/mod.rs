@@ -142,7 +142,7 @@ impl Executor {
                         } else if let Expression::ListSubScript((_a, _b), _, _) = **expr {
                             let mut indices = Vec::new();
                             indices.push(index);
-                            let reference = self.evaluate_list_subscript(&l, &mut indices)?;
+                            let reference = self.evaluate_list_subscript(l, &mut indices)?;
                             *reference = data;
                         } else {
                             return Err(((*p, *q), RunTimeErrors::InvalidExpression));
@@ -370,7 +370,7 @@ impl Executor {
                         Err(((*p, *q), RunTimeErrors::UndefinedSymbol(name)))
                     }
                 } else if let Expression::ListSubScript(_, _, _) = **expr {
-                    let data = self.eval_arithmetic_logic_expression(&expr)?;
+                    let data = self.eval_arithmetic_logic_expression(expr)?;
                     if let DataTypes::List(list) = data {
                         if index < 0 || index > (list.len() - 1) as i64 {
                             return Err((
@@ -396,12 +396,12 @@ impl Executor {
         vec: &mut Vec<i64>,
     ) -> Result<&mut DataTypes, ((usize, usize), error::RunTimeErrors)> {
         if let Expression::ListSubScript((p, q), expr, index) = expr {
-            let index = match self.eval_arithmetic_logic_expression(&index) {
+            let index = match self.eval_arithmetic_logic_expression(index) {
                 Ok(DataTypes::Integer(idx)) => idx,
                 _ => return Err(((*p, *q), RunTimeErrors::IncompatibleOperation)),
             };
             vec.push(index);
-            return self.evaluate_list_subscript(&expr, vec);
+            return self.evaluate_list_subscript(expr, vec);
         } else if let Expression::Symbol((a, b), TokenType::Symbol(address)) = expr {
             let mut frame_level = self.frame_level;
             let mut data_address = address;
@@ -424,6 +424,6 @@ impl Executor {
             }
             return Ok(data.unwrap());
         }
-        return Err(((0, 0), RunTimeErrors::InvalidExpression));
+        Err(((0, 0), RunTimeErrors::InvalidExpression))
     }
 }
