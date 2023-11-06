@@ -298,11 +298,15 @@ impl Executor {
                             if let Expression::Symbol(_, TokenType::Symbol(y)) = y {
                                 // allocation
                                 let data = self.eval_arithmetic_logic_expression(x)?.clone();
-                                if let DataTypes::List(_) = data {
+                                if let (
+                                    DataTypes::List(_),
+                                    Expression::Symbol(_, TokenType::Symbol(x)),
+                                ) = (&data, x)
+                                {
                                     // lists will be passed by reference by default
                                     self.symbol_table.insert(
                                         (self.frame_level + 1, *y),
-                                        DataTypes::Ref((self.frame_level, *y)),
+                                        DataTypes::Ref((self.frame_level, *x)),
                                     );
                                 } else {
                                     self.symbol_table.insert((self.frame_level + 1, *y), data);
