@@ -57,6 +57,8 @@ impl<'input> Lexer<'input> {
             || c == ','
             || c == '{'
             || c == '}'
+            || c == '['
+            || c == ']'
     }
 
     fn is_valid_name(&self, c: char) -> bool {
@@ -86,6 +88,8 @@ impl<'input> Iterator for &mut Lexer<'input> {
                 Some((i, ',')) => return Some(Ok((i, TokenType::Comma, i + 1))),
                 Some((i, '<')) => return Some(Ok((i, TokenType::AngleOpen, i + 1))),
                 Some((i, '>')) => return Some(Ok((i, TokenType::AngleClose, i + 1))),
+                Some((i, '[')) => return Some(Ok((i, TokenType::SquareOpen, i + 1))),
+                Some((i, ']')) => return Some(Ok((i, TokenType::SquareClose, i + 1))),
                 Some((i, '"')) => {
                     let (start, mut end) = (i + 1, 0);
                     let mut ch = ' ';

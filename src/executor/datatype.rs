@@ -46,6 +46,8 @@ pub enum DataTypes {
     Integer(i64),
     Bool(bool),
     Float(f64),
+    List(Vec<DataTypes>),
+    Ref((i64, usize)),
     Unknown,
 }
 
@@ -55,6 +57,23 @@ impl fmt::Display for DataTypes {
             DataTypes::String(s) => write!(f, "{}", literal_eval(s)),
             DataTypes::Integer(i) => write!(f, "{}", i),
             DataTypes::Float(n) => write!(f, "{}", n),
+            DataTypes::List(list) => {
+                let mut string = String::from("[");
+                let mut iter = list.iter().peekable();
+                while let Some(x) = iter.next() {
+                    if let DataTypes::String(_) = x {
+                        string += &("\"".to_owned() + &x.to_string() + "\"");
+                    } else {
+                        string += &x.to_string();
+                    }
+
+                    if iter.peek().is_some() {
+                        string += ",";
+                    }
+                }
+                string += "]";
+                write!(f, "{}", string)
+            }
             _ => write!(f, "<Garbage:UnintialisedMemorySpace>"),
         }
     }
@@ -75,6 +94,10 @@ impl ops::Add for DataTypes {
             (DataTypes::Float(l), DataTypes::String(r)) => DataTypes::String(l.to_string() + &r),
             (DataTypes::String(l), DataTypes::Float(r)) => DataTypes::String(l + &r.to_string()),
             (DataTypes::String(l), DataTypes::String(r)) => DataTypes::String(l + &r),
+            (DataTypes::List(mut l), r) => {
+                l.push(r);
+                DataTypes::List(l)
+            }
             _ => raise_error(RunTimeErrors::IncompatibleOperation),
         }
     }
