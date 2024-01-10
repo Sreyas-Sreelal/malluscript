@@ -20,23 +20,23 @@ impl Keywords {
         // The following list contain keywords that are named meme_style
         // Last word will be in മലയാളലിപി(Malayalalipi)
         let list = keywordize!(
-            ["pwoli_sadhanam", "pwoli_sanam", "pwoli_saanam", "poli_sadhanam",
-            "poli_sanam", "poli_saanam", "പൊളിസാധനം", ] => TokenType::Declaration,
-            ["address_thada", "അഡ്രസ്_താടാ"] => TokenType::InputString,
-            ["number_thada", "നമ്പർ_താടാ"] => TokenType::InputNumber,
-            ["dhe_pidicho", "ദേ_പിടിച്ചോ"] => TokenType::Write,
-            ["seriyano_mwone", "seriyano", "ശെരിയാണോ_മോനെ","ശെരിയാണോ"] => TokenType::If,
-            ["seri_allel", "ശെരി_അല്ലേൽ"] => TokenType::Else,
-            ["repeat_adi", "റിപീറ്റടി"] => TokenType::Loop,
-            ["veluthane", "veluthanenkil", "veluthanekil", "valuthanenkil",
-            "valuthanekil", "valuthane", "വലുതാണെ", "വലുതാണെങ്കിൽ", "വലുതാണെകിൽ", ] => TokenType::GreaterThan,
-            ["same_alle", "same_allel", "സെയിം_അല്ല"] => TokenType::NotEqual,
-            ["cheruthane", "cheruthanenkil", "cheruthanekil", "charuthane",
-            "charuthanenkil", "charuthanekil", "ചെറുതാണെകിൽ", "ചെറുതാണെങ്കിൽ", ] => TokenType::LessThan,
-            ["same_aane", "സെയിം_ആണേ"] => TokenType::EqualTo,
+            ["vachakam_vangikuga","vachakam_vangikuka","vachagam_vangikuga","vachagam_vangikuka","വാചകംവാങ്ങിക്കുക"] => TokenType::InputString,
+            ["akam_vangikuga", "akkam_vangikuga","അക്കംവാങ്ങിക്കുക"] => TokenType::InputNumber,
+            ["ezhuthuka","ezhuthuga","kanikuka","kanikuga","എഴുതുക","കാണിക്കുക"] => TokenType::Write,
+            ["enkil","engil" ,"എങ്കിൽ"] => TokenType::If,
+            ["adhallengil","adhallenkil", "അതല്ലെങ്കിൽ"] => TokenType::Else,
+            ["aavarthikuga","avarthikuga","aavarthikuka","avarthikuka","ആവർത്തിക്കുക"] => TokenType::Loop,
+            ["veluthan","വലുതാണ്"] => TokenType::GreaterThan,
+            ["veluthanenkil","വലുതാണെങ്കിൽ"] => TokenType::IfGreaterThan,
+            ["thullyamalla","onnalla", "തുല്യമല്ല","ഒന്നല്ല"] => TokenType::NotEqual,
+            ["thullyamallenkil","onnallenkil", "തുല്യമല്ലെങ്കിൽ","ഒന്നല്ലെങ്കിൽ"] => TokenType::IfNotEqual,
+            ["cheruthan", "ചെറുതാണ്", ] => TokenType::LessThan,
+            ["cheruthanenkil", "ചെറുതാണെങ്കിൽ", ] => TokenType::IfLessThan,
+            ["thullyaman","onnan", "തുല്യമാണ്","ഒന്നാണ്"] => TokenType::EqualTo,
+            ["thullyamanenkil","onnanenkil", "തുല്യമാണെങ്കിൽ","ഒന്നാണെങ്കിൽ"] => TokenType::IfEqualTo,
             ["um", "ഉം"] => TokenType::Um,
             ["ne_kal", "നെകാൾ"] => TokenType::Nekal,
-            ["koduthek","കൊടുത്തേക്","കൊടുത്തെക്"] => TokenType::Return
+            ["kodukuga","kodukuka","madakiayakuga","madakiayakuka","കൊടുക്കുക","മടക്കിഅയയ്ക്കുക"] => TokenType::Return
         );
 
         Self { list }

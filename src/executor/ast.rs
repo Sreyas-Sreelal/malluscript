@@ -12,7 +12,6 @@ pub enum SourceUnitPart {
 pub enum Statement {
     Conditional((usize, usize), Expression, SourceUnit, Option<SourceUnit>),
     Loop((usize, usize), Expression, SourceUnit),
-    Declaration((usize, usize), Vec<Expression>),
     FunctionDeclaration((usize, usize), Expression, Vec<Expression>, SourceUnit),
     Assignment((usize, usize), Expression, Expression),
     EmptyExpression((usize, usize), Expression),
@@ -42,4 +41,7 @@ pub enum Expression {
     InputNumber((usize, usize)),
 
     FunctionCall((usize, usize), Box<Expression>, Vec<Expression>),
+
+    ListExpression((usize, usize), Vec<Expression>),
+    ListSubScript((usize, usize), Box<Expression>, Box<Expression>),
 }

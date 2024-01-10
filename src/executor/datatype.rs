@@ -1,5 +1,6 @@
 use crate::executor::error::{raise_error, RunTimeErrors};
 use std::fmt;
+use std::ops;
 
 macro_rules! safe_operation {
     ($l:ident + $r:ident) => {
@@ -45,6 +46,8 @@ pub enum DataTypes {
     Integer(i64),
     Bool(bool),
     Float(f64),
+    List(Vec<DataTypes>),
+    Ref((i64, usize)),
     Unknown,
 }
 
@@ -54,12 +57,29 @@ impl fmt::Display for DataTypes {
             DataTypes::String(s) => write!(f, "{}", literal_eval(s)),
             DataTypes::Integer(i) => write!(f, "{}", i),
             DataTypes::Float(n) => write!(f, "{}", n),
+            DataTypes::List(list) => {
+                let mut string = String::from("[");
+                let mut iter = list.iter().peekable();
+                while let Some(x) = iter.next() {
+                    if let DataTypes::String(_) = x {
+                        string += &("\"".to_owned() + &x.to_string() + "\"");
+                    } else {
+                        string += &x.to_string();
+                    }
+
+                    if iter.peek().is_some() {
+                        string += ",";
+                    }
+                }
+                string += "]";
+                write!(f, "{}", string)
+            }
             _ => write!(f, "<Garbage:UnintialisedMemorySpace>"),
         }
     }
 }
 
-impl std::ops::Add for DataTypes {
+impl ops::Add for DataTypes {
     type Output = Self;
     fn add(self, rhs: DataTypes) -> Self {
         match (self, rhs) {
@@ -74,6 +94,10 @@ impl std::ops::Add for DataTypes {
             (DataTypes::Float(l), DataTypes::String(r)) => DataTypes::String(l.to_string() + &r),
             (DataTypes::String(l), DataTypes::Float(r)) => DataTypes::String(l + &r.to_string()),
             (DataTypes::String(l), DataTypes::String(r)) => DataTypes::String(l + &r),
+            (DataTypes::List(mut l), r) => {
+                l.push(r);
+                DataTypes::List(l)
+            }
             _ => raise_error(RunTimeErrors::IncompatibleOperation),
         }
     }
@@ -85,7 +109,7 @@ impl From<bool> for DataTypes {
     }
 }
 
-impl std::ops::Sub for DataTypes {
+impl ops::Sub for DataTypes {
     type Output = Self;
     fn sub(self, rhs: DataTypes) -> Self {
         match (self, rhs) {
@@ -100,7 +124,7 @@ impl std::ops::Sub for DataTypes {
     }
 }
 
-impl std::ops::Mul for DataTypes {
+impl ops::Mul for DataTypes {
     type Output = Self;
     fn mul(self, rhs: DataTypes) -> Self {
         match (self, rhs) {
@@ -115,7 +139,7 @@ impl std::ops::Mul for DataTypes {
     }
 }
 
-impl std::ops::Div for DataTypes {
+impl ops::Div for DataTypes {
     type Output = Self;
     fn div(self, rhs: DataTypes) -> Self {
         if rhs == DataTypes::Integer(0) || rhs == DataTypes::Float(0.0) {
@@ -133,7 +157,7 @@ impl std::ops::Div for DataTypes {
     }
 }
 
-impl std::ops::Rem for DataTypes {
+impl ops::Rem for DataTypes {
     type Output = Self;
     fn rem(self, rhs: DataTypes) -> Self {
         if rhs == DataTypes::Integer(0) || rhs == DataTypes::Float(0.0) {

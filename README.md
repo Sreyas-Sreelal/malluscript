@@ -58,45 +58,44 @@ Basic arithmetic operations can be done using `+`,`-`,`*`,`/`,`%` (modulo). Ever
 ### Basic I/O operations
 * Printing or writing to console is done as follows
     ```ms
-    dhe_pidicho "hello world";
-    dhe_pidicho variable;
-    dhe_pidicho "Onnum randum kottiyal " + 1+2 + " aane"; 
+    ezhuthuga "hello world";
+    ezhuthuga variable;
+    ezhuthuga "Onnum randum kottiyal " + 1+2 + " aanu"; 
     ``` 
   * Alternate Keywords
-    * `ദേ_പിടിച്ചോ`
+    * `ezhuthuka`
+    * `ezhuthuga`
+    * `kanikuka`
+    * `kanikuga`
+    * `എഴുതുക`
+    * `കാണിക്കുക`
 
 * In order to get keyboard input from the user
   
   For integer inputs
   ```
-  variable = number_thada;
+  variable = akam_vangikuga;
   ```
   * Alternate Keywords
-    * `നമ്പർ_താടാ`
+    * `akam_vangikuga`
+    * `akkam_vangikuga`
+    * `അക്കംവാങ്ങിക്കുക`
 
   For string inputs
   ```
-  variable = address_thada;
+  variable = vachakam_vangikuga;
   ```
   * Alternate Keywords
-    * `അഡ്രസ്_താടാ`
+    * `vachakam_vangikuga`
+    * `vachakam_vangikuka`
+    * `vachagam_vangikuga`
+    * `vachagam_vangikuka`
+    * `വാചകംവാങ്ങിക്കുക`
 
 ### Datatypes and Storage
-Malluscript is not strictly type-safe.The language, currently, supports only integers and string literals as datatypes.
+Malluscript is not strictly type-safe.The language, currently, supports only integer,float and string literals as datatypes.
 
-In order to declare a variable
-```
-pwoli_sadhanam variable_name
-```
-  * Alternate Keywords
-      * `pwoli_sanam`
-      * `pwoli_saanam`
-      * `poli_sadhanam`
-      * `poli_sanam`
-      * `poli_saanam`
-      * `പൊളിസാധനം`
-
-To assign it some value
+To assign it some value and declare a variable
 
 ```
 variable_name = 1;
@@ -107,88 +106,84 @@ second_var = "ente string";
 The conditional expression has the following syntax
 
 ```
-seriyano i um 0 um same_aane {
+i um 0 um thullyaman enkil {
 
-} seri_allel {
+} adhallengil {
 
 }
 ```
-The above snippet checks whether i equal to 0 and if yes the code in the first block will execute otherwise block defined by `seri_allel` will get executed.
+The above snippet checks whether i equal to 0 and if yes the code in the first block will execute otherwise block defined by `adhallengil` will get executed.
 
 In general
-* `i um 0 um same_aane` checks if i is equals to 0
-* `i um 0 um same_alle` checks if i not equals to 0
-* `i nekal 0  cheruthane` checks if 0 is less than i
-* `i nekal 0  veluthane` checks if 0 is greater than i
+* `i um 0 um thullyaman enkil` checks if i is equals to 0
+* `i um 0 um thullyamalla enkil` checks if i not equals to 0
+* `i nekal 0 cheruthan enkil` checks if 0 is less than i
+* `i nekal 0 veluthan enkil` checks if 0 is greater than i
 
   * Alternate Keywords
-    * **seriyano**
-      * `seriyano_mwone`
-      * `seriyano`
-      * `ശെരിയാണോ_മോനെ`
-    * **cheruthane**
-      * `cheruthanenkil`
-      * `cheruthanekil`
-      * `charuthane`
-      * `charuthanenkil`
-      * `charuthanekil`
-      * `ചെറുതാണെകിൽ`
-      * `ചെറുതാണെങ്കിൽ`
-    * **same_aane**
-      * `സെയിം_ആണേ`
+    * **enkil**
+      * `engil`
+      * `എങ്കിൽ`
+    * **thullyamalla**
+      * `onnalla`
+      * `തുല്യമല്ല`
+      * `ഒന്നല്ല`
+    * **thullyaman**
+      * `onnan`
+      * `തുല്യമാണ്`
+      * `ഒന്നാണ്`
     * **um**
       * `ഉം`
     * **ne_kal**
       * `നെകാൾ`
-    * **veluthane**
-      * `veluthanenkil`
-      * `veluthanekil`
-      * `valuthanenkil`
-      * `valuthanekil`
-      * `valuthane`
-      * `വലുതാണെ`
-      * `വലുതാണെങ്കിൽ`
-      * `വലുതാണെകിൽ`
-    * **cheruthane**
-      * `cheruthane`
-      * `cheruthanenkil`
-      * `cheruthanekil`
-      * `charuthane`
-      * `charuthanenkil`
-      * `charuthanekil`
-      * `ചെറുതാണെകിൽ`
-      * `ചെറുതാണെങ്കിൽ`
+    * **veluthan**
+      * `വലുതാണ്`
+    * **cheruthan**
+      * `ചെറുതാണ്`
+    * **adhallengil**
+      * `adhallenkil`
+      * `അതല്ലെങ്കിൽ`
+
+#### Agglutination of conditional statements
+Conditional statements like `thullyaman enkil` can be agglutinated together like `thullyamanenkil`
 
 ## Iterative Statements Or Loops
 
 The loops in malluscript look as follows
 ```
-repeat_adi 0 nekal i veluthane {
+0 nekal i veluthan enkil avarthikuga {
   i = i-1;
 }
 ```
   * Alternative Keywords
-    * `റിപീറ്റടി`
+    * `aavarthikuga`
+    * `avarthikuga`
+    * `aavarthikuka`
+    * `avarthikuka`
+    * `ആവർത്തിക്കുക`
 
 ## Functions
 The functions definition in malluscript are defined as follows.
 ```
 ente_function(variable1,variable2) {
-  dhe_pidicho variable1 + variable2;
+  ezhuthuga variable1 + variable2;
 }
 ```
 The functions can also return values.
 ```
 factorial(n) {
-    seriyano n um 0 um same_aane {
-        koduthek 1;   
+    n um 0 um thullyaman enkil {
+        kodukuga 1;   
     }
-    koduthek n * factorial<n-1>;
+    kodukuga n * factorial<n-1>;
 }
 ```
-  * Alterative keywords for `koduthek`
-    * `കൊടുത്തേക്`
-    * `കൊടുത്തെക്`
+  * Alterative keywords for `kodukuga`
+    * `kodukuka`
+    * `madakiayakuga`
+    * `madakiayakuka`
+    * `കൊടുക്കുക`
+    * `മടക്കിഅയയ്ക്കുക`
 
 To call a function function name followed by angle brackets are used.
 ```
@@ -199,34 +194,30 @@ my_function<arg1,arg2>;
 A simple program to find factorial in malluscript would be 
 
 ```ms
-pwoli_sadhanam num;
-pwoli_sadhanam factorial;
-dhe_pidicho "Input number:";
-num = number_thada;
+kanikuga "Input number:";
+num = akam_vangikuga;
 factorial = 1;
 
-repeat_adi 0 um num um same_alle {
+0 um num um thullyamalla enkil avarthikuga {
     factorial = factorial * num;
     num = num -1;
 }
 
-dhe_pidicho "Factoral is : " + factorial + "\n";
+kanikuga "Factoral is : " + factorial + "\n";
 
 ```
 Same in pure Malayalam would be
 ```ms
-പൊളിസാധനം നമ്പർ;
-പൊളിസാധനം ഫാക്ടോറിയൽ;
-ദേ_പിടിച്ചോ "ദയവായി നമ്പർ തരുക: ";
-നമ്പർ = number_thada;
+എഴുതുക "ദയവായി നമ്പർ തരുക: ";
+നമ്പർ = അക്കംവാങ്ങിക്കുക;
 ഫാക്ടോറിയൽ = 1;
 
-റിപീറ്റടി 0 ഉം നമ്പർ ഉം സെയിം_അല്ല {
-    ഫാക്ടോറിയൽ = ഫാക്ടോറിയൽ * നമ്പർ;
-    നമ്പർ = നമ്പർ -1;
+0 ഉം നമ്പർ ഉം തുല്യമല്ല എങ്കിൽ {
+  ഫാക്ടോറിയൽ = ഫാക്ടോറിയൽ * നമ്പർ;
+  നമ്പർ = നമ്പർ -1;
 }
 
-ദേ_പിടിച്ചോ "ഫാക്ടോറിയൽ : " + ഫാക്ടോറിയൽ + "\n";
+എഴുതുക "ഫാക്ടോറിയൽ : " + ഫാക്ടോറിയൽ + "\n";
 ```
 
 More examples can be found in [examples](examples)

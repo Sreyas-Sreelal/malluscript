@@ -1,19 +1,18 @@
 [package]
 name = "malluscript"
-version = "0.3.2"
+version = "1.1.0"
 authors = ["SyS <sreyassreelal@gmail.com>"]
 edition = "2018"
 build = "build.rs" 
-description = "Scripting language based on manglish and malayalam memes"
+description = "An esoteric scripting language that lets to write computer programs in Malayalam"
 
 [dependencies]
-serde = "1.0.117"
-lalrpop-util = "0.19.1"
+lalrpop-util = "0.20.0"
 clap = "2.33"
 rustyline = "6.1"
 
 [build-dependencies]
-lalrpop = "0.19"
+lalrpop = "0.20.0"
 
 [profile.release]
 lto = true

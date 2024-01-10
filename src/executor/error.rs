@@ -1,10 +1,10 @@
 use std::fmt;
+use std::process;
 
 #[derive(Debug)]
 pub enum RunTimeErrors {
     UndefinedSymbol(String),
     SymbolAlreadyDefined(String),
-    UnInitialzedData(String),
     InvalidAssignment,
     DivisionByZero,
     IncompatibleOperation,
@@ -14,6 +14,7 @@ pub enum RunTimeErrors {
     InvalidFunctionDeclaration,
     ArgumentCountMismatch,
     IntegerOverFlow,
+    IndexOutOfBounds(i64, i64),
 }
 
 impl fmt::Display for RunTimeErrors {
@@ -25,7 +26,6 @@ impl fmt::Display for RunTimeErrors {
             RunTimeErrors::SymbolAlreadyDefined(symbol) => {
                 write!(f, "[Error]: Symbol {} already defined", symbol)
             }
-            RunTimeErrors::UnInitialzedData(data) => write!(f, "Uninitialised variable {}", data),
             RunTimeErrors::DivisionByZero => write!(f, "[Error]: Division by Zero"),
             RunTimeErrors::IncompatibleOperation => {
                 write!(f, "[Error]: Incompatible operation between datatypes")
@@ -48,11 +48,15 @@ impl fmt::Display for RunTimeErrors {
                 f,
                 "[Error]: Integer OverFlow, attempt to arithmetic operation that leads to overflow"
             ),
+            RunTimeErrors::IndexOutOfBounds(index,limit) => write!(
+                f,
+                "[Error]: Index Out Of Bounds, attempted to read/write at index {index} on {limit} sized data"
+            ),
         }
     }
 }
 
 pub fn raise_error(error: RunTimeErrors) -> ! {
     println!("{}", error);
-    std::process::exit(0)
+    process::exit(0)
 }

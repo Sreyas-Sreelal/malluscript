@@ -11,17 +11,16 @@ use std::collections::HashMap;
 #[test]
 fn parser_test() {
     let code = "
-        pwoli_sadhanam i;
         i=0;
-        seriyano_mwone i um 0 um same_alle {
+        i um 0 um thullyamalla enkil {
             i = 10;
-        } seri_allel {
+        } adhallengil {
             i = -1;
         }
-        repeat_adi i um 0 um same_alle {
+        i um 0 um thullyamalla enkil avarthikuga {
             i = i-1;
         }
-        dhe_pidicho i;
+        kanikuga i;
     ";
     let mut lex = Lexer::new(&code, HashMap::new(), 0);
     let parsed = parse(&code, &mut lex);
@@ -29,63 +28,59 @@ fn parser_test() {
     println!("{:?}", parsed);
     let expected = SourceUnit(
         [
-            Statement(Declaration(
-                (9, 26),
-                [Symbol((24, 24), TokenType::Symbol(1))].to_vec(),
-            )),
             Statement(Assignment(
-                (35, 39),
-                Symbol((35, 35), TokenType::Symbol(1)),
-                Integer((37, 38), TokenType::Integer(0)),
+                (9, 13),
+                Symbol((9, 9), TokenType::Symbol(1)),
+                Integer((11, 12), TokenType::Integer(0)),
             )),
             Statement(Conditional(
-                (48, 157),
+                (22, 126),
                 NotEquals(
-                    (73, 81),
-                    Box::new(Symbol((63, 63), TokenType::Symbol(1))),
-                    Box::new(Integer((68, 69), TokenType::Integer(0))),
+                    (32, 43),
+                    Box::new(Symbol((22, 22), TokenType::Symbol(1))),
+                    Box::new(Integer((27, 28), TokenType::Integer(0))),
                 ),
                 SourceUnit(
                     [Statement(Assignment(
-                        (97, 104),
-                        Symbol((97, 97), TokenType::Symbol(1)),
-                        Integer((101, 103), TokenType::Integer(10)),
+                        (65, 72),
+                        Symbol((65, 65), TokenType::Symbol(1)),
+                        Integer((69, 71), TokenType::Integer(10)),
                     ))]
                     .to_vec(),
                 ),
                 Some(SourceUnit(
                     [Statement(Assignment(
-                        (140, 147),
-                        Symbol((140, 140), TokenType::Symbol(1)),
+                        (109, 116),
+                        Symbol((109, 109), TokenType::Symbol(1)),
                         UnaryMinus(
-                            (144, 145),
-                            Box::new(Integer((145, 146), TokenType::Integer(1))),
+                            (113, 114),
+                            Box::new(Integer((114, 115), TokenType::Integer(1))),
                         ),
                     ))]
                     .to_vec(),
                 )),
             )),
             Statement(Loop(
-                (166, 229),
+                (135, 208),
                 NotEquals(
-                    (187, 195),
-                    Box::new(Symbol((177, 177), TokenType::Symbol(1))),
-                    Box::new(Integer((182, 183), TokenType::Integer(0))),
+                    (145, 156),
+                    Box::new(Symbol((135, 135), TokenType::Symbol(1))),
+                    Box::new(Integer((140, 141), TokenType::Integer(0))),
                 ),
                 SourceUnit(
                     [Statement(Assignment(
-                        (211, 219),
-                        Symbol((211, 211), TokenType::Symbol(1)),
+                        (190, 198),
+                        Symbol((190, 190), TokenType::Symbol(1)),
                         Subtract(
-                            (216, 217),
-                            Box::new(Symbol((215, 215), TokenType::Symbol(1))),
-                            Box::new(Integer((217, 218), TokenType::Integer(1))),
+                            (195, 196),
+                            Box::new(Symbol((194, 194), TokenType::Symbol(1))),
+                            Box::new(Integer((196, 197), TokenType::Integer(1))),
                         ),
                     ))]
                     .to_vec(),
                 ),
             )),
-            Statement(Write((238, 252), Symbol((250, 250), TokenType::Symbol(1)))),
+            Statement(Write((217, 228), Symbol((226, 226), TokenType::Symbol(1)))),
         ]
         .to_vec(),
     );

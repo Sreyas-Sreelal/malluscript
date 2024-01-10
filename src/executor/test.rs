@@ -5,17 +5,16 @@ use std::collections::HashMap;
 #[test]
 fn primary_test() {
     let code = "
-        pwoli_sadhanam i;
         i=0;
-        seriyano_mwone i um 0 um same_aane {
+        i um 0 um onnan enkil {
             i = 10;
-        } seri_allel {
+        } adhallengil {
             i = -1;
         }
-        repeat_adi i um 0 um same_alle {
+        i um 0 um onnalla enkil avarthikuga {
             i = i-1;
         }
-        dhe_pidicho i;
+        ezhuthuga i;
     ";
 
     let mut lex = Lexer::new(&code, HashMap::new(), 0);
@@ -28,38 +27,35 @@ fn primary_test() {
 #[test]
 fn arithmetic_test() {
     let code = "
-        pwoli_sadhanam i;
-        pwoli_sadhanam j;
         i = 55/5+22*7-3;
         j = i % 3;
     ";
     let exec = get_executor(code).unwrap();
     assert_eq!(
-        exec.symbol_table[&(exec.scope_level, exec.symbol_lookup_table["i"])],
+        exec.symbol_table[&(exec.frame_level, exec.symbol_lookup_table["i"])],
         DataTypes::Integer(162)
     );
     assert_eq!(
-        exec.symbol_table[&(exec.scope_level, exec.symbol_lookup_table["j"])],
+        exec.symbol_table[&(exec.frame_level, exec.symbol_lookup_table["j"])],
         DataTypes::Integer(0)
     );
 }
 #[test]
 fn malayalam_test() {
     let code = "
-        പൊളിസാധനം നമ്പർ;
         നമ്പർ = 1;
         നമ്പർ = നമ്പർ + 1;
-        റിപീറ്റടി 10 നെകാൾ നമ്പർ ചെറുതാണെകിൽ {
-            ശെരിയാണോ നമ്പർ%2 um 0 um സെയിം_ആണേ {
+        10 നെകാൾ നമ്പർ cheruthan enkil avarthikuga {
+            നമ്പർ%2 um 0 um thullyaman enkil {
                 നമ്പർ = നമ്പർ+2;
-            } ശെരി_അല്ലേൽ {
+            } adhallengil {
                 നമ്പർ = നമ്പർ+1;
             }
         }
     ";
     let exec = get_executor(code).unwrap();
     assert_eq!(
-        exec.symbol_table[&(exec.scope_level, exec.symbol_lookup_table["നമ്പർ"])],
+        exec.symbol_table[&(exec.frame_level, exec.symbol_lookup_table["നമ്പർ"])],
         DataTypes::Integer(10)
     );
 }
