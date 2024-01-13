@@ -36,6 +36,8 @@ pub enum TokenType {
     IfNotEqual,
     IfLessThan,
     IfEqualTo,
+    SquareOpen,
+    SquareClose,
 }
 
 impl Display for TokenType {
@@ -76,6 +78,8 @@ impl Display for TokenType {
             TokenType::IfNotEqual => write!(f, "thullyamallenkil"),
             TokenType::IfLessThan => write!(f, "cheruthanenkil"),
             TokenType::IfEqualTo => write!(f, "thullyamanenkil"),
+            TokenType::SquareOpen => write!(f, "["),
+            TokenType::SquareClose => write!(f, "]"),
         }
     }
 }

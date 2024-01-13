@@ -32,11 +32,11 @@ fn arithmetic_test() {
     ";
     let exec = get_executor(code).unwrap();
     assert_eq!(
-        exec.symbol_table[&(exec.scope_level, exec.symbol_lookup_table["i"])],
+        exec.symbol_table[&(exec.frame_level, exec.symbol_lookup_table["i"])],
         DataTypes::Integer(162)
     );
     assert_eq!(
-        exec.symbol_table[&(exec.scope_level, exec.symbol_lookup_table["j"])],
+        exec.symbol_table[&(exec.frame_level, exec.symbol_lookup_table["j"])],
         DataTypes::Integer(0)
     );
 }
@@ -55,7 +55,7 @@ fn malayalam_test() {
     ";
     let exec = get_executor(code).unwrap();
     assert_eq!(
-        exec.symbol_table[&(exec.scope_level, exec.symbol_lookup_table["നമ്പർ"])],
+        exec.symbol_table[&(exec.frame_level, exec.symbol_lookup_table["നമ്പർ"])],
         DataTypes::Integer(10)
     );
 }

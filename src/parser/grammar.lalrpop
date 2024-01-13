@@ -81,7 +81,9 @@ Term: Expression= {
     <a:@L> <d:InputNumber> <b:@R> => Expression::InputNumber((a,b)),
     <a:@L> <d:InputString> <b:@R> => Expression::InputString((a,b)),
     <a:@L> <id:Term> "Open" <args:Expressions> "Close"  <b:@R>  => Expression::FunctionCall((a,b),Box::new(id),args),
-    "(" <e:Expression> ")" => e
+    "(" <e:Expression> ")" => e,
+    <a:@L> "[" <items:Expressions> "]" <b:@R> => Expression::ListExpression((a,b),items),
+    <a:@L> <id:Term> "[" <idx:Expression> "]" <b:@R> => Expression::ListSubScript((a,b),Box::new(id),Box::new(idx)),
 };
 
 extern {
@@ -124,5 +126,7 @@ extern {
         IfNotEqual => TokenType::IfNotEqual,
         IfLessThan => TokenType::IfLessThan,
         IfEqualTo => TokenType::IfEqualTo,
+        "[" => TokenType::SquareOpen,
+        "]" => TokenType::SquareClose,        
     }
 }
