@@ -93,10 +93,16 @@ impl Executor {
                     }
                 }
 
-                Statement::Write((_p, _q), expr) => {
-                    let result = self.eval_arithmetic_logic_expression(expr)?;
-
-                    print!("{}", result);
+                Statement::Write(offset, expr) => {
+                    let mut data = self.eval_arithmetic_logic_expression(expr)?;
+                    if let DataTypes::Ref(address) = data {
+                        data = self
+                            .symbol_table
+                            .get(&address)
+                            .ok_or((*offset, RunTimeErrors::InvalidExpression))?
+                            .clone();
+                    }
+                    print!("{}", data);
                     self.output.push(format!("{}", result));
                     let _ = stdout().flush();
                 }
@@ -121,37 +127,10 @@ impl Executor {
                             Ok(DataTypes::Integer(idx)) => idx,
                             _ => return Err(((*p, *q), RunTimeErrors::IncompatibleOperation)),
                         };
-                        if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = **expr {
-                            let mut frame_level = self.frame_level;
-                            let mut data_address = address;
-                            let left_type = self.symbol_table.get(&(self.frame_level, address));
-                            if let Some(DataTypes::Ref((level, address))) = left_type {
-                                frame_level = *level;
-                                data_address = *address;
-                            }
-
-                            let left = self.symbol_table.get_mut(&(frame_level, data_address));
-
-                            if let Some(DataTypes::List(list)) = left {
-                                if index < 0 || index > (list.len() - 1) as i64 {
-                                    return Err((
-                                        (*p, *q),
-                                        RunTimeErrors::IndexOutOfBounds(index, list.len() as i64),
-                                    ));
-                                }
-
-                                list[index as usize] = data;
-                            } else {
-                                return Err(((*p, *q), RunTimeErrors::InvalidExpression));
-                            }
-                        } else if let Expression::ListSubScript((_a, _b), _, _) = **expr {
-                            let mut indices = Vec::new();
-                            indices.push(index);
-                            let reference = self.evaluate_list_subscript(l, &mut indices)?;
-                            *reference = data;
-                        } else {
-                            return Err(((*p, *q), RunTimeErrors::InvalidExpression));
-                        }
+                        let mut indices = Vec::new();
+                        indices.push(index);
+                        let reference = self.evaluate_list_subscript(expr, &mut indices)?;
+                        *reference = data;
                     }
                     _ => {
                         return Err(((*p, *q), RunTimeErrors::InvalidAssignment));
@@ -187,44 +166,198 @@ impl Executor {
         expr: &Expression,
     ) -> Result<DataTypes, ((usize, usize), RunTimeErrors)> {
         match expr {
-            Expression::Add((_a, _b), l, r) => Ok(self.eval_arithmetic_logic_expression(l)?
-                + self.eval_arithmetic_logic_expression(r)?),
-
-            Expression::Multiply((_a, _b), l, r) => Ok(self.eval_arithmetic_logic_expression(l)?
-                * self.eval_arithmetic_logic_expression(r)?),
-
-            Expression::Subtract((_a, _b), l, r) => Ok(self.eval_arithmetic_logic_expression(l)?
-                - self.eval_arithmetic_logic_expression(r)?),
-
-            Expression::Divide((_a, _b), l, r) => Ok(self.eval_arithmetic_logic_expression(l)?
-                / self.eval_arithmetic_logic_expression(r)?),
-
-            Expression::Modulo((_a, _b), l, r) => Ok(self.eval_arithmetic_logic_expression(l)?
-                % self.eval_arithmetic_logic_expression(r)?),
-
-            Expression::UnaryMinus((_a, _b), r) => {
-                Ok(DataTypes::Integer(-1) * self.eval_arithmetic_logic_expression(r)?)
+            Expression::Add(offset, l, r) => {
+                let mut l = self.eval_arithmetic_logic_expression(l)?;
+                let mut r = self.eval_arithmetic_logic_expression(r)?;
+                if let DataTypes::Ref(address) = l {
+                    l = self
+                        .symbol_table
+                        .get(&address)
+                        .ok_or((*offset, RunTimeErrors::InvalidExpression))?
+                        .clone();
+                }
+                if let DataTypes::Ref(address) = r {
+                    r = self
+                        .symbol_table
+                        .get(&address)
+                        .ok_or((*offset, RunTimeErrors::InvalidExpression))?
+                        .clone();
+                }
+                Ok(l + r)
             }
 
-            Expression::Equals((_a, _b), l, r) => Ok(DataTypes::Bool(
-                self.eval_arithmetic_logic_expression(l)?
-                    == self.eval_arithmetic_logic_expression(r)?,
-            )),
+            Expression::Multiply(offset, l, r) => {
+                let mut l = self.eval_arithmetic_logic_expression(l)?;
+                let mut r = self.eval_arithmetic_logic_expression(r)?;
+                if let DataTypes::Ref(address) = l {
+                    l = self
+                        .symbol_table
+                        .get(&address)
+                        .ok_or((*offset, RunTimeErrors::InvalidExpression))?
+                        .clone();
+                }
+                if let DataTypes::Ref(address) = r {
+                    r = self
+                        .symbol_table
+                        .get(&address)
+                        .ok_or((*offset, RunTimeErrors::InvalidExpression))?
+                        .clone();
+                }
+                Ok(l * r)
+            }
 
-            Expression::NotEquals((_a, _b), l, r) => Ok(DataTypes::Bool(
-                self.eval_arithmetic_logic_expression(l)?
-                    != self.eval_arithmetic_logic_expression(r)?,
-            )),
+            Expression::Subtract(offset, l, r) => {
+                let mut l = self.eval_arithmetic_logic_expression(l)?;
+                let mut r = self.eval_arithmetic_logic_expression(r)?;
+                if let DataTypes::Ref(address) = l {
+                    l = self
+                        .symbol_table
+                        .get(&address)
+                        .ok_or((*offset, RunTimeErrors::InvalidExpression))?
+                        .clone();
+                }
+                if let DataTypes::Ref(address) = r {
+                    r = self
+                        .symbol_table
+                        .get(&address)
+                        .ok_or((*offset, RunTimeErrors::InvalidExpression))?
+                        .clone();
+                }
+                Ok(l - r)
+            }
 
-            Expression::GreaterThan((_a, _b), l, r) => Ok(DataTypes::Bool(
-                self.eval_arithmetic_logic_expression(l)?
-                    > self.eval_arithmetic_logic_expression(r)?,
-            )),
+            Expression::Divide(offset, l, r) => {
+                let mut l = self.eval_arithmetic_logic_expression(l)?;
+                let mut r = self.eval_arithmetic_logic_expression(r)?;
+                if let DataTypes::Ref(address) = l {
+                    l = self
+                        .symbol_table
+                        .get(&address)
+                        .ok_or((*offset, RunTimeErrors::InvalidExpression))?
+                        .clone();
+                }
+                if let DataTypes::Ref(address) = r {
+                    r = self
+                        .symbol_table
+                        .get(&address)
+                        .ok_or((*offset, RunTimeErrors::InvalidExpression))?
+                        .clone();
+                }
+                Ok(l / r)
+            }
 
-            Expression::LessThan((_a, _b), l, r) => Ok(DataTypes::Bool(
-                self.eval_arithmetic_logic_expression(l)?
-                    < self.eval_arithmetic_logic_expression(r)?,
-            )),
+            Expression::Modulo(offset, l, r) => {
+                let mut l = self.eval_arithmetic_logic_expression(l)?;
+                let mut r = self.eval_arithmetic_logic_expression(r)?;
+                if let DataTypes::Ref(address) = l {
+                    l = self
+                        .symbol_table
+                        .get(&address)
+                        .ok_or((*offset, RunTimeErrors::InvalidExpression))?
+                        .clone();
+                }
+                if let DataTypes::Ref(address) = r {
+                    r = self
+                        .symbol_table
+                        .get(&address)
+                        .ok_or((*offset, RunTimeErrors::InvalidExpression))?
+                        .clone();
+                }
+                Ok(l % r)
+            }
+
+            Expression::UnaryMinus(offset, r) => {
+                let mut r = self.eval_arithmetic_logic_expression(r)?;
+
+                if let DataTypes::Ref(address) = r {
+                    r = self
+                        .symbol_table
+                        .get(&address)
+                        .ok_or((*offset, RunTimeErrors::InvalidExpression))?
+                        .clone();
+                }
+                Ok(DataTypes::Integer(-1) * r)
+            }
+
+            Expression::Equals(offset, l, r) => {
+                let mut l = self.eval_arithmetic_logic_expression(l)?;
+                let mut r = self.eval_arithmetic_logic_expression(r)?;
+                if let DataTypes::Ref(address) = l {
+                    l = self
+                        .symbol_table
+                        .get(&address)
+                        .ok_or((*offset, RunTimeErrors::InvalidExpression))?
+                        .clone();
+                }
+                if let DataTypes::Ref(address) = r {
+                    r = self
+                        .symbol_table
+                        .get(&address)
+                        .ok_or((*offset, RunTimeErrors::InvalidExpression))?
+                        .clone();
+                }
+                Ok(DataTypes::Bool(l == r))
+            }
+
+            Expression::NotEquals(offset, l, r) => {
+                let mut l = self.eval_arithmetic_logic_expression(l)?;
+                let mut r = self.eval_arithmetic_logic_expression(r)?;
+                if let DataTypes::Ref(address) = l {
+                    l = self
+                        .symbol_table
+                        .get(&address)
+                        .ok_or((*offset, RunTimeErrors::InvalidExpression))?
+                        .clone();
+                }
+                if let DataTypes::Ref(address) = r {
+                    r = self
+                        .symbol_table
+                        .get(&address)
+                        .ok_or((*offset, RunTimeErrors::InvalidExpression))?
+                        .clone();
+                }
+                Ok(DataTypes::Bool(l != r))
+            }
+
+            Expression::GreaterThan(offset, l, r) => {
+                let mut l = self.eval_arithmetic_logic_expression(l)?;
+                let mut r = self.eval_arithmetic_logic_expression(r)?;
+                if let DataTypes::Ref(address) = l {
+                    l = self
+                        .symbol_table
+                        .get(&address)
+                        .ok_or((*offset, RunTimeErrors::InvalidExpression))?
+                        .clone();
+                }
+                if let DataTypes::Ref(address) = r {
+                    r = self
+                        .symbol_table
+                        .get(&address)
+                        .ok_or((*offset, RunTimeErrors::InvalidExpression))?
+                        .clone();
+                }
+                Ok(DataTypes::Bool(l > r))
+            }
+
+            Expression::LessThan(offset, l, r) => {
+                let mut l = self.eval_arithmetic_logic_expression(l)?;
+                let mut r = self.eval_arithmetic_logic_expression(r)?;
+                if let DataTypes::Ref(address) = l {
+                    l = self
+                        .symbol_table
+                        .get(&address)
+                        .ok_or((*offset, RunTimeErrors::InvalidExpression))?
+                        .clone();
+                }
+                if let DataTypes::Ref(address) = r {
+                    r = self
+                        .symbol_table
+                        .get(&address)
+                        .ok_or((*offset, RunTimeErrors::InvalidExpression))?
+                        .clone();
+                }
+                Ok(DataTypes::Bool(l < r))
+            }
 
             Expression::Integer((a, b), l) => match l {
                 TokenType::Integer(number) => Ok(DataTypes::Integer(*number)),
@@ -247,7 +380,7 @@ impl Executor {
                     Some(DataTypes::String(data)) => Ok(DataTypes::String(data.to_string())),
                     Some(DataTypes::List(data)) => Ok(DataTypes::List(data.to_vec())),
                     Some(DataTypes::Ref((level, address))) => {
-                        Ok(self.symbol_table.get(&(*level, *address)).unwrap().clone())
+                        Ok(DataTypes::Ref((*level, *address)))
                     }
                     _ => Err((
                         (*a, *b),
@@ -353,48 +486,10 @@ impl Executor {
                     Ok(DataTypes::Integer(idx)) => idx,
                     _ => return Err(((*p, *q), RunTimeErrors::IncompatibleOperation)),
                 };
-                if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = **expr {
-                    let mut frame_level = self.frame_level;
-                    let mut data_address = address;
-                    let left_type = self.symbol_table.get(&(self.frame_level, address));
-                    if let Some(DataTypes::Ref((level, address))) = left_type {
-                        frame_level = *level;
-                        data_address = *address;
-                    }
-                    if let Some(data) = self.symbol_table.get_mut(&(frame_level, data_address)) {
-                        if let DataTypes::List(list) = data {
-                            if index < 0 || index > (list.len() - 1) as i64 {
-                                return Err((
-                                    (*p, *q),
-                                    RunTimeErrors::IndexOutOfBounds(index, list.len() as i64),
-                                ));
-                            }
-                            let value = &list[index as usize];
-                            Ok(value.clone())
-                        } else {
-                            Err(((*p, *q), RunTimeErrors::InvalidExpression))
-                        }
-                    } else {
-                        let name = self.get_symbol_name(address).unwrap();
-                        Err(((*p, *q), RunTimeErrors::UndefinedSymbol(name)))
-                    }
-                } else if let Expression::ListSubScript(_, _, _) = **expr {
-                    let data = self.eval_arithmetic_logic_expression(expr)?;
-                    if let DataTypes::List(list) = data {
-                        if index < 0 || index > (list.len() - 1) as i64 {
-                            return Err((
-                                (*p, *q),
-                                RunTimeErrors::IndexOutOfBounds(index, list.len() as i64),
-                            ));
-                        }
-                        let value = &list[index as usize];
-                        Ok(value.clone())
-                    } else {
-                        Err(((*p, *q), RunTimeErrors::InvalidExpression))
-                    }
-                } else {
-                    Err(((*p, *q), RunTimeErrors::InvalidExpression))
-                }
+                let mut indices = Vec::new();
+                indices.push(index);
+                let reference = self.evaluate_list_subscript(expr, &mut indices)?;
+                Ok(reference.clone())
             }
         }
     }
@@ -429,6 +524,8 @@ impl Executor {
                         ));
                     }
                     data = Some(&mut list[index as usize]);
+                } else {
+                    return Err(((*a, *b), RunTimeErrors::InvalidExpression));
                 }
             }
             return Ok(data.unwrap());

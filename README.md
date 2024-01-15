@@ -1,4 +1,4 @@
-# Mallu Script
+# Malluscript
 <p align="center">
 <img alt="Malluscript" src="images/poster-transparent.png" height=500 width=500><br/>
 <a href="https://github.com/actions/toolkit"><img alt="GitHub Actions status" src="https://github.com/sreyas-sreelal/malluscript/workflows/build/badge.svg"></a>
@@ -6,11 +6,16 @@
 <a href="https://github.com/Sreyas-Sreelal/malluscript/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/sreyas-sreelal/malluscript"></a>
 <a href="https://github.com/Sreyas-Sreelal/malluscript/blob/master/LICENSE"><img alt="GitHub issues" src="https://img.shields.io/github/license/sreyas-sreelal/malluscript"></a>
 <p align="center">
-<a href="https://discord.gg/5CMMf4ckuk"><img alt="Malluscript" src="https://dcbadge.vercel.app/api/server/5CMMf4ckuk"></a>
+<a href="https://patreon.com/sreyas_sreelal"><img src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dsreyas_sreelal%26type%3Dpatrons&style=for-the-badge" /> </a>
+<p align="center">
+<a href='https://ko-fi.com/sreyas' target='_blank'><img height='40'  src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' />
+</p></p>
+<p align="center">
+<a href="https://discord.gg/9GDUE4hRcW"><img alt="Malluscript" src="https://dcbadge.vercel.app/api/server/9GDUE4hRcW"></a>
 </p></p>
 
 
-Malluscript is an esoteric scripting language based on manglish and malayalam memes. The language uses trending Malayalam memetic words as keywords. The language is not strictly type-safe and uses only two datatypes strings and integers. Currently, malluscript is on the development phase and undergoing vigorous changes. Always check the release section for pre-built binaries for the interpreter.
+Malluscript is an esoteric scripting language that allows one to write computer programs in Malayalam. The concept of Malluscript stems from the idea of promoting inclusivity and linguistic diversity within the world of coding. By enabling programmers to express their ideas and algorithms in Malayalam, Malluscript serves as a bridge between traditional programming languages and the rich linguistic heritage of the Malayalam-speaking community. Currently, Malluscript is on the development phase and undergoing vigorous changes. Always check the release section for pre-built binaries for the interpreter.
 
 **Note:** For support please join our [Discord](https://discord.gg/5CMMf4ckuk).
 
@@ -26,7 +31,7 @@ The interpreter can be compiled as follows
 cd malluscript
 cargo build --release
 ```
-Note: You require rust compiler installed on your machine in order to compile the interpreter
+Note: You require Rust compiler installed on your machine in order to compile the interpreter
 
 ## Executing malluscript programs
 Malluscript can be used in two ways
@@ -93,7 +98,7 @@ Basic arithmetic operations can be done using `+`,`-`,`*`,`/`,`%` (modulo). Ever
     * `വാചകംവാങ്ങിക്കുക`
 
 ### Datatypes and Storage
-Malluscript is not strictly type-safe.The language, currently, supports only integer,float and string literals as datatypes.
+Malluscript is not strictly type-safe.The language supports integer,float and string literals as primary datatypes and it also support compound datatype called List.
 
 To assign it some value and declare a variable
 
@@ -101,6 +106,19 @@ To assign it some value and declare a variable
 variable_name = 1;
 second_var = "ente string";
 ```
+
+Lists in Malluscript are similar to compound types in other mainstream programming languages. A list can have different type of primary data in it. An example usage of List would be:
+
+```
+x = [1,4,5,6,"malluscript"];
+x = x + "more data";
+i = 0;
+i um 6 um onnallenkil avarthikuga {
+    ezhuthuga x[i] + " ";
+    i = i+1;
+}
+```
+Using `+` operator along side a list data, will append the other operand into that list. List data can be accessed using subscript operators `[]`. Also unlike other datatypes when passed as an argument to a function, it will be *passed as reference* instead of *passed as value*.
 
 ## Conditional Statements And Expressions
 The conditional expression has the following syntax
@@ -223,6 +241,7 @@ Same in pure Malayalam would be
 More examples can be found in [examples](examples)
 
 ## Notes
-The language as mentioned above is under the development phase and its structure can change overnight, suddenly. This language is not meant to disrespect anyone and wrote just for fun.
+The language as mentioned above is under the development phase and its structure can change overnight, suddenly.
 
 Any kind of contribution is always welcome. If you have any ideas or improvements to provide for this project open a pull request or if you have any difficulties using this language open an issue :) 
+
