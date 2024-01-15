@@ -103,7 +103,7 @@ impl Executor {
                             .clone();
                     }
                     print!("{}", data);
-                    self.output.push(format!("{}", result));
+                    self.output.push(format!("{}", data));
                     let _ = stdout().flush();
                 }
 
