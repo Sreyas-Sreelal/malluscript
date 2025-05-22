@@ -30,11 +30,11 @@ pub fn run_file(source: &str) {
 pub fn run_interactive_shell() {
     println!(
         "
-    +---------------------------------------------------------------+
-    |                   Mallu Script                                |
-    | Repository: https://www.github.com/sreyas-sreelal/malluscript |
-    +---------------------------------------------------------------+
-                        Version {}
+    ╭───────────────────────────────────────────────────────────────╮
+    │                       Mallu Script                            │
+    │ Repository: https://www.github.com/sreyas-sreelal/malluscript │
+    ╰───────────────────────────────────────────────────────────────╯
+                            Version {}
     ",
         env!("CARGO_PKG_VERSION")
     );
