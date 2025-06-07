@@ -25,6 +25,7 @@ pub struct Executor {
     frame_level: ScopeLevel,
     return_storage: DataTypes,
     subroutine_exit_flag: bool,
+    pub output: Vec<String>,
 }
 
 impl Executor {
@@ -40,6 +41,7 @@ impl Executor {
             frame_level: GLOBAL_SCOPE,
             subroutine_exit_flag: false,
             return_storage: DataTypes::Integer(1),
+            output: Vec::new(),
         }
     }
 
@@ -101,6 +103,7 @@ impl Executor {
                             .clone();
                     }
                     print!("{}", data);
+                    self.output.push(format!("{}", data));
                     let _ = stdout().flush();
                 }
 
