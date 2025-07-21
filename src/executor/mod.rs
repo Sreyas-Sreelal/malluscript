@@ -11,17 +11,27 @@ use std::collections::{BTreeMap, HashMap};
 use std::io::{stdin, stdout, Write};
 
 use crate::executor::datatype::{to_bool, DataTypes};
+use libloading::{Library, Symbol};
 use crate::lexer::tokens::TokenType;
 
 pub type ScopeLevel = i64;
 
 static GLOBAL_SCOPE: ScopeLevel = 0;
 
+pub enum FunctionDef {
+    Script(Vec<Expression>, SourceUnit),
+    Native(fn(&mut Executor, Vec<DataTypes>) -> Result<DataTypes, RunTimeErrors>),
+}
+
 pub struct Executor {
     symbol_table: BTreeMap<(ScopeLevel, usize), DataTypes>,
     literal_table: HashMap<usize, String>,
     symbol_lookup_table: HashMap<String, usize>,
-    function_table: HashMap<String, (Vec<Expression>, SourceUnit)>,
+    function_table: HashMap<String, FunctionDef>,
+    native_libraries: std::collections::HashMap<usize, Library>,
+    native_symbols: std::collections::HashMap<usize, Symbol<unsafe extern "C" fn(i64) -> i64>>,
+    next_lib_handle: usize,
+    next_sym_handle: usize,
     frame_level: ScopeLevel,
     return_storage: DataTypes,
     subroutine_exit_flag: bool,
@@ -32,15 +42,22 @@ impl Executor {
         literal_table: HashMap<usize, String>,
         symbol_lookup_table: HashMap<String, usize>,
     ) -> Self {
-        Executor {
+        let mut executor = Executor {
             symbol_table: BTreeMap::new(),
             literal_table,
             symbol_lookup_table,
             function_table: HashMap::new(),
+            native_libraries: HashMap::new(),
+            native_symbols: HashMap::new(),
+            next_lib_handle: 1,
+            next_sym_handle: 1,
             frame_level: GLOBAL_SCOPE,
-            subroutine_exit_flag: false,
             return_storage: DataTypes::Integer(1),
-        }
+            subroutine_exit_flag: false,
+        };
+        executor.register_native_functions();
+        executor
+    }
     }
 
     pub fn get_symbol_name(&self, address: usize) -> Option<String> {
@@ -59,6 +76,85 @@ impl Executor {
     pub fn update_lookup_table(&mut self, lookup_table: HashMap<String, usize>) {
         for x in lookup_table {
             self.symbol_lookup_table.insert(x.0, x.1);
+        }
+    }
+    
+    fn register_native_functions(&mut self) {
+        self.function_table.insert(
+            "ffi_open".to_string(),
+            FunctionDef::Native(Executor::native_ffi_open),
+        );
+        self.function_table.insert(
+            "ffi_sym".to_string(),
+            FunctionDef::Native(Executor::native_ffi_sym),
+        );
+        self.function_table.insert(
+            "ffi_call".to_string(),
+            FunctionDef::Native(Executor::native_ffi_call),
+        );
+    }
+
+    fn native_ffi_open(&mut self, args: Vec<DataTypes>) -> Result<DataTypes, RunTimeErrors> {
+        if args.len() != 1 {
+            return Err(RunTimeErrors::ArgumentCountMismatch);
+        }
+        if let DataTypes::String(path) = &args[0] {
+            match Library::new(path) {
+                Ok(lib) => {
+                    let handle = self.next_lib_handle;
+                    self.native_libraries.insert(handle, lib);
+                    self.next_lib_handle += 1;
+                    Ok(DataTypes::Integer(handle as i64))
+                }
+                Err(err) => Err(RunTimeErrors::FFIOpenError(err.to_string())),
+            }
+        } else {
+            Err(RunTimeErrors::IncompatibleOperation)
+        }
+    }
+
+    fn native_ffi_sym(&mut self, args: Vec<DataTypes>) -> Result<DataTypes, RunTimeErrors> {
+        if args.len() != 2 {
+            return Err(RunTimeErrors::ArgumentCountMismatch);
+        }
+        if let (DataTypes::Integer(lib_handle), DataTypes::String(sym)) = (&args[0], &args[1]) {
+            if let Some(lib) = self.native_libraries.get(&(*lib_handle as usize)) {
+                unsafe {
+                    match lib.get::<unsafe extern "C" fn(i64) -> i64>(sym.as_bytes()) {
+                        Ok(symbol) => {
+                            let handle = self.next_sym_handle;
+                            self.native_symbols.insert(handle, symbol);
+                            self.next_sym_handle += 1;
+                            Ok(DataTypes::Integer(handle as i64))
+                        }
+                        Err(err) => Err(RunTimeErrors::FFISymError(err.to_string())),
+                    }
+                }
+            } else {
+                Err(RunTimeErrors::FFIOpenError(format!(
+                    "Invalid library handle {}", lib_handle
+                )))
+            }
+        } else {
+            Err(RunTimeErrors::IncompatibleOperation)
+        }
+    }
+
+    fn native_ffi_call(&mut self, args: Vec<DataTypes>) -> Result<DataTypes, RunTimeErrors> {
+        if args.len() != 2 {
+            return Err(RunTimeErrors::ArgumentCountMismatch);
+        }
+        if let (DataTypes::Integer(sym_handle), DataTypes::Integer(val)) = (&args[0], &args[1]) {
+            if let Some(symbol) = self.native_symbols.get(&(*sym_handle as usize)) {
+                let result = unsafe { symbol(*val) };
+                Ok(DataTypes::Integer(result))
+            } else {
+                Err(RunTimeErrors::FFISymError(format!(
+                    "Invalid symbol handle {}", sym_handle
+                )))
+            }
+        } else {
+            Err(RunTimeErrors::IncompatibleOperation)
         }
     }
 
@@ -418,52 +514,57 @@ impl Executor {
                 Ok(DataTypes::String(input))
             }
 
-            Expression::FunctionCall((p, q), l, args) => {
-                if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = **l {
+            Expression::FunctionCall((p, q), func_expr, args) => {
+                // Evaluate function name
+                if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = **func_expr {
                     let name = self.get_symbol_name(address).unwrap();
-                    if let Some(function) = self.function_table.get(&name) {
-                        // See: https://github.com/rust-lang/rust/issues/59159
-                        let function = function.clone();
-
-                        let parameters = &function.0;
-                        if parameters.len() != args.len() {
-                            return Err(((*p, *q), RunTimeErrors::ArgumentCountMismatch));
-                        }
-                        for (x, y) in args.iter().zip(parameters.iter()) {
-                            if let Expression::Symbol(_, TokenType::Symbol(y)) = y {
-                                // allocation
-                                let data = self.eval_arithmetic_logic_expression(x)?.clone();
-                                if let (
-                                    DataTypes::List(_),
-                                    Expression::Symbol(_, TokenType::Symbol(x)),
-                                ) = (&data, x)
-                                {
-                                    // lists will be passed by reference by default
-                                    self.symbol_table.insert(
-                                        (self.frame_level + 1, *y),
-                                        DataTypes::Ref((self.frame_level, *x)),
-                                    );
-                                } else {
-                                    self.symbol_table.insert((self.frame_level + 1, *y), data);
+                    if let Some(def) = self.function_table.get(&name) {
+                        match def {
+                            FunctionDef::Script(params, body) => {
+                                if params.len() != args.len() {
+                                    return Err(((*p, *q), RunTimeErrors::ArgumentCountMismatch));
                                 }
-                            } else {
-                                return Err(((*p, *q), RunTimeErrors::InvalidFunctionDeclaration));
+                                // Setup parameters
+                                for (arg_expr, param_expr) in args.iter().zip(params.iter()) {
+                                    if let Expression::Symbol(_, TokenType::Symbol(param_addr)) = param_expr {
+                                        let data = self.eval_arithmetic_logic_expression(arg_expr)?.clone();
+                                        if let (DataTypes::List(_), Expression::Symbol(_, TokenType::Symbol(arg_addr))) =
+                                            (&data, arg_expr)
+                                        {
+                                            self.symbol_table.insert(
+                                                (self.frame_level + 1, *param_addr),
+                                                DataTypes::Ref((self.frame_level, *arg_addr)),
+                                            );
+                                        } else {
+                                            self.symbol_table.insert((self.frame_level + 1, *param_addr), data);
+                                        }
+                                    } else {
+                                        return Err(((*p, *q), RunTimeErrors::InvalidFunctionDeclaration));
+                                    }
+                                }
+                                // Execute script function
+                                self.frame_level += 1;
+                                self.return_storage = DataTypes::Unknown;
+                                self.execute(body)?;
+                                let scope = self.frame_level;
+                                self.symbol_table.retain(|(lvl, _), _| *lvl != scope);
+                                self.frame_level -= 1;
+                                self.subroutine_exit_flag = false;
+                                Ok(self.return_storage.clone())
+                            }
+                            FunctionDef::Native(native_fn) => {
+                                // Evaluate arguments first
+                                let mut native_args = Vec::new();
+                                for arg_expr in args {
+                                    native_args.push(self.eval_arithmetic_logic_expression(arg_expr)?);
+                                }
+                                // Call native function
+                                native_fn(self, native_args)
                             }
                         }
-
-                        self.frame_level += 1;
-                        self.return_storage = DataTypes::Unknown;
-                        self.execute(&function.1)?;
-
-                        let scope = self.frame_level;
-                        self.symbol_table
-                            .retain(|(frame_level, _), _| *frame_level != scope);
-                        self.frame_level -= 1;
                     } else {
-                        return Err(((*p, *q), RunTimeErrors::UndefinedSymbol(name)));
+                        Err(((*p, *q), RunTimeErrors::UndefinedSymbol(name)))
                     }
-                    self.subroutine_exit_flag = false;
-                    Ok(self.return_storage.clone())
                 } else {
                     Err(((*p, *q), RunTimeErrors::InvalidExpression))
                 }

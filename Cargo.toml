@@ -10,6 +10,7 @@ description = "An esoteric scripting language that lets to write computer progra
 lalrpop-util = "0.20.0"
 clap = "2.33"
 rustyline = "6.1"
+libloading = "0.7"
 
 [build-dependencies]
 lalrpop = "0.20.0"

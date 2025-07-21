@@ -15,6 +15,9 @@ pub enum RunTimeErrors {
     ArgumentCountMismatch,
     IntegerOverFlow,
     IndexOutOfBounds(i64, i64),
+    FFIOpenError(String),
+    FFISymError(String),
+    FFICallError(String),
 }
 
 impl fmt::Display for RunTimeErrors {
@@ -52,6 +55,15 @@ impl fmt::Display for RunTimeErrors {
                 f,
                 "[Error]: Index Out Of Bounds, attempted to read/write at index {index} on {limit} sized data"
             ),
+            RunTimeErrors::FFIOpenError(path) => {
+                write!(f, "[FFI Error]: Failed to open library {}", path)
+            }
+            RunTimeErrors::FFISymError(symbol) => {
+                write!(f, "[FFI Error]: Failed to resolve symbol {}", symbol)
+            }
+            RunTimeErrors::FFICallError(msg) => {
+                write!(f, "[FFI Error]: Function call failed: {}", msg)
+            }
         }
     }
 }

@@ -239,9 +239,27 @@ Same in pure Malayalam would be
 ```
 
 More examples can be found in [examples](examples)
+## Foreign Function Interface (FFI)
+
+Malluscript provides a simple plugin interface for loading and calling functions from dynamic libraries.
+This allows writing libraries in other languages (e.g., C) and using them within Malluscript.
+
+### Built-in Functions
+
+- `ffi_open<path>`: Loads a dynamic library at the given string `path`. Returns an integer library handle.
+- `ffi_sym<lib_handle, symbol_name>`: Resolves a symbol named `symbol_name` from the library referred to by `lib_handle`. Returns an integer symbol handle.
+- `ffi_call<sym_handle, value>`: Calls the symbol function identified by `sym_handle` with a single 64-bit integer argument `value`. Returns the integer result.
+
+### Example
+
+```ms
+lib = ffi_open<"libm.so">;          // load math library
+cos_sym = ffi_sym<lib, "cos">;      // resolve cos function
+res = ffi_call<cos_sym, 0>;           // call cos(0)
+ezhuthuga res;                        // print result
+```
 
 ## Notes
 The language as mentioned above is under the development phase and its structure can change overnight, suddenly.
 
 Any kind of contribution is always welcome. If you have any ideas or improvements to provide for this project open a pull request or if you have any difficulties using this language open an issue :) 
-
