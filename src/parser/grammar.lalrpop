@@ -34,8 +34,23 @@ Statement:Statement = {
     <a:@L> Return <expr:Expression> ";" <b:@R>  => Statement::Return((a,b),expr),
     <a:@L> <expr:Expression> ";" <b:@R>  => Statement::EmptyExpression((a,b),expr),
     <a:@L> <condition:Conditional> If Loop "{" <s:SourceUnit> "}" <b:@R> => Statement::Loop((a,b),condition,s),
-    <a:@L> <condition:ConditionalWithAgglutination> Loop "{" <s:SourceUnit> "}" <b:@R> => Statement::Loop((a,b),condition,s)
+    <a:@L> <condition:ConditionalWithAgglutination> Loop "{" <s:SourceUnit> "}" <b:@R> => Statement::Loop((a,b),condition,s),
+    <a:@L> Import <path:ImportPath> ";" <b:@R> => Statement::Import((a,b), path),
 }; 
+
+ImportPath: Vec<usize> = {
+    <id:Identifier> => match id {
+        TokenType::Symbol(val) => vec![val],
+        _ => unreachable!(),
+    },
+    <mut v:ImportPath> ":" <id:Identifier> => match id {
+        TokenType::Symbol(val) => {
+            v.push(val);
+            v
+        },
+        _ => unreachable!(),
+    }
+};
 
 Expression:Expression= {
     ArithExpression
@@ -84,6 +99,13 @@ Term: Expression= {
     "(" <e:Expression> ")" => e,
     <a:@L> "[" <items:Expressions> "]" <b:@R> => Expression::ListExpression((a,b),items),
     <a:@L> <id:Term> "[" <idx:Expression> "]" <b:@R> => Expression::ListSubScript((a,b),Box::new(id),Box::new(idx)),
+    <a:@L> <module:Identifier> "." <id:Identifier> <b:@R> => {
+        let module_id = match module {
+            TokenType::Symbol(id) => id,
+            _ => unreachable!(),
+        };
+        Expression::ModuleAccess((a,b),module_id,Box::new(Expression::Symbol((a,b),id)))
+    },
 };
 
 extern {
@@ -128,5 +150,8 @@ extern {
         IfEqualTo => TokenType::IfEqualTo,
         "[" => TokenType::SquareOpen,
         "]" => TokenType::SquareClose,        
+        Import => TokenType::Import,
+        ":" => TokenType::Colon,
+        "." => TokenType::Dot,
     }
 }
