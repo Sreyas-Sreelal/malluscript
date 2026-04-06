@@ -25,6 +25,7 @@ pub struct Executor {
     frame_level: ScopeLevel,
     return_storage: DataTypes,
     subroutine_exit_flag: bool,
+    pub modules: HashMap<String, Executor>,
 }
 
 impl Executor {
@@ -40,6 +41,7 @@ impl Executor {
             frame_level: GLOBAL_SCOPE,
             subroutine_exit_flag: false,
             return_storage: DataTypes::Integer(1),
+            modules: HashMap::new(),
         }
     }
 
@@ -129,6 +131,72 @@ impl Executor {
                         let reference = self.evaluate_list_subscript(expr, &mut indices)?;
                         *reference = data;
                     }
+                    Expression::ModuleAccess((_a, _b), module_id, expr) => {
+                        let module_name = self.get_symbol_name(*module_id).unwrap();
+                        let data = self.eval_arithmetic_logic_expression(r)?;
+                        let mut evaluated_index = None;
+                        if let Expression::ListSubScript((_x, _y), _, index) = &**expr {
+                            evaluated_index =
+                                Some(match self.eval_arithmetic_logic_expression(index) {
+                                    Ok(DataTypes::Integer(idx)) => idx,
+                                    _ => {
+                                        return Err((
+                                            (*p, *q),
+                                            RunTimeErrors::IncompatibleOperation,
+                                        ))
+                                    }
+                                });
+                        }
+                        let mut var_name = String::new();
+                        if let Expression::Symbol((_x, _y), TokenType::Symbol(caller_address)) =
+                            &**expr
+                        {
+                            var_name = self.get_symbol_name(*caller_address).unwrap();
+                        }
+
+                        if let Some(module) = self.modules.get_mut(&module_name) {
+                            if let Expression::Symbol(
+                                (_x, _y),
+                                TokenType::Symbol(_caller_address),
+                            ) = **expr
+                            {
+                                let target_address =
+                                    if let Some(addr) = module.symbol_lookup_table.get(&var_name) {
+                                        *addr
+                                    } else {
+                                        return Err((
+                                            (*p, *q),
+                                            RunTimeErrors::UndefinedSymbol(var_name),
+                                        ));
+                                    };
+
+                                let mut frame_level = module.frame_level;
+                                let mut data_address = target_address;
+
+                                let left_type = module
+                                    .symbol_table
+                                    .get(&(module.frame_level, target_address));
+                                if let Some(DataTypes::Ref((level, addr))) = left_type {
+                                    frame_level = *level;
+                                    data_address = *addr;
+                                }
+                                module
+                                    .symbol_table
+                                    .insert((frame_level, data_address), data);
+                            } else if let Expression::ListSubScript((_x, _y), list_expr, _) =
+                                &**expr
+                            {
+                                let mut indices = vec![evaluated_index.unwrap()];
+                                let reference =
+                                    module.evaluate_list_subscript(list_expr, &mut indices)?;
+                                *reference = data;
+                            } else {
+                                return Err(((*p, *q), RunTimeErrors::InvalidAssignment));
+                            }
+                        } else {
+                            return Err(((*p, *q), RunTimeErrors::UndefinedSymbol(module_name)));
+                        }
+                    }
                     _ => {
                         return Err(((*p, *q), RunTimeErrors::InvalidAssignment));
                     }
@@ -152,6 +220,58 @@ impl Executor {
                 Statement::Return((_, _), expr) => {
                     self.return_storage = self.eval_arithmetic_logic_expression(expr)?;
                     self.subroutine_exit_flag = true;
+                }
+                Statement::Import((p, q), path) => {
+                    let mut module_path = String::new();
+                    let mut module_name = String::new();
+                    for (i, id) in path.iter().enumerate() {
+                        let name = self.get_symbol_name(*id).unwrap();
+                        if i > 0 {
+                            module_path.push('/');
+                        }
+                        module_path.push_str(&name);
+                        module_name = name;
+                    }
+                    module_path.push_str(".ms");
+
+                    let source = match std::fs::read_to_string(&module_path) {
+                        Ok(contents) => contents,
+                        Err(e) => {
+                            return Err((
+                                (*p, *q),
+                                RunTimeErrors::ModuleLoadError(format!(
+                                    "Failed to read file {}: {}",
+                                    module_path, e
+                                )),
+                            ))
+                        }
+                    };
+
+                    let mut tokens = crate::lexer::Lexer::new(&source, HashMap::new(), 0);
+                    let parsed = match crate::parser::parse(&source, &mut tokens) {
+                        Ok(p) => p,
+                        Err(e) => {
+                            return Err((
+                                (*p, *q),
+                                RunTimeErrors::ModuleLoadError(format!(
+                                    "Failed to parse module {}: {}",
+                                    module_name, e
+                                )),
+                            ))
+                        }
+                    };
+
+                    let mut exec = Executor::new(tokens.literal_table, tokens.symbol_lookup);
+                    if let Err(e) = exec.execute(&parsed) {
+                        return Err((
+                            (*p, *q),
+                            RunTimeErrors::ModuleLoadError(format!(
+                                "Error executing module {}: {}",
+                                module_name, e.1
+                            )),
+                        ));
+                    }
+                    self.modules.insert(module_name, exec);
                 }
             }
         }
@@ -419,53 +539,132 @@ impl Executor {
             }
 
             Expression::FunctionCall((p, q), l, args) => {
-                if let Expression::Symbol((_a, _b), TokenType::Symbol(address)) = **l {
-                    let name = self.get_symbol_name(address).unwrap();
-                    if let Some(function) = self.function_table.get(&name) {
-                        // See: https://github.com/rust-lang/rust/issues/59159
-                        let function = function.clone();
-
-                        let parameters = &function.0;
-                        if parameters.len() != args.len() {
-                            return Err(((*p, *q), RunTimeErrors::ArgumentCountMismatch));
-                        }
-                        for (x, y) in args.iter().zip(parameters.iter()) {
-                            if let Expression::Symbol(_, TokenType::Symbol(y)) = y {
-                                // allocation
-                                let data = self.eval_arithmetic_logic_expression(x)?.clone();
-                                if let (
-                                    DataTypes::List(_),
-                                    Expression::Symbol(_, TokenType::Symbol(x)),
-                                ) = (&data, x)
-                                {
-                                    // lists will be passed by reference by default
-                                    self.symbol_table.insert(
-                                        (self.frame_level + 1, *y),
-                                        DataTypes::Ref((self.frame_level, *x)),
-                                    );
-                                } else {
-                                    self.symbol_table.insert((self.frame_level + 1, *y), data);
-                                }
-                            } else {
-                                return Err(((*p, *q), RunTimeErrors::InvalidFunctionDeclaration));
-                            }
-                        }
-
-                        self.frame_level += 1;
-                        self.return_storage = DataTypes::Unknown;
-                        self.execute(&function.1)?;
-
-                        let scope = self.frame_level;
-                        self.symbol_table
-                            .retain(|(frame_level, _), _| *frame_level != scope);
-                        self.frame_level -= 1;
-                    } else {
-                        return Err(((*p, *q), RunTimeErrors::UndefinedSymbol(name)));
+                let mut is_module = false;
+                let mut module_name = String::new();
+                let func_name = match &**l {
+                    Expression::Symbol((_a, _b), TokenType::Symbol(address)) => {
+                        self.get_symbol_name(*address).unwrap()
                     }
-                    self.subroutine_exit_flag = false;
-                    Ok(self.return_storage.clone())
+                    Expression::ModuleAccess((_a, _b), module_id, expr) => {
+                        module_name = self.get_symbol_name(*module_id).unwrap();
+                        if let Expression::Symbol((_x, _y), TokenType::Symbol(address)) = &**expr {
+                            is_module = true;
+                            self.get_symbol_name(*address).unwrap()
+                        } else {
+                            return Err(((*p, *q), RunTimeErrors::InvalidExpression));
+                        }
+                    }
+                    _ => return Err(((*p, *q), RunTimeErrors::InvalidExpression)),
+                };
+
+                let mut evaluated_args = Vec::new();
+                for x in args.iter() {
+                    let data = self.eval_arithmetic_logic_expression(x)?.clone();
+
+                    let ref_info = if let (
+                        DataTypes::List(_),
+                        Expression::Symbol(_, TokenType::Symbol(x_addr)),
+                    ) = (&data, x)
+                    {
+                        Some((self.frame_level, *x_addr))
+                    } else {
+                        None
+                    };
+                    evaluated_args.push((data, ref_info));
+                }
+
+                let function_data = if is_module {
+                    let module = self.modules.get_mut(&module_name).ok_or((
+                        (*p, *q),
+                        RunTimeErrors::UndefinedSymbol(module_name.clone()),
+                    ))?;
+                    module.function_table.get(&func_name).cloned()
                 } else {
-                    Err(((*p, *q), RunTimeErrors::InvalidExpression))
+                    self.function_table.get(&func_name).cloned()
+                };
+
+                if let Some(function) = function_data {
+                    let parameters = &function.0;
+                    if parameters.len() != evaluated_args.len() {
+                        return Err(((*p, *q), RunTimeErrors::ArgumentCountMismatch));
+                    }
+
+                    let module = if is_module {
+                        self.modules.get_mut(&module_name).unwrap() // Safe, checked earlier
+                    } else {
+                        self
+                    };
+
+                    for (i, y) in parameters.iter().enumerate() {
+                        if let Expression::Symbol(_, TokenType::Symbol(y_addr)) = y {
+                            let (data, ref_info) = evaluated_args[i].clone();
+                            if !is_module && ref_info.is_some() {
+                                let (level, addr) = ref_info.unwrap();
+                                module.symbol_table.insert(
+                                    (module.frame_level + 1, *y_addr),
+                                    DataTypes::Ref((level, addr)),
+                                );
+                            } else {
+                                module
+                                    .symbol_table
+                                    .insert((module.frame_level + 1, *y_addr), data);
+                            }
+                        } else {
+                            return Err(((*p, *q), RunTimeErrors::InvalidFunctionDeclaration));
+                        }
+                    }
+
+                    module.frame_level += 1;
+                    module.return_storage = DataTypes::Unknown;
+                    module.execute(&function.1)?;
+
+                    let scope = module.frame_level;
+                    module
+                        .symbol_table
+                        .retain(|(frame_level, _), _| *frame_level != scope);
+                    module.frame_level -= 1;
+                    module.subroutine_exit_flag = false;
+
+                    Ok(module.return_storage.clone())
+                } else {
+                    return Err(((*p, *q), RunTimeErrors::UndefinedSymbol(func_name)));
+                }
+            }
+
+            Expression::ModuleAccess((p, q), module_id, expr) => {
+                let module_name = self.get_symbol_name(*module_id).unwrap();
+                let mut var_name = String::new();
+                if let Expression::Symbol((_a, _b), TokenType::Symbol(caller_address)) = &**expr {
+                    var_name = self.get_symbol_name(*caller_address).unwrap();
+                }
+
+                if let Some(module) = self.modules.get_mut(&module_name) {
+                    if let Expression::Symbol((a, b), TokenType::Symbol(_caller_address)) = **expr {
+                        let target_address =
+                            if let Some(addr) = module.symbol_lookup_table.get(&var_name) {
+                                *addr
+                            } else {
+                                return Err(((*p, *q), RunTimeErrors::UndefinedSymbol(var_name)));
+                            };
+                        match module.eval_arithmetic_logic_expression(&Expression::Symbol(
+                            (a, b),
+                            TokenType::Symbol(target_address),
+                        )) {
+                            Ok(data) => Ok(data),
+                            Err(e) => Err(((*p, *q), e.1)),
+                        }
+                    } else if let Expression::ListSubScript((_a, _b), _list_expr, _index) = &**expr
+                    {
+                        // Handled correctly in evaluate_list_subscript now
+                        match module.eval_arithmetic_logic_expression(expr) {
+                            Ok(data) => Ok(data),
+                            Err(e) => Err(((*p, *q), e.1)),
+                        }
+                    } else {
+                        Err(((*p, *q), RunTimeErrors::InvalidExpression))
+                    }
+                } else {
+                    Err(((*p, *q), RunTimeErrors::UndefinedSymbol(module_name)))
                 }
             }
 
@@ -526,6 +725,33 @@ impl Executor {
                 }
             }
             return Ok(data.unwrap());
+        } else if let Expression::ModuleAccess((a, b), module_id, inner_expr) = expr {
+            let module_name = self.get_symbol_name(*module_id).unwrap();
+            let mut var_name = String::new();
+            if let Expression::Symbol((_x, _y), TokenType::Symbol(caller_address)) = &**inner_expr {
+                var_name = self.get_symbol_name(*caller_address).unwrap();
+            }
+
+            if let Some(module) = self.modules.get_mut(&module_name) {
+                if let Expression::Symbol((_x, _y), TokenType::Symbol(_caller_address)) =
+                    **inner_expr
+                {
+                    let target_address =
+                        if let Some(addr) = module.symbol_lookup_table.get(&var_name) {
+                            *addr
+                        } else {
+                            return Err(((*a, *b), RunTimeErrors::UndefinedSymbol(var_name)));
+                        };
+                    return module.evaluate_list_subscript(
+                        &Expression::Symbol((_x, _y), TokenType::Symbol(target_address)),
+                        vec,
+                    );
+                } else {
+                    return Err(((*a, *b), RunTimeErrors::InvalidExpression));
+                }
+            } else {
+                return Err(((*a, *b), RunTimeErrors::UndefinedSymbol(module_name)));
+            }
         }
         Err(((0, 0), RunTimeErrors::InvalidExpression))
     }
