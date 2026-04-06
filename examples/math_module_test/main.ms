@@ -1,15 +1,15 @@
-import math;
+math m ennu ulppeduthuka;
 
-ezhuthuka "Math Var: ";
-ezhuthuka math.math_var;
-ezhuthuka "\n";
+"Math Var: " ezhuthuka;
+m.math_var ezhuthuka;
+"\n" ezhuthuka;
 
-math.math_var = 20;
+m.math_var = 20;
 
-ezhuthuka "Math Var Modified: ";
-ezhuthuka math.math_var;
-ezhuthuka "\n";
+"Math Var Modified: " ezhuthuka;
+m.math_var ezhuthuka;
+"\n" ezhuthuka;
 
-ezhuthuka "Math Add 3 + 4: ";
-ezhuthuka math.math_add<3, 4>;
-ezhuthuka "\n";
+"Math Add 3 + 4: " ezhuthuka;
+m.math_add<3, 4> ezhuthuka;
+"\n" ezhuthuka;

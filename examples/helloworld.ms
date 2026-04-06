@@ -1,4 +1,4 @@
-kanikuga "Please Enter Your Name: ";
-name = vachakam_vangikuga;
+"Please Enter Your Name: " kanikuga;
+name = vachakam_vangikuka;
 
-kanikuga "Swagatham "+name+"\n";
+"Swagatham " + name + "\n" kanikuga;
