@@ -1,10 +1,10 @@
-kanikuga "Input the number ";
-n=akam_vangikuga;
+"Input the number " kanikuga;
+n = akam_vangikuga;
 
-kanikuga "The reversed bits of the number are ";
-n um 0 um onnalla enkil avarthikuga
-{
-    k=n%2;
-    kanikuga k;
-    n=n/2;
+"The reversed bits of the number are " kanikuga;
+n um 0 um onnalla enkil avarthikuga {
+    k = n % 2;
+    k kanikuga;
+    n = n / 2;
 }
+"\n" kanikuga;
