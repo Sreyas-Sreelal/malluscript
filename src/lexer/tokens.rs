@@ -41,6 +41,7 @@ pub enum TokenType {
     Import,
     Colon,
     Dot,
+    As,
 }
 
 impl Display for TokenType {
@@ -86,6 +87,7 @@ impl Display for TokenType {
             TokenType::Import => write!(f, "ulppeduthuka"),
             TokenType::Colon => write!(f, ":"),
             TokenType::Dot => write!(f, "."),
+            TokenType::As => write!(f, "ennu"),
         }
     }
 }

@@ -17,7 +17,7 @@ pub enum Statement {
     EmptyExpression((usize, usize), Expression),
     Return((usize, usize), Expression),
     Write((usize, usize), Expression),
-    Import((usize, usize), Vec<usize>),
+    Import((usize, usize), Vec<usize>, Option<usize>),
 }
 
 #[derive(Debug, Clone, PartialEq)]

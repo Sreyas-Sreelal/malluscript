@@ -35,7 +35,8 @@ Statement:Statement = {
     <a:@L> <expr:Expression> ";" <b:@R>  => Statement::EmptyExpression((a,b),expr),
     <a:@L> <condition:Conditional> If Loop "{" <s:SourceUnit> "}" <b:@R> => Statement::Loop((a,b),condition,s),
     <a:@L> <condition:ConditionalWithAgglutination> Loop "{" <s:SourceUnit> "}" <b:@R> => Statement::Loop((a,b),condition,s),
-    <a:@L> <path:ImportPath> Import ";" <b:@R> => Statement::Import((a,b), path),
+    <a:@L> <path:ImportPath> <alias:Identifier> As Import ";" <b:@R> => Statement::Import((a,b), path, Some(match alias { TokenType::Symbol(s) => s, _ => unreachable!() })),
+    <a:@L> <path:ImportPath> Import ";" <b:@R> => Statement::Import((a,b), path, None),
 }; 
 
 ImportPath: Vec<usize> = {
@@ -151,6 +152,7 @@ extern {
         "[" => TokenType::SquareOpen,
         "]" => TokenType::SquareClose,        
         Import => TokenType::Import,
+        As => TokenType::As,
         ":" => TokenType::Colon,
         "." => TokenType::Dot,
     }

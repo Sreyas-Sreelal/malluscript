@@ -221,7 +221,7 @@ impl Executor {
                     self.return_storage = self.eval_arithmetic_logic_expression(expr)?;
                     self.subroutine_exit_flag = true;
                 }
-                Statement::Import((p, q), path) => {
+                Statement::Import((p, q), path, alias) => {
                     let mut module_path = String::new();
                     let mut module_name = String::new();
                     for (i, id) in path.iter().enumerate() {
@@ -271,7 +271,11 @@ impl Executor {
                             )),
                         ));
                     }
-                    self.modules.insert(module_name, exec);
+                    let final_name = match alias {
+                        Some(id) => self.get_symbol_name(*id).unwrap(),
+                        None => module_name,
+                    };
+                    self.modules.insert(final_name, exec);
                 }
             }
         }

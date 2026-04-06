@@ -37,7 +37,8 @@ impl Keywords {
             ["um", "ഉം"] => TokenType::Um,
             ["ne_kal", "നെകാൾ"] => TokenType::Nekal,
             ["kodukuga","kodukuka","madakiayakuga","madakiayakuka","കൊടുക്കുക","മടക്കിഅയയ്ക്കുക"] => TokenType::Return,
-            ["ulppeduthuka","ulppeduthuga","ഉൾപ്പെടുത്തുക"] => TokenType::Import
+            ["ulppeduthuka","ulppeduthuga","ഉൾപ്പെടുത്തുക"] => TokenType::Import,
+            ["ennu","ayi","എന്ന്","ആയി"] => TokenType::As
         );
 
         Self { list }
