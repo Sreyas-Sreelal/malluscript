@@ -6,13 +6,16 @@
 <a href="https://github.com/Sreyas-Sreelal/malluscript/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/sreyas-sreelal/malluscript"></a>
 <a href="https://github.com/Sreyas-Sreelal/malluscript/blob/master/LICENSE"><img alt="GitHub issues" src="https://img.shields.io/github/license/sreyas-sreelal/malluscript"></a>
 <p align="center">
-<a href="https://patreon.com/sreyas_sreelal"><img src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dsreyas_sreelal%26type%3Dpatrons&style=for-the-badge" /> </a>
-<p align="center">
-<a href='https://ko-fi.com/sreyas' target='_blank'><img height='40'  src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' />
-</p></p>
-<p align="center">
-<a href="https://discord.gg/9GDUE4hRcW"><img alt="Malluscript" src="https://dcbadge.vercel.app/api/server/9GDUE4hRcW"></a>
-</p></p>
+  <a href="https://patreon.com/sreyas_sreelal">
+    <img src="https://img.shields.io/badge/Patreon-F96854?style=for-the-badge&logo=patreon&logoColor=white" alt="Support on Patreon" />
+  </a>
+  <a href="https://ko-fi.com/sreyas">
+    <img src="https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white" alt="Buy Me a Coffee" />
+  </a>
+  <a href="https://discord.gg/9GDUE4hRcW">
+    <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Join Discord" />
+  </a>
+</p>
 
 
 Malluscript is an esoteric scripting language that allows one to write computer programs in Malayalam. The concept of Malluscript stems from the idea of promoting inclusivity and linguistic diversity within the world of coding. By enabling programmers to express their ideas and algorithms in Malayalam, Malluscript serves as a bridge between traditional programming languages and the rich linguistic heritage of the Malayalam-speaking community. Currently, Malluscript is on the development phase and undergoing vigorous changes. Always check the release section for pre-built binaries for the interpreter.
