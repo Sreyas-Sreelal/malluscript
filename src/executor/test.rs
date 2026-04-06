@@ -14,7 +14,7 @@ fn primary_test() {
         i um 0 um onnalla enkil avarthikuga {
             i = i-1;
         }
-        ezhuthuga i;
+        i ezhuthuga;
     ";
 
     let mut lex = Lexer::new(&code, HashMap::new(), 0);

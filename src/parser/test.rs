@@ -20,7 +20,7 @@ fn parser_test() {
         i um 0 um thullyamalla enkil avarthikuga {
             i = i-1;
         }
-        kanikuga i;
+        i kanikuga;
     ";
     let mut lex = Lexer::new(&code, HashMap::new(), 0);
     let parsed = parse(&code, &mut lex);
@@ -80,7 +80,7 @@ fn parser_test() {
                     .to_vec(),
                 ),
             )),
-            Statement(Write((217, 228), Symbol((226, 226), TokenType::Symbol(1)))),
+            Statement(Write((217, 228), Symbol((217, 217), TokenType::Symbol(1)))),
         ]
         .to_vec(),
     );
