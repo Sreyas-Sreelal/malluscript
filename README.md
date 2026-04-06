@@ -63,9 +63,9 @@ Basic arithmetic operations can be done using `+`,`-`,`*`,`/`,`%` (modulo). Ever
 ### Basic I/O operations
 * Printing or writing to console is done as follows
     ```ms
-    ezhuthuga "hello world";
-    ezhuthuga variable;
-    ezhuthuga "Onnum randum kottiyal " + 1+2 + " aanu"; 
+    "hello world" ezhuthuga;
+    variable ezhuthuga;
+    "Onnum randum kottiyal " + 1+2 + " aanu" ezhuthuga; 
     ``` 
   * Alternate Keywords
     * `ezhuthuka`
@@ -114,11 +114,37 @@ x = [1,4,5,6,"malluscript"];
 x = x + "more data";
 i = 0;
 i um 6 um onnallenkil avarthikuga {
-    ezhuthuga x[i] + " ";
+    x[i] + " " ezhuthuga;
     i = i+1;
 }
 ```
 Using `+` operator along side a list data, will append the other operand into that list. List data can be accessed using subscript operators `[]`. Also unlike other datatypes when passed as an argument to a function, it will be *passed as reference* instead of *passed as value*.
+
+## Modules and Imports
+Malluscript supports a powerful module system for code organization. Modules are imported using the `ulppeduthuka` keyword.
+
+### Basic Import
+Imports the specified module from the filesystem. The module path is relative to the current working directory.
+```ms
+math ulppeduthuka;
+math.math_add<3, 4> ezhuthuka;
+```
+
+### Module Aliasing
+You can alias imported modules for convenience using the `ennu` or `ayi` keywords.
+```ms
+math m ennu ulppeduthuka;
+m.math_add<3, 4> ezhuthuka;
+```
+* Alternate Keywords
+    * **ulppeduthuka**
+      * `ulppeduthuga`
+      * `ഉൾപ്പെടുത്തുക`
+
+    * **ennu**
+      * `ayi`
+      * `എന്ന്`
+      * `ആയി`
 
 ## Conditional Statements And Expressions
 The conditional expression has the following syntax
@@ -184,19 +210,19 @@ The loops in malluscript look as follows
 The functions definition in malluscript are defined as follows.
 ```
 ente_function(variable1,variable2) {
-  ezhuthuga variable1 + variable2;
+  variable1 + variable2 ezhuthuga;
 }
 ```
-The functions can also return values.
+The functions can also return values using `kodukuga`.
 ```
 factorial(n) {
     n um 0 um thullyaman enkil {
-        kodukuga 1;   
+        1 kodukuga;   
     }
-    kodukuga n * factorial<n-1>;
+    n * factorial<n-1> kodukuga;
 }
 ```
-  * Alterative keywords for `kodukuga`
+  * Alterative keywords for `kodukuga` (Return)
     * `kodukuka`
     * `madakiayakuga`
     * `madakiayakuka`
@@ -212,30 +238,31 @@ my_function<arg1,arg2>;
 A simple program to find factorial in malluscript would be 
 
 ```ms
-kanikuga "Input number:";
+"Input number:" kanikuka;
 num = akam_vangikuga;
 factorial = 1;
 
 0 um num um thullyamalla enkil avarthikuga {
     factorial = factorial * num;
-    num = num -1;
+    num = num - 1;
 }
 
-kanikuga "Factoral is : " + factorial + "\n";
+"Factoral is : " + factorial + "\n" kanikuka;
 
 ```
 Same in pure Malayalam would be
 ```ms
-എഴുതുക "ദയവായി നമ്പർ തരുക: ";
+"ദയവായി നമ്പർ തരുക: " എഴുതുക;
 നമ്പർ = അക്കംവാങ്ങിക്കുക;
 ഫാക്ടോറിയൽ = 1;
 
-0 ഉം നമ്പർ ഉം തുല്യമല്ല എങ്കിൽ {
+0 ഉം നമ്പർ ഉം തുല്യമല്ലെങ്കിൽ ആവർത്തിക്കുക {
   ഫാക്ടോറിയൽ = ഫാക്ടോറിയൽ * നമ്പർ;
-  നമ്പർ = നമ്പർ -1;
+  നമ്പർ = നമ്പർ - 1;
 }
 
-എഴുതുക "ഫാക്ടോറിയൽ : " + ഫാക്ടോറിയൽ + "\n";
+"ഫാക്ടോറിയൽ : " + ഫാക്ടോറിയൽ + "\n" എഴുതുക;
+```
 ```
 
 More examples can be found in [examples](examples)
