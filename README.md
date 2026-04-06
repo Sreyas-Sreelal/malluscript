@@ -12,6 +12,9 @@
   <a href="https://ko-fi.com/sreyas">
     <img src="https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white" alt="Buy Me a Coffee" />
   </a>
+  <a href="https://opencollective.com/malluscript">
+    <img src="https://img.shields.io/badge/Open%20Collective-7B9E31?style=for-the-badge&logo=open-collective&logoColor=white" alt="Support on Open Collective" />
+  </a>
   <a href="https://discord.gg/9GDUE4hRcW">
     <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Join Discord" />
   </a>
