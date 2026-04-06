@@ -83,7 +83,7 @@ impl Display for TokenType {
             TokenType::IfEqualTo => write!(f, "thullyamanenkil"),
             TokenType::SquareOpen => write!(f, "["),
             TokenType::SquareClose => write!(f, "]"),
-            TokenType::Import => write!(f, "import"),
+            TokenType::Import => write!(f, "ulppeduthuka"),
             TokenType::Colon => write!(f, ":"),
             TokenType::Dot => write!(f, "."),
         }
