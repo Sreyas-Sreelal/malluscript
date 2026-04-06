@@ -67,3 +67,23 @@ fn get_executor(code: &str) -> Result<Executor, ()> {
     exec.execute(&parsed.unwrap()).unwrap();
     Ok(exec)
 }
+
+#[test]
+fn import_test() {
+    let code = "
+        examples:math_module_test:math m ennu ulppeduthuka;
+        res = m.math_add<10, 20>;
+    ";
+    let mut lex = Lexer::new(&code, HashMap::new(), 0);
+    let parsed = parse(&code, &mut lex);
+    let mut exec = Executor::new(lex.literal_table, lex.symbol_lookup);
+    
+    let result = exec.execute(&parsed.unwrap());
+    assert!(result.is_ok(), "Execution failed: {:?}", result.err());
+
+    let res_addr = exec.symbol_lookup_table["res"];
+    assert_eq!(
+        exec.symbol_table[&(0, res_addr)],
+        DataTypes::Integer(30)
+    );
+}
