@@ -29,7 +29,7 @@ jobs:
             rust: stable
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Build
       run: cargo build --verbose --release
 
@@ -52,8 +52,7 @@ jobs:
       run: 7z a -tzip ./artifacts/${{ env.RELEASE_BIN }}-mac-x86_64.zip ./target/release/${{ env.RELEASE_BIN }} ${{ env.RELEASE_ADDS }}
       if: matrix.os == 'macos-latest'
 
-    - uses: actions/upload-artifact@v1
-      name: Upload archive
+    - uses: actions/upload-artifact@v4
       with:
-        name: ${{ runner.os }}
+        name: ${{ matrix.build }}-artifact
         path: artifacts/
