@@ -59,6 +59,8 @@ impl<'input> Lexer<'input> {
             || c == '}'
             || c == '['
             || c == ']'
+            || c == ':'
+            || c == '.'
     }
 
     fn is_valid_name(&self, c: char) -> bool {
@@ -90,6 +92,8 @@ impl<'input> Iterator for &mut Lexer<'input> {
                 Some((i, '>')) => return Some(Ok((i, TokenType::AngleClose, i + 1))),
                 Some((i, '[')) => return Some(Ok((i, TokenType::SquareOpen, i + 1))),
                 Some((i, ']')) => return Some(Ok((i, TokenType::SquareClose, i + 1))),
+                Some((i, ':')) => return Some(Ok((i, TokenType::Colon, i + 1))),
+                Some((i, '.')) => return Some(Ok((i, TokenType::Dot, i + 1))),
                 Some((i, '"')) => {
                     let (start, mut end) = (i + 1, 0);
                     let mut ch = ' ';
@@ -143,7 +147,7 @@ impl<'input> Iterator for &mut Lexer<'input> {
                     let mut word = String::new();
                     word.push(c);
                     while let Some((_, c)) = self.chars.clone().peekable().peek() {
-                        if self.is_operator(*c) {
+                        if self.is_operator(*c) && *c != '.' {
                             break;
                         }
                         word.push(*c);

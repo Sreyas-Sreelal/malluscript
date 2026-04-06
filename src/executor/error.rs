@@ -15,6 +15,7 @@ pub enum RunTimeErrors {
     ArgumentCountMismatch,
     IntegerOverFlow,
     IndexOutOfBounds(i64, i64),
+    ModuleLoadError(String),
 }
 
 impl fmt::Display for RunTimeErrors {
@@ -52,6 +53,9 @@ impl fmt::Display for RunTimeErrors {
                 f,
                 "[Error]: Index Out Of Bounds, attempted to read/write at index {index} on {limit} sized data"
             ),
+            RunTimeErrors::ModuleLoadError(err) => {
+                write!(f, "[Error]: Could not load module: {}", err)
+            }
         }
     }
 }

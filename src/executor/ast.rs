@@ -17,6 +17,7 @@ pub enum Statement {
     EmptyExpression((usize, usize), Expression),
     Return((usize, usize), Expression),
     Write((usize, usize), Expression),
+    Import((usize, usize), Vec<usize>, Option<usize>),
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -44,4 +45,6 @@ pub enum Expression {
 
     ListExpression((usize, usize), Vec<Expression>),
     ListSubScript((usize, usize), Box<Expression>, Box<Expression>),
+
+    ModuleAccess((usize, usize), usize, Box<Expression>),
 }

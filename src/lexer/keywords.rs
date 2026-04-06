@@ -36,7 +36,9 @@ impl Keywords {
             ["thullyamanenkil","thullyamanengil","onnanenkil","onnanengil", "orupoleyanenkil","orupoleyanengil","തുല്യമാണെങ്കിൽ","ഒന്നാണെങ്കിൽ","ഒരുപോലെയാണെങ്കിൽ"] => TokenType::IfEqualTo,
             ["um", "ഉം"] => TokenType::Um,
             ["ne_kal", "നെകാൾ"] => TokenType::Nekal,
-            ["kodukuga","kodukuka","madakiayakuga","madakiayakuka","കൊടുക്കുക","മടക്കിഅയയ്ക്കുക"] => TokenType::Return
+            ["kodukuga","kodukuka","madakiayakuga","madakiayakuka","കൊടുക്കുക","മടക്കിഅയയ്ക്കുക"] => TokenType::Return,
+            ["ulppeduthuka","ulppeduthuga","ഉൾപ്പെടുത്തുക"] => TokenType::Import,
+            ["ennu","ayi","എന്ന്","ആയി"] => TokenType::As
         );
 
         Self { list }

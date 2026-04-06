@@ -38,6 +38,10 @@ pub enum TokenType {
     IfEqualTo,
     SquareOpen,
     SquareClose,
+    Import,
+    Colon,
+    Dot,
+    As,
 }
 
 impl Display for TokenType {
@@ -80,6 +84,10 @@ impl Display for TokenType {
             TokenType::IfEqualTo => write!(f, "thullyamanenkil"),
             TokenType::SquareOpen => write!(f, "["),
             TokenType::SquareClose => write!(f, "]"),
+            TokenType::Import => write!(f, "ulppeduthuka"),
+            TokenType::Colon => write!(f, ":"),
+            TokenType::Dot => write!(f, "."),
+            TokenType::As => write!(f, "ennu"),
         }
     }
 }

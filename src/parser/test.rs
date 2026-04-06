@@ -1,5 +1,5 @@
 use crate::executor::ast::Expression::*;
-use crate::executor::ast::SourceUnitPart::Statement;
+use crate::executor::ast::SourceUnitPart::Statement as Stmt;
 use crate::executor::ast::Statement::*;
 use crate::executor::ast::*;
 use crate::lexer::tokens::TokenType;
@@ -20,7 +20,7 @@ fn parser_test() {
         i um 0 um thullyamalla enkil avarthikuga {
             i = i-1;
         }
-        kanikuga i;
+        i kanikuga;
     ";
     let mut lex = Lexer::new(&code, HashMap::new(), 0);
     let parsed = parse(&code, &mut lex);
@@ -28,12 +28,12 @@ fn parser_test() {
     println!("{:?}", parsed);
     let expected = SourceUnit(
         [
-            Statement(Assignment(
+            Stmt(Assignment(
                 (9, 13),
                 Symbol((9, 9), TokenType::Symbol(1)),
                 Integer((11, 12), TokenType::Integer(0)),
             )),
-            Statement(Conditional(
+            Stmt(Conditional(
                 (22, 126),
                 NotEquals(
                     (32, 43),
@@ -41,7 +41,7 @@ fn parser_test() {
                     Box::new(Integer((27, 28), TokenType::Integer(0))),
                 ),
                 SourceUnit(
-                    [Statement(Assignment(
+                    [Stmt(Assignment(
                         (65, 72),
                         Symbol((65, 65), TokenType::Symbol(1)),
                         Integer((69, 71), TokenType::Integer(10)),
@@ -49,7 +49,7 @@ fn parser_test() {
                     .to_vec(),
                 ),
                 Some(SourceUnit(
-                    [Statement(Assignment(
+                    [Stmt(Assignment(
                         (109, 116),
                         Symbol((109, 109), TokenType::Symbol(1)),
                         UnaryMinus(
@@ -60,7 +60,7 @@ fn parser_test() {
                     .to_vec(),
                 )),
             )),
-            Statement(Loop(
+            Stmt(Loop(
                 (135, 208),
                 NotEquals(
                     (145, 156),
@@ -68,7 +68,7 @@ fn parser_test() {
                     Box::new(Integer((140, 141), TokenType::Integer(0))),
                 ),
                 SourceUnit(
-                    [Statement(Assignment(
+                    [Stmt(Assignment(
                         (190, 198),
                         Symbol((190, 190), TokenType::Symbol(1)),
                         Subtract(
@@ -80,9 +80,37 @@ fn parser_test() {
                     .to_vec(),
                 ),
             )),
-            Statement(Write((217, 228), Symbol((226, 226), TokenType::Symbol(1)))),
+            Stmt(Write((217, 228), Symbol((217, 217), TokenType::Symbol(1)))),
         ]
         .to_vec(),
     );
     assert_eq!(expected, parsed.unwrap());
+}
+
+#[test]
+fn parser_import_test() {
+    let code = "
+        math:operations m ennu ulppeduthuka;
+        math:utils ulppeduthuka;
+    ";
+    let mut lex = Lexer::new(&code, HashMap::new(), 0);
+    let parsed = parse(&code, &mut lex);
+    assert!(parsed.is_ok());
+
+    let unit = parsed.unwrap();
+    assert_eq!(unit.0.len(), 2);
+
+    if let SourceUnitPart::Statement(Statement::Import(_, path, alias)) = &unit.0[0] {
+        assert_eq!(path.len(), 2);
+        assert!(alias.is_some());
+    } else {
+        panic!("Expected import statement with alias");
+    }
+
+    if let SourceUnitPart::Statement(Statement::Import(_, path, alias)) = &unit.0[1] {
+        assert_eq!(path.len(), 2);
+        assert!(alias.is_none());
+    } else {
+        panic!("Expected import statement without alias");
+    }
 }
