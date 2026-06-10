@@ -122,7 +122,6 @@ impl Value {
     }
 }
 
-
 #[macro_export]
 macro_rules! malluscript_native {
     ($name:ident, $reg_ident:ident, $handler:expr) => {
