@@ -155,10 +155,13 @@ m.math_add<3, 4> ezhuthuka;
       * `ulppeduthuga`
       * `ഉൾപ്പെടുത്തുക`
 
-    * **ennu**
-      * `ayi`
-      * `എന്ന്`
-      * `ആയി`
+## Extending Malluscript / മല്ലുസ്ക്രിപ്റ്റ് വിപുലീകരിക്കൽ
+While Malluscript is great for writing standard scripts, there are times when you need operating system level access (like file I/O, networking, and threading) or high-performance computation. Developers can bridge this gap by writing native libraries for Malluscript via its C-ABI bindings. These libraries are compiled as dynamic C-libraries (`.dll`, `.so`, `.dylib`) and can be seamlessly imported just like regular `.ms` scripts.
+
+മല്ലുസ്ക്രിപ്റ്റ് ഉപയോഗിച്ച് സാധാരണ സ്ക്രിപ്റ്റുകൾ എഴുതാമെങ്കിലും ഫയൽ ഐ/ഒ (File I/O), നെറ്റ്‌വർക്കിംഗ് (Networking), ത്രെഡിംഗ് (Threading), അല്ലെങ്കിൽ അതിവേഗ കണക്കുകൂട്ടലുകൾ എന്നിവ ആവശ്യമായി വരുമ്പോൾ സി-എബിഐ (C-ABI) ബൈൻഡിംഗുകൾ ഉപയോഗിച്ച് ഡെവലപ്പർമാർക്ക് മല്ലുസ്ക്രിപ്റ്റിനായി അതിവേഗ ലൈബ്രറികൾ നിർമ്മിക്കാവുന്നതാണ്. ഇവ സാധാരണ `.ms` ഫയലുകൾ പോലെ തന്നെ ഇംപോർട്ട് ചെയ്യാവുന്നതാണ്.
+
+To write your own libraries easily in Rust, you can use the [mallubind](mallubind/README.md) crate which provides safe abstractions over the Malluscript C-ABI.
+
 
 ## Conditional Statements And Expressions / നിബന്ധനാധിഷ്ഠിത വാചകങ്ങൾ
 The conditional expression has the following syntax / നിബന്ധനാധിഷ്ഠിത വാചകങ്ങളുടെ ഘടന താഴെ പറയുന്നവയാണ്:

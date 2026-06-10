@@ -98,16 +98,33 @@ impl<'input> Iterator for &mut Lexer<'input> {
                     let (start, mut end) = (i + 1, 0);
                     let mut ch = ' ';
                     let mut word = String::new();
+                    let mut escape_next = false;
                     for (_, c) in self.chars.by_ref() {
                         ch = c;
-                        if c == '"' {
-                            break;
-                        }
-                        word.push(c);
                         end += 1;
+                        if escape_next {
+                            match c {
+                                'n' => word.push('\n'),
+                                'r' => word.push('\r'),
+                                't' => word.push('\t'),
+                                '"' => word.push('"'),
+                                '\\' => word.push('\\'),
+                                _ => {
+                                    word.push('\\');
+                                    word.push(c);
+                                }
+                            }
+                            escape_next = false;
+                        } else if c == '\\' {
+                            escape_next = true;
+                        } else if c == '"' {
+                            break;
+                        } else {
+                            word.push(c);
+                        }
                     }
                     end += start;
-                    if ch != '"' {
+                    if ch != '"' || escape_next {
                         return Some(Err(LexicalError::InvalidStringLiteral(i, end)));
                     }
                     self.literal_count += 1;
