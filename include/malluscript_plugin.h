@@ -35,6 +35,7 @@ typedef struct {
 } MS_Error;
 
 typedef MS_Value* (*MS_Native)(const MS_Value* const* args, size_t argc, MS_Error** error);
+typedef MS_Value* (*MS_CallFunction)(void* executor, const char* name, const MS_Value* const* args, size_t argc, MS_Error** error);
 
 typedef void (*MS_AddFunction)(void* executor, const char* name, MS_Native func);
 typedef MS_Value* (*MS_AllocateValue)(MS_Type v_type);
@@ -53,6 +54,7 @@ typedef struct {
     MS_FreeString free_string;
     MS_AllocateList allocate_list;
     MS_FreeList free_list;
+    MS_CallFunction call_function;
 } MS_InterpreterState;
 
 #ifdef __cplusplus

@@ -36,6 +36,14 @@ pub type MsNative = extern "C" fn(
     error: *mut *mut MsError,
 ) -> *mut MsValue;
 
+pub type MsCallFunction = extern "C" fn(
+    executor: *mut c_void,
+    name: *const c_char,
+    args: *const *const MsValue,
+    argc: usize,
+    error: *mut *mut MsError,
+) -> *mut MsValue;
+
 #[repr(C)]
 pub struct MsInterpreterState {
     pub executor: *mut c_void,
@@ -46,4 +54,5 @@ pub struct MsInterpreterState {
     pub free_string: extern "C" fn(ptr: *mut c_char),
     pub allocate_list: extern "C" fn(length: usize) -> *mut MsList,
     pub free_list: extern "C" fn(ptr: *mut MsList),
+    pub call_function: MsCallFunction,
 }

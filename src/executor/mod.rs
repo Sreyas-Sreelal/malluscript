@@ -32,8 +32,9 @@ pub struct Executor {
     frame_level: ScopeLevel,
     return_storage: DataTypes,
     subroutine_exit_flag: bool,
-    pub modules: HashMap<String, Executor>,
+    pub modules: HashMap<String, Box<Executor>>,
     pub plugins: Vec<std::rc::Rc<libloading::Library>>,
+    pub parent: Option<*mut Executor>,
 }
 
 impl Executor {
@@ -51,6 +52,7 @@ impl Executor {
             return_storage: DataTypes::Integer(1),
             modules: HashMap::new(),
             plugins: Vec::new(),
+            parent: None,
         }
     }
 
@@ -292,7 +294,7 @@ impl Executor {
                                 )),
                             ));
                         }
-                        self.modules.insert(final_name, exec);
+                        self.modules.insert(final_name, Box::new(exec));
                     } else {
                         let plugin_path = if std::path::Path::new(&so_path).exists() {
                             Some(so_path)
@@ -350,6 +352,7 @@ impl Executor {
 
                                 let mut module_exec =
                                     Box::new(Executor::new(HashMap::new(), HashMap::new()));
+                                module_exec.parent = Some(self as *mut Executor);
 
                                 let registry = ffi::MsInterpreterState {
                                     executor: &mut *module_exec as *mut Executor
@@ -361,11 +364,12 @@ impl Executor {
                                     free_string: ffi::ms_free_string,
                                     allocate_list: ffi::ms_allocate_list,
                                     free_list: ffi::ms_free_list,
+                                    call_function: ffi::ms_call_function,
                                 };
 
                                 init_func(&registry);
                                 module_exec.plugins.push(lib);
-                                self.modules.insert(final_name, *module_exec);
+                                self.modules.insert(final_name, module_exec);
                             }
                         } else {
                             return Err((
@@ -381,6 +385,73 @@ impl Executor {
             }
         }
         Ok(())
+    }
+
+    pub fn call_function(
+        &mut self,
+        name: &str,
+        args: Vec<DataTypes>,
+    ) -> Result<DataTypes, ((usize, usize), RunTimeErrors)> {
+        let function_data = self.function_table.get(name).cloned();
+        if let Some(function) = function_data {
+            match function {
+                Callable::Interpreted(parameters, body) => {
+                    if parameters.len() != args.len() {
+                        return Err(((0, 0), RunTimeErrors::ArgumentCountMismatch));
+                    }
+                    for (i, y) in parameters.iter().enumerate() {
+                        if let Expression::Symbol(_, TokenType::Symbol(y_addr)) = y {
+                            self.symbol_table
+                                .insert((self.frame_level + 1, *y_addr), args[i].clone());
+                        } else {
+                            return Err(((0, 0), RunTimeErrors::InvalidFunctionDeclaration));
+                        }
+                    }
+                    self.frame_level += 1;
+                    self.return_storage = DataTypes::Unknown;
+                    self.execute(&body)?;
+                    let scope = self.frame_level;
+                    self.symbol_table
+                        .retain(|(frame_level, _), _| *frame_level != scope);
+                    self.frame_level -= 1;
+                    self.subroutine_exit_flag = false;
+
+                    Ok(self.return_storage.clone())
+                }
+                Callable::Native(func_ptr) => {
+                    let mut c_args = Vec::new();
+                    let mut args_ptrs = Vec::new();
+                    for arg in args {
+                        let c_arg = crate::executor::ffi::datatype_to_ms_value(&arg);
+                        c_args.push(c_arg);
+                        args_ptrs.push(c_arg as *const crate::executor::ffi::MsValue);
+                    }
+
+                    let mut error_ptr: *mut crate::executor::ffi::MsError = std::ptr::null_mut();
+
+                    let result_ptr = func_ptr(args_ptrs.as_ptr(), args_ptrs.len(), &mut error_ptr);
+
+                    for c_arg in c_args {
+                        crate::executor::ffi::ms_free_value(c_arg);
+                    }
+
+                    if !error_ptr.is_null() {
+                        let _msg = unsafe { std::ffi::CStr::from_ptr((*error_ptr).message).to_string_lossy().into_owned() };
+                        return Err(((0, 0), RunTimeErrors::InvalidExpression));
+                    }
+
+                    let result = crate::executor::ffi::ms_value_to_datatype(result_ptr)
+                        .unwrap_or(DataTypes::Unknown);
+                    crate::executor::ffi::ms_free_value(result_ptr);
+
+                    Ok(result)
+                }
+            }
+        } else if let Some(parent) = self.parent {
+            unsafe { (*parent).call_function(name, args) }
+        } else {
+            Err(((0, 0), RunTimeErrors::UndefinedSymbol(name.to_string())))
+        }
     }
 
     fn eval_arithmetic_logic_expression(

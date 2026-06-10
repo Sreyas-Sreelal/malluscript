@@ -200,4 +200,43 @@ impl InterpreterState {
             ((*self.raw).add_function)((*self.raw).executor, c_name.as_ptr(), func);
         }
     }
+
+    pub fn call(&self, name: &str, args: &[Value]) -> Result<Value, String> {
+        let c_name = CString::new(name).map_err(|e| e.to_string())?;
+        unsafe {
+            let mut c_args = Vec::with_capacity(args.len());
+            let mut args_ptrs = Vec::with_capacity(args.len());
+            for arg in args {
+                let c_arg = arg.clone().into_raw(self.raw());
+                c_args.push(c_arg);
+                args_ptrs.push(c_arg as *const ffi::MsValue);
+            }
+
+            let mut error_ptr: *mut ffi::MsError = std::ptr::null_mut();
+
+            let result_ptr = ((*self.raw).call_function)(
+                (*self.raw).executor,
+                c_name.as_ptr(),
+                args_ptrs.as_ptr(),
+                args_ptrs.len(),
+                &mut error_ptr,
+            );
+
+            for c_arg in c_args {
+                ((*self.raw).free_value)(c_arg);
+            }
+
+            if !error_ptr.is_null() {
+                let msg = CStr::from_ptr((*error_ptr).message)
+                    .to_string_lossy()
+                    .into_owned();
+                return Err(msg);
+            }
+
+            let result = Value::from_raw(result_ptr);
+            ((*self.raw).free_value)(result_ptr);
+
+            Ok(result)
+        }
+    }
 }

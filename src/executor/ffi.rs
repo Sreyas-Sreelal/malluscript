@@ -182,3 +182,52 @@ pub fn ms_value_to_datatype(val: *const MsValue) -> Result<DataTypes, String> {
         }
     }
 }
+
+#[no_mangle]
+pub extern "C" fn ms_call_function(
+    executor: *mut c_void,
+    name: *const c_char,
+    args: *const *const MsValue,
+    argc: usize,
+    error: *mut *mut MsError,
+) -> *mut MsValue {
+    unsafe {
+        let exec = &mut *(executor as *mut crate::executor::Executor);
+        let fn_name = CStr::from_ptr(name).to_string_lossy().into_owned();
+
+        let mut rust_args = Vec::new();
+        if argc > 0 && !args.is_null() {
+            let slice = std::slice::from_raw_parts(args, argc);
+            for &arg_ptr in slice {
+                match ms_value_to_datatype(arg_ptr) {
+                    Ok(dt) => rust_args.push(dt),
+                    Err(e) => {
+                        if !error.is_null() {
+                            let msg = CString::new(e).unwrap();
+                            let err_box = Box::new(MsError {
+                                message: msg.into_raw(),
+                            });
+                            *error = Box::into_raw(err_box);
+                        }
+                        return ptr::null_mut();
+                    }
+                }
+            }
+        }
+
+        match exec.call_function(&fn_name, rust_args) {
+            Ok(dt) => datatype_to_ms_value(&dt),
+            Err(e) => {
+                if !error.is_null() {
+                    let err_str = format!("{:?}", e);
+                    let msg = CString::new(err_str).unwrap();
+                    let err_box = Box::new(MsError {
+                        message: msg.into_raw(),
+                    });
+                    *error = Box::into_raw(err_box);
+                }
+                ptr::null_mut()
+            }
+        }
+    }
+}
