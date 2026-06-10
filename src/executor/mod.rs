@@ -1,6 +1,7 @@
 pub mod ast;
 mod datatype;
 mod error;
+pub mod ffi;
 
 #[cfg(test)]
 mod test;
@@ -13,6 +14,12 @@ use std::io::{stdin, stdout, Write};
 use crate::executor::datatype::{to_bool, DataTypes};
 use crate::lexer::tokens::TokenType;
 
+#[derive(Clone)]
+pub enum Callable {
+    Interpreted(Vec<Expression>, SourceUnit),
+    Native(ffi::MsNative),
+}
+
 pub type ScopeLevel = i64;
 
 static GLOBAL_SCOPE: ScopeLevel = 0;
@@ -21,11 +28,13 @@ pub struct Executor {
     symbol_table: BTreeMap<(ScopeLevel, usize), DataTypes>,
     literal_table: HashMap<usize, String>,
     symbol_lookup_table: HashMap<String, usize>,
-    function_table: HashMap<String, (Vec<Expression>, SourceUnit)>,
+    function_table: HashMap<String, Callable>,
     frame_level: ScopeLevel,
     return_storage: DataTypes,
     subroutine_exit_flag: bool,
-    pub modules: HashMap<String, Executor>,
+    pub modules: HashMap<String, Box<Executor>>,
+    pub plugins: Vec<std::rc::Rc<libloading::Library>>,
+    pub parent: Option<*mut Executor>,
 }
 
 impl Executor {
@@ -42,6 +51,8 @@ impl Executor {
             subroutine_exit_flag: false,
             return_storage: DataTypes::Integer(1),
             modules: HashMap::new(),
+            plugins: Vec::new(),
+            parent: None,
         }
     }
 
@@ -210,8 +221,10 @@ impl Executor {
                         if self.function_table.contains_key(&name) {
                             return Err(((*p, *q), RunTimeErrors::SymbolAlreadyDefined(name)));
                         }
-                        self.function_table
-                            .insert(name, (parameters.to_vec(), body.clone()));
+                        self.function_table.insert(
+                            name,
+                            Callable::Interpreted(parameters.to_vec(), body.clone()),
+                        );
                     } else {
                         return Err(((*p, *q), RunTimeErrors::InvalidFunctionDeclaration));
                     }
@@ -222,64 +235,227 @@ impl Executor {
                     self.subroutine_exit_flag = true;
                 }
                 Statement::Import((p, q), path, alias) => {
-                    let mut module_path = String::new();
+                    let mut module_path_base = String::new();
                     let mut module_name = String::new();
                     for (i, id) in path.iter().enumerate() {
                         let name = self.get_symbol_name(*id).unwrap();
                         if i > 0 {
-                            module_path.push('/');
+                            module_path_base.push('/');
                         }
-                        module_path.push_str(&name);
+                        module_path_base.push_str(&name);
                         module_name = name;
                     }
-                    module_path.push_str(".ms");
 
-                    let source = match std::fs::read_to_string(&module_path) {
-                        Ok(contents) => contents,
-                        Err(e) => {
-                            return Err((
-                                (*p, *q),
-                                RunTimeErrors::ModuleLoadError(format!(
-                                    "Failed to read file {}: {}",
-                                    module_path, e
-                                )),
-                            ))
-                        }
-                    };
-
-                    let mut tokens = crate::lexer::Lexer::new(&source, HashMap::new(), 0);
-                    let parsed = match crate::parser::parse(&source, &mut tokens) {
-                        Ok(p) => p,
-                        Err(e) => {
-                            return Err((
-                                (*p, *q),
-                                RunTimeErrors::ModuleLoadError(format!(
-                                    "Failed to parse module {}: {}",
-                                    module_name, e
-                                )),
-                            ))
-                        }
-                    };
-
-                    let mut exec = Executor::new(tokens.literal_table, tokens.symbol_lookup);
-                    if let Err(e) = exec.execute(&parsed) {
-                        return Err((
-                            (*p, *q),
-                            RunTimeErrors::ModuleLoadError(format!(
-                                "Error executing module {}: {}",
-                                module_name, e.1
-                            )),
-                        ));
-                    }
                     let final_name = match alias {
                         Some(id) => self.get_symbol_name(*id).unwrap(),
-                        None => module_name,
+                        None => module_name.clone(),
                     };
-                    self.modules.insert(final_name, exec);
+
+                    let ms_path = format!("{}.ms", module_path_base);
+                    let so_path = format!("{}.so", module_path_base);
+                    let dll_path = format!("{}.dll", module_path_base);
+                    let dylib_path = format!("{}.dylib", module_path_base);
+
+                    if std::path::Path::new(&ms_path).exists() {
+                        let source = match std::fs::read_to_string(&ms_path) {
+                            Ok(contents) => contents,
+                            Err(e) => {
+                                return Err((
+                                    (*p, *q),
+                                    RunTimeErrors::ModuleLoadError(format!(
+                                        "Failed to read file {}: {}",
+                                        ms_path, e
+                                    )),
+                                ))
+                            }
+                        };
+
+                        let mut tokens = crate::lexer::Lexer::new(&source, HashMap::new(), 0);
+                        let parsed = match crate::parser::parse(&source, &mut tokens) {
+                            Ok(p) => p,
+                            Err(e) => {
+                                return Err((
+                                    (*p, *q),
+                                    RunTimeErrors::ModuleLoadError(format!(
+                                        "Failed to parse module {}: {}",
+                                        module_name, e
+                                    )),
+                                ))
+                            }
+                        };
+
+                        let mut exec = Executor::new(tokens.literal_table, tokens.symbol_lookup);
+                        if let Err(e) = exec.execute(&parsed) {
+                            return Err((
+                                (*p, *q),
+                                RunTimeErrors::ModuleLoadError(format!(
+                                    "Error executing module {}: {}",
+                                    module_name, e.1
+                                )),
+                            ));
+                        }
+                        self.modules.insert(final_name, Box::new(exec));
+                    } else {
+                        let plugin_path = if std::path::Path::new(&so_path).exists() {
+                            Some(so_path)
+                        } else if std::path::Path::new(&dll_path).exists() {
+                            Some(dll_path)
+                        } else if std::path::Path::new(&dylib_path).exists() {
+                            Some(dylib_path)
+                        } else {
+                            None
+                        };
+
+                        if let Some(path) = plugin_path {
+                            unsafe {
+                                let lib = match libloading::Library::new(&path) {
+                                    Ok(l) => std::rc::Rc::new(l),
+                                    Err(e) => {
+                                        return Err((
+                                            (*p, *q),
+                                            RunTimeErrors::ModuleLoadError(format!(
+                                                "Failed to load plugin {}: {}",
+                                                path, e
+                                            )),
+                                        ))
+                                    }
+                                };
+
+                                let init_func: libloading::Symbol<
+                                    extern "C" fn(*const ffi::MsInterpreterState),
+                                > = match lib.get(b"register_mallubind") {
+                                    Ok(f) => f,
+                                    Err(e) => {
+                                        return Err((
+                                            (*p, *q),
+                                            RunTimeErrors::ModuleLoadError(format!(
+                                                "Plugin {} is missing register_mallubind: {}",
+                                                path, e
+                                            )),
+                                        ))
+                                    }
+                                };
+
+                                extern "C" fn register_cb(
+                                    executor: *mut std::ffi::c_void,
+                                    name: *const std::ffi::c_char,
+                                    func: ffi::MsNative,
+                                ) {
+                                    unsafe {
+                                        let exec = &mut *(executor as *mut Executor);
+                                        let fn_name = std::ffi::CStr::from_ptr(name)
+                                            .to_string_lossy()
+                                            .into_owned();
+                                        exec.function_table.insert(fn_name, Callable::Native(func));
+                                    }
+                                }
+
+                                let mut module_exec =
+                                    Box::new(Executor::new(HashMap::new(), HashMap::new()));
+                                module_exec.parent = Some(self as *mut Executor);
+
+                                let registry = ffi::MsInterpreterState {
+                                    executor: &mut *module_exec as *mut Executor
+                                        as *mut std::ffi::c_void,
+                                    add_function: register_cb,
+                                    allocate_value: ffi::ms_allocate_value,
+                                    free_value: ffi::ms_free_value,
+                                    allocate_string: ffi::ms_allocate_string,
+                                    free_string: ffi::ms_free_string,
+                                    allocate_list: ffi::ms_allocate_list,
+                                    free_list: ffi::ms_free_list,
+                                    call_function: ffi::ms_call_function,
+                                };
+
+                                init_func(&registry);
+                                module_exec.plugins.push(lib);
+                                self.modules.insert(final_name, module_exec);
+                            }
+                        } else {
+                            return Err((
+                                (*p, *q),
+                                RunTimeErrors::ModuleLoadError(format!(
+                                    "Module {} not found",
+                                    module_name
+                                )),
+                            ));
+                        }
+                    }
                 }
             }
         }
         Ok(())
+    }
+
+    pub fn call_function(
+        &mut self,
+        name: &str,
+        args: Vec<DataTypes>,
+    ) -> Result<DataTypes, ((usize, usize), RunTimeErrors)> {
+        let function_data = self.function_table.get(name).cloned();
+        if let Some(function) = function_data {
+            match function {
+                Callable::Interpreted(parameters, body) => {
+                    if parameters.len() != args.len() {
+                        return Err(((0, 0), RunTimeErrors::ArgumentCountMismatch));
+                    }
+                    for (i, y) in parameters.iter().enumerate() {
+                        if let Expression::Symbol(_, TokenType::Symbol(y_addr)) = y {
+                            self.symbol_table
+                                .insert((self.frame_level + 1, *y_addr), args[i].clone());
+                        } else {
+                            return Err(((0, 0), RunTimeErrors::InvalidFunctionDeclaration));
+                        }
+                    }
+                    self.frame_level += 1;
+                    self.return_storage = DataTypes::Unknown;
+                    self.execute(&body)?;
+                    let scope = self.frame_level;
+                    self.symbol_table
+                        .retain(|(frame_level, _), _| *frame_level != scope);
+                    self.frame_level -= 1;
+                    self.subroutine_exit_flag = false;
+
+                    Ok(self.return_storage.clone())
+                }
+                Callable::Native(func_ptr) => {
+                    let mut c_args = Vec::new();
+                    let mut args_ptrs = Vec::new();
+                    for arg in args {
+                        let c_arg = crate::executor::ffi::datatype_to_ms_value(&arg);
+                        c_args.push(c_arg);
+                        args_ptrs.push(c_arg as *const crate::executor::ffi::MsValue);
+                    }
+
+                    let mut error_ptr: *mut crate::executor::ffi::MsError = std::ptr::null_mut();
+
+                    let result_ptr = func_ptr(args_ptrs.as_ptr(), args_ptrs.len(), &mut error_ptr);
+
+                    for c_arg in c_args {
+                        crate::executor::ffi::ms_free_value(c_arg);
+                    }
+
+                    if !error_ptr.is_null() {
+                        let _msg = unsafe {
+                            std::ffi::CStr::from_ptr((*error_ptr).message)
+                                .to_string_lossy()
+                                .into_owned()
+                        };
+                        return Err(((0, 0), RunTimeErrors::InvalidExpression));
+                    }
+
+                    let result = crate::executor::ffi::ms_value_to_datatype(result_ptr)
+                        .unwrap_or(DataTypes::Unknown);
+                    crate::executor::ffi::ms_free_value(result_ptr);
+
+                    Ok(result)
+                }
+            }
+        } else if let Some(parent) = self.parent {
+            unsafe { (*parent).call_function(name, args) }
+        } else {
+            Err(((0, 0), RunTimeErrors::UndefinedSymbol(name.to_string())))
+        }
     }
 
     fn eval_arithmetic_logic_expression(
@@ -588,48 +764,87 @@ impl Executor {
                 };
 
                 if let Some(function) = function_data {
-                    let parameters = &function.0;
-                    if parameters.len() != evaluated_args.len() {
-                        return Err(((*p, *q), RunTimeErrors::ArgumentCountMismatch));
-                    }
-
-                    let module = if is_module {
-                        self.modules.get_mut(&module_name).unwrap() // Safe, checked earlier
-                    } else {
-                        self
-                    };
-
-                    for (i, y) in parameters.iter().enumerate() {
-                        if let Expression::Symbol(_, TokenType::Symbol(y_addr)) = y {
-                            let (data, ref_info) = evaluated_args[i].clone();
-                            if !is_module && ref_info.is_some() {
-                                let (level, addr) = ref_info.unwrap();
-                                module.symbol_table.insert(
-                                    (module.frame_level + 1, *y_addr),
-                                    DataTypes::Ref((level, addr)),
-                                );
-                            } else {
-                                module
-                                    .symbol_table
-                                    .insert((module.frame_level + 1, *y_addr), data);
+                    match function {
+                        Callable::Interpreted(parameters, body) => {
+                            if parameters.len() != evaluated_args.len() {
+                                return Err(((*p, *q), RunTimeErrors::ArgumentCountMismatch));
                             }
-                        } else {
-                            return Err(((*p, *q), RunTimeErrors::InvalidFunctionDeclaration));
+
+                            let module = if is_module {
+                                self.modules.get_mut(&module_name).unwrap()
+                            } else {
+                                self
+                            };
+
+                            for (i, y) in parameters.iter().enumerate() {
+                                if let Expression::Symbol(_, TokenType::Symbol(y_addr)) = y {
+                                    let (data, ref_info) = evaluated_args[i].clone();
+                                    if !is_module && ref_info.is_some() {
+                                        let (level, addr) = ref_info.unwrap();
+                                        module.symbol_table.insert(
+                                            (module.frame_level + 1, *y_addr),
+                                            DataTypes::Ref((level, addr)),
+                                        );
+                                    } else {
+                                        module
+                                            .symbol_table
+                                            .insert((module.frame_level + 1, *y_addr), data);
+                                    }
+                                } else {
+                                    return Err((
+                                        (*p, *q),
+                                        RunTimeErrors::InvalidFunctionDeclaration,
+                                    ));
+                                }
+                            }
+
+                            module.frame_level += 1;
+                            module.return_storage = DataTypes::Unknown;
+                            module.execute(&body)?;
+
+                            let scope = module.frame_level;
+                            module
+                                .symbol_table
+                                .retain(|(frame_level, _), _| *frame_level != scope);
+                            module.frame_level -= 1;
+                            module.subroutine_exit_flag = false;
+
+                            Ok(module.return_storage.clone())
+                        }
+                        Callable::Native(func_ptr) => {
+                            let mut c_args = Vec::new();
+                            let mut args_ptrs = Vec::new();
+                            for (arg, _) in evaluated_args {
+                                let c_arg = ffi::datatype_to_ms_value(&arg);
+                                c_args.push(c_arg);
+                                args_ptrs.push(c_arg as *const ffi::MsValue);
+                            }
+
+                            let mut error_ptr: *mut ffi::MsError = std::ptr::null_mut();
+
+                            let result_ptr =
+                                func_ptr(args_ptrs.as_ptr(), args_ptrs.len(), &mut error_ptr);
+
+                            for c_arg in c_args {
+                                ffi::ms_free_value(c_arg);
+                            }
+
+                            if !error_ptr.is_null() {
+                                let msg = unsafe {
+                                    std::ffi::CStr::from_ptr((*error_ptr).message)
+                                        .to_string_lossy()
+                                        .into_owned()
+                                };
+                                return Err(((*p, *q), RunTimeErrors::InvalidExpression));
+                            }
+
+                            let result =
+                                ffi::ms_value_to_datatype(result_ptr).unwrap_or(DataTypes::Unknown);
+                            ffi::ms_free_value(result_ptr);
+
+                            Ok(result)
                         }
                     }
-
-                    module.frame_level += 1;
-                    module.return_storage = DataTypes::Unknown;
-                    module.execute(&function.1)?;
-
-                    let scope = module.frame_level;
-                    module
-                        .symbol_table
-                        .retain(|(frame_level, _), _| *frame_level != scope);
-                    module.frame_level -= 1;
-                    module.subroutine_exit_flag = false;
-
-                    Ok(module.return_storage.clone())
                 } else {
                     return Err(((*p, *q), RunTimeErrors::UndefinedSymbol(func_name)));
                 }
@@ -659,7 +874,6 @@ impl Executor {
                         }
                     } else if let Expression::ListSubScript((_a, _b), _list_expr, _index) = &**expr
                     {
-                        // Handled correctly in evaluate_list_subscript now
                         match module.eval_arithmetic_logic_expression(expr) {
                             Ok(data) => Ok(data),
                             Err(e) => Err(((*p, *q), e.1)),

@@ -1,6 +1,11 @@
+[workspace]
+members = [
+    "mallubind",
+]
+
 [package]
 name = "malluscript"
-version = "1.1.0"
+version = "2.0.0"
 authors = ["SyS <sreyassreelal@gmail.com>"]
 edition = "2018"
 build = "build.rs" 
@@ -10,6 +15,8 @@ description = "An esoteric scripting language that lets to write computer progra
 lalrpop-util = "0.20.0"
 clap = "2.33"
 rustyline = "6.1"
+libloading = "0.9.0"
+mallubind = { path = "mallubind" }
 
 [build-dependencies]
 lalrpop = "0.20.0"
