@@ -1,4 +1,10 @@
-/target
+**/target/
 **/*.rs.bk
 .vscode
 malluscript
+*.dll
+*.exe
+*.so
+*.dylib
+*.lib
+*.pdb
