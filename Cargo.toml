@@ -5,7 +5,7 @@ members = [
 
 [package]
 name = "malluscript"
-version = "2.0.0"
+version = "3.0.0"
 authors = ["SyS <sreyassreelal@gmail.com>"]
 edition = "2018"
 build = "build.rs" 
