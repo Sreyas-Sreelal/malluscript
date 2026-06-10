@@ -122,20 +122,6 @@ impl Value {
     }
 }
 
-struct ClosureData {
-    func: Box<dyn Fn(&[Value]) -> Result<Value, String>>,
-    registry: *const ffi::MsInterpreterState,
-}
-
-extern "C" fn generic_plugin_handler(
-    args: *const *const ffi::MsValue,
-    argc: usize,
-    error: *mut *mut ffi::MsError,
-) -> *mut ffi::MsValue {
-    unimplemented!(
-        "Dynamic closures require executor in MsNative signature. Use a macro or static functions for now."
-    );
-}
 
 #[macro_export]
 macro_rules! malluscript_native {
