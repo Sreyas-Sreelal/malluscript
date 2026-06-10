@@ -436,7 +436,11 @@ impl Executor {
                     }
 
                     if !error_ptr.is_null() {
-                        let _msg = unsafe { std::ffi::CStr::from_ptr((*error_ptr).message).to_string_lossy().into_owned() };
+                        let _msg = unsafe {
+                            std::ffi::CStr::from_ptr((*error_ptr).message)
+                                .to_string_lossy()
+                                .into_owned()
+                        };
                         return Err(((0, 0), RunTimeErrors::InvalidExpression));
                     }
 
