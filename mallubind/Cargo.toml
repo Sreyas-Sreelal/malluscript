@@ -2,5 +2,11 @@
 name = "mallubind"
 version = "0.1.0"
 edition = "2024"
+description = "Native C-ABI bindings for writing libraries for the Malluscript programming language"
+license = "GPL-3.0"
+repository = "https://github.com/Sreyas-Sreelal/malluscript"
+readme = "README.md"
+keywords = ["malluscript", "ffi", "library", "malayalam", "kerala"]
+categories = ["api-bindings"]
 
 [dependencies]
