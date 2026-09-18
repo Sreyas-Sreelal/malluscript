@@ -33,8 +33,10 @@ pub struct Executor {
     return_storage: DataTypes,
     subroutine_exit_flag: bool,
     pub modules: HashMap<String, Box<Executor>>,
+    #[cfg(not(target_arch = "wasm32"))]
     pub plugins: Vec<std::rc::Rc<libloading::Library>>,
     pub parent: Option<*mut Executor>,
+    pub output: Vec<String>,
 }
 
 impl Executor {
@@ -51,8 +53,10 @@ impl Executor {
             subroutine_exit_flag: false,
             return_storage: DataTypes::Integer(1),
             modules: HashMap::new(),
+            #[cfg(not(target_arch = "wasm32"))]
             plugins: Vec::new(),
             parent: None,
+            output: Vec::new(),
         }
     }
 
@@ -113,8 +117,18 @@ impl Executor {
                             .ok_or((*offset, RunTimeErrors::InvalidExpression))?
                             .clone();
                     }
-                    print!("{}", data);
-                    let _ = stdout().flush();
+                    let formatted = format!("{}", data);
+                    self.output.push(formatted.clone());
+                    if let Some(parent_ptr) = self.parent {
+                        unsafe {
+                            (*parent_ptr).output.push(formatted);
+                        }
+                    }
+                    #[cfg(not(target_arch = "wasm32"))]
+                    {
+                        print!("{}", data);
+                        let _ = stdout().flush();
+                    }
                 }
 
                 Statement::Assignment((p, q), l, r) => match l {
@@ -306,6 +320,7 @@ impl Executor {
                             None
                         };
 
+                        #[cfg(not(target_arch = "wasm32"))]
                         if let Some(path) = plugin_path {
                             unsafe {
                                 let lib = match libloading::Library::new(&path) {
@@ -371,6 +386,16 @@ impl Executor {
                                 module_exec.plugins.push(lib);
                                 self.modules.insert(final_name, module_exec);
                             }
+                        }
+                        #[cfg(target_arch = "wasm32")]
+                        if let Some(path) = plugin_path {
+                            return Err((
+                                (*p, *q),
+                                RunTimeErrors::ModuleLoadError(format!(
+                                    "Dynamic C plugins are not supported in WebAssembly environment: {}",
+                                    path
+                                )),
+                            ));
                         } else {
                             return Err((
                                 (*p, *q),

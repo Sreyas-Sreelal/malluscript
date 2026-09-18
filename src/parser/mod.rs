@@ -11,12 +11,25 @@ use std::collections::HashMap;
 #[cfg(test)]
 mod test;
 
+fn safe_slice(src: &str, start: usize, end: usize) -> &str {
+    let mut s = start;
+    while s > 0 && !src.is_char_boundary(s) {
+        s -= 1;
+    }
+    let mut e = end;
+    while e < src.len() && !src.is_char_boundary(e) {
+        e += 1;
+    }
+    src.get(s..e).unwrap_or("")
+}
+
 pub fn parse<'a>(src: &'a str, mut tokens: &mut Lexer<'a>) -> Result<ast::SourceUnit, String> {
     match grammar::SourceUnitParser::new().parse(src, &mut tokens) {
         Ok(parsed) => Ok(parsed),
         Err(err) => match err {
             ParseError::InvalidToken { location } => {
-                Err(format!("Invalid Token {}", &src[location..=location]))
+                let char_at = safe_slice(src, location, location + 1);
+                Err(format!("Invalid Token {}", char_at))
             }
 
             ParseError::UnrecognizedToken {
@@ -24,8 +37,8 @@ pub fn parse<'a>(src: &'a str, mut tokens: &mut Lexer<'a>) -> Result<ast::Source
                 expected,
             } => Err(format!(
                 "{}\nUnrecognised token `{}` expected `{}` ",
-                &src[l..r].trim(),
-                tokens.literal_table[&token],
+                safe_slice(src, l, r).trim(),
+                tokens.literal_table.get(&token).map(|s| s.as_str()).unwrap_or(""),
                 expected.join(", ")
             )),
             ParseError::UnrecognizedToken {
@@ -33,7 +46,7 @@ pub fn parse<'a>(src: &'a str, mut tokens: &mut Lexer<'a>) -> Result<ast::Source
                 expected,
             } => Err(format!(
                 "{}\nUnrecognised token `{}` expected `{}` ",
-                &src[l..r].trim(),
+                safe_slice(src, l, r).trim(),
                 get_symbol_name(&tokens.symbol_lookup, token),
                 expected.join(", ")
             )),
@@ -42,7 +55,7 @@ pub fn parse<'a>(src: &'a str, mut tokens: &mut Lexer<'a>) -> Result<ast::Source
                 expected,
             } => Err(format!(
                 "{}\nUnrecognised token `{}` expected `{}` ",
-                &src[l..r].trim(),
+                safe_slice(src, l, r).trim(),
                 token,
                 expected.join(", ")
             )),
@@ -50,7 +63,7 @@ pub fn parse<'a>(src: &'a str, mut tokens: &mut Lexer<'a>) -> Result<ast::Source
             ParseError::User { error } => Err(format!("Unexpected error {}", error)),
             ParseError::ExtraToken { token } => Err(format!(
                 "{}\nExtra token `{}' encountered",
-                &src[token.0..=token.2].trim(),
+                safe_slice(src, token.0, token.2).trim(),
                 token.1
             )),
             ParseError::UnrecognizedEof {
