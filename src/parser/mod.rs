@@ -38,7 +38,11 @@ pub fn parse<'a>(src: &'a str, mut tokens: &mut Lexer<'a>) -> Result<ast::Source
             } => Err(format!(
                 "{}\nUnrecognised token `{}` expected `{}` ",
                 safe_slice(src, l, r).trim(),
-                tokens.literal_table.get(&token).map(|s| s.as_str()).unwrap_or(""),
+                tokens
+                    .literal_table
+                    .get(&token)
+                    .map(|s| s.as_str())
+                    .unwrap_or(""),
                 expected.join(", ")
             )),
             ParseError::UnrecognizedToken {
