@@ -22,8 +22,8 @@ fn parser_test() {
         }
         i kanikuga;
     ";
-    let mut lex = Lexer::new(&code, HashMap::new(), 0);
-    let parsed = parse(&code, &mut lex);
+    let mut lex = Lexer::new(code, HashMap::new(), 0);
+    let parsed = parse(code, &mut lex);
 
     println!("{:?}", parsed);
     let expected = SourceUnit(
@@ -93,8 +93,8 @@ fn parser_import_test() {
         math:operations m ennu ulppeduthuka;
         math:utils ulppeduthuka;
     ";
-    let mut lex = Lexer::new(&code, HashMap::new(), 0);
-    let parsed = parse(&code, &mut lex);
+    let mut lex = Lexer::new(code, HashMap::new(), 0);
+    let parsed = parse(code, &mut lex);
     assert!(parsed.is_ok());
 
     let unit = parsed.unwrap();

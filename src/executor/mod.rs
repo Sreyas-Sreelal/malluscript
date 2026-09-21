@@ -804,12 +804,13 @@ impl Executor {
                             for (i, y) in parameters.iter().enumerate() {
                                 if let Expression::Symbol(_, TokenType::Symbol(y_addr)) = y {
                                     let (data, ref_info) = evaluated_args[i].clone();
-                                    if !is_module && ref_info.is_some() {
-                                        let (level, addr) = ref_info.unwrap();
-                                        module.symbol_table.insert(
-                                            (module.frame_level + 1, *y_addr),
-                                            DataTypes::Ref((level, addr)),
-                                        );
+                                    if !is_module {
+                                        if let Some((level, addr)) = ref_info {
+                                            module.symbol_table.insert(
+                                                (module.frame_level + 1, *y_addr),
+                                                DataTypes::Ref((level, addr)),
+                                            );
+                                        }
                                     } else {
                                         module
                                             .symbol_table
@@ -855,7 +856,7 @@ impl Executor {
                             }
 
                             if !error_ptr.is_null() {
-                                let msg = unsafe {
+                                let _ = unsafe {
                                     std::ffi::CStr::from_ptr((*error_ptr).message)
                                         .to_string_lossy()
                                         .into_owned()
@@ -871,7 +872,7 @@ impl Executor {
                         }
                     }
                 } else {
-                    return Err(((*p, *q), RunTimeErrors::UndefinedSymbol(func_name)));
+                    Err(((*p, *q), RunTimeErrors::UndefinedSymbol(func_name)))
                 }
             }
 

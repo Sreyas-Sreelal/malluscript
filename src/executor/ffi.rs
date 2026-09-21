@@ -1,3 +1,5 @@
+#![allow(clippy::not_unsafe_ptr_arg_deref)]
+
 use crate::executor::datatype::DataTypes;
 use std::ffi::{c_char, c_void, CStr, CString};
 use std::ptr;
@@ -183,8 +185,16 @@ pub fn ms_value_to_datatype(val: *const MsValue) -> Result<DataTypes, String> {
     }
 }
 
+/// Calls a MalluScript function on the executor instance across the C FFI boundary.
+///
+/// # Safety
+///
+/// - `executor` must point to a valid, properly aligned `Executor` instance.
+/// - `name` must point to a valid, null-terminated C string.
+/// - If `argc > 0` and `args` is non-null, `args` must point to `argc` valid `MsValue` pointers.
+/// - If `error` is non-null, it must point to a valid, properly aligned pointer location that can be written to.
 #[no_mangle]
-pub extern "C" fn ms_call_function(
+pub unsafe extern "C" fn ms_call_function(
     executor: *mut c_void,
     name: *const c_char,
     args: *const *const MsValue,

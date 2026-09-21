@@ -35,7 +35,7 @@ pub fn run_source(source: &str) -> Result<String, String> {
                 }
             }
         }
-        Err(message) => Err(format!("{}", message)),
+        Err(message) => Err(message.to_string()),
     }
 }
 

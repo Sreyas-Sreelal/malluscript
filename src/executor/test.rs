@@ -17,8 +17,8 @@ fn primary_test() {
         i ezhuthuga;
     ";
 
-    let mut lex = Lexer::new(&code, HashMap::new(), 0);
-    let parsed = parse(&code, &mut lex);
+    let mut lex = Lexer::new(code, HashMap::new(), 0);
+    let parsed = parse(code, &mut lex);
     let mut exec = Executor::new(lex.literal_table, lex.symbol_lookup);
 
     assert!(exec.execute(&parsed.unwrap()).is_ok());
@@ -61,8 +61,8 @@ fn malayalam_test() {
 }
 
 fn get_executor(code: &str) -> Result<Executor, ()> {
-    let mut lex = Lexer::new(&code, HashMap::new(), 0);
-    let parsed = parse(&code, &mut lex);
+    let mut lex = Lexer::new(code, HashMap::new(), 0);
+    let parsed = parse(code, &mut lex);
     let mut exec = Executor::new(lex.literal_table, lex.symbol_lookup);
     exec.execute(&parsed.unwrap()).unwrap();
     Ok(exec)
@@ -74,8 +74,8 @@ fn import_test() {
         examples:math_module_test:math m ennu ulppeduthuka;
         res = m.math_add<10, 20>;
     ";
-    let mut lex = Lexer::new(&code, HashMap::new(), 0);
-    let parsed = parse(&code, &mut lex);
+    let mut lex = Lexer::new(code, HashMap::new(), 0);
+    let parsed = parse(code, &mut lex);
     let mut exec = Executor::new(lex.literal_table, lex.symbol_lookup);
 
     let result = exec.execute(&parsed.unwrap());
