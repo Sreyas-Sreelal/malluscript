@@ -37,6 +37,13 @@ impl Value {
         }
     }
 
+    /// Converts a raw pointer to an `MsValue` into a `Value`.
+    ///
+    /// # Safety
+    ///
+    /// - If `ptr` is not null, it must point to a valid, properly aligned, and initialized `MsValue`.
+    /// - Any pointers referenced inside `ptr` (such as string buffers or list items) must be
+    ///   valid for reads of their respective types for the duration of this call.
     pub unsafe fn from_raw(ptr: *const ffi::MsValue) -> Self {
         if ptr.is_null() {
             return Value::Unknown;
@@ -86,6 +93,14 @@ impl Value {
         }
     }
 
+    /// Converts this `Value` into a raw `MsValue` pointer using the allocator functions
+    /// provided by `reg`.
+    ///
+    /// # Safety
+    ///
+    /// - The allocator function pointers in `reg` (`allocate_value`, `allocate_string`, `allocate_list`)
+    ///   must be valid and callable.
+    /// - The pointers returned by the allocator functions must be non-null and valid for writes.
     pub unsafe fn into_raw(self, reg: &ffi::MsInterpreterState) -> *mut ffi::MsValue {
         unsafe {
             match self {

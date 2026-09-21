@@ -33,8 +33,10 @@ pub struct Executor {
     return_storage: DataTypes,
     subroutine_exit_flag: bool,
     pub modules: HashMap<String, Box<Executor>>,
+    #[cfg(not(target_arch = "wasm32"))]
     pub plugins: Vec<std::rc::Rc<libloading::Library>>,
     pub parent: Option<*mut Executor>,
+    pub output: Vec<String>,
 }
 
 impl Executor {
@@ -51,8 +53,10 @@ impl Executor {
             subroutine_exit_flag: false,
             return_storage: DataTypes::Integer(1),
             modules: HashMap::new(),
+            #[cfg(not(target_arch = "wasm32"))]
             plugins: Vec::new(),
             parent: None,
+            output: Vec::new(),
         }
     }
 
@@ -113,8 +117,18 @@ impl Executor {
                             .ok_or((*offset, RunTimeErrors::InvalidExpression))?
                             .clone();
                     }
-                    print!("{}", data);
-                    let _ = stdout().flush();
+                    let formatted = format!("{}", data);
+                    self.output.push(formatted.clone());
+                    if let Some(parent_ptr) = self.parent {
+                        unsafe {
+                            (*parent_ptr).output.push(formatted);
+                        }
+                    }
+                    #[cfg(not(target_arch = "wasm32"))]
+                    {
+                        print!("{}", data);
+                        let _ = stdout().flush();
+                    }
                 }
 
                 Statement::Assignment((p, q), l, r) => match l {
@@ -306,6 +320,7 @@ impl Executor {
                             None
                         };
 
+                        #[cfg(not(target_arch = "wasm32"))]
                         if let Some(path) = plugin_path {
                             unsafe {
                                 let lib = match libloading::Library::new(&path) {
@@ -371,6 +386,16 @@ impl Executor {
                                 module_exec.plugins.push(lib);
                                 self.modules.insert(final_name, module_exec);
                             }
+                        }
+                        #[cfg(target_arch = "wasm32")]
+                        if let Some(path) = plugin_path {
+                            return Err((
+                                (*p, *q),
+                                RunTimeErrors::ModuleLoadError(format!(
+                                    "Dynamic C plugins are not supported in WebAssembly environment: {}",
+                                    path
+                                )),
+                            ));
                         } else {
                             return Err((
                                 (*p, *q),
@@ -779,12 +804,13 @@ impl Executor {
                             for (i, y) in parameters.iter().enumerate() {
                                 if let Expression::Symbol(_, TokenType::Symbol(y_addr)) = y {
                                     let (data, ref_info) = evaluated_args[i].clone();
-                                    if !is_module && ref_info.is_some() {
-                                        let (level, addr) = ref_info.unwrap();
-                                        module.symbol_table.insert(
-                                            (module.frame_level + 1, *y_addr),
-                                            DataTypes::Ref((level, addr)),
-                                        );
+                                    if !is_module {
+                                        if let Some((level, addr)) = ref_info {
+                                            module.symbol_table.insert(
+                                                (module.frame_level + 1, *y_addr),
+                                                DataTypes::Ref((level, addr)),
+                                            );
+                                        }
                                     } else {
                                         module
                                             .symbol_table
@@ -830,7 +856,7 @@ impl Executor {
                             }
 
                             if !error_ptr.is_null() {
-                                let msg = unsafe {
+                                let _ = unsafe {
                                     std::ffi::CStr::from_ptr((*error_ptr).message)
                                         .to_string_lossy()
                                         .into_owned()
@@ -846,7 +872,7 @@ impl Executor {
                         }
                     }
                 } else {
-                    return Err(((*p, *q), RunTimeErrors::UndefinedSymbol(func_name)));
+                    Err(((*p, *q), RunTimeErrors::UndefinedSymbol(func_name)))
                 }
             }
 

@@ -1,10 +1,50 @@
-mod executor;
-mod lexer;
-mod parser;
+pub mod executor;
+pub mod lexer;
+pub mod parser;
 
+#[cfg(not(target_arch = "wasm32"))]
 use rustyline::error::ReadlineError;
+#[cfg(not(target_arch = "wasm32"))]
 use rustyline::Editor;
 use std::collections::HashMap;
+
+pub fn run_source(source: &str) -> Result<String, String> {
+    let mut tokens = lexer::Lexer::new(source, HashMap::new(), 0);
+
+    match parser::parse(source, &mut tokens) {
+        Ok(parsed) => {
+            let mut exec = executor::Executor::new(tokens.literal_table, tokens.symbol_lookup);
+            match exec.execute(&parsed) {
+                Ok(_) => Ok(exec.output.join("")),
+                Err(message) => {
+                    let mut err_str = String::from("\n**[Execution Failed]**\n");
+                    let (start, end) = message.0;
+                    let mut s = start;
+                    while s > 0 && !source.is_char_boundary(s) {
+                        s -= 1;
+                    }
+                    let mut e = end + 1;
+                    while e <= source.len() && !source.is_char_boundary(e) {
+                        e += 1;
+                    }
+                    if let Some(region) = source.get(s..e) {
+                        err_str.push_str(&format!("{}\n", region));
+                    }
+                    err_str.push_str(&format!("^^^^{}\n", message.1));
+                    Err(err_str)
+                }
+            }
+        }
+        Err(message) => Err(message.to_string()),
+    }
+}
+
+pub fn store_result(source: &str) -> Vec<String> {
+    match run_source(source) {
+        Ok(output) => vec![output],
+        Err(err) => vec![err],
+    }
+}
 
 pub fn run_file(source: &str) {
     let mut tokens = lexer::Lexer::new(source, HashMap::new(), 0);
@@ -27,6 +67,7 @@ pub fn run_file(source: &str) {
     }
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 pub fn run_interactive_shell() {
     println!(
         "
