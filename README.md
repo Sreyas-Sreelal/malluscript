@@ -21,7 +21,7 @@
 </p>
 
 
-Malluscript is an esoteric scripting language that allows one to write computer programs in Malayalam. The concept of Malluscript stems from the idea of promoting inclusivity and linguistic diversity within the world of coding. By enabling programmers to express their ideas and algorithms in Malayalam, Malluscript serves as a bridge between traditional programming languages and the rich linguistic heritage of the Malayalam-speaking community. Currently, Malluscript is on the development phase and undergoing vigorous changes. Always check the release section for pre-built binaries for the interpreter.
+Malluscript is a programming language that allows one to write computer programs in Malayalam. The concept of Malluscript stems from the idea of promoting inclusivity and linguistic diversity within the world of coding. By enabling programmers to express their ideas and algorithms in Malayalam, Malluscript serves as a bridge between traditional programming languages and the rich linguistic heritage of the Malayalam-speaking community. Currently, Malluscript is on the development phase and undergoing vigorous changes. Always check the release section for pre-built binaries for the interpreter.
 
 മലയാളത്തിൽ കമ്പ്യൂട്ടർ പ്രോഗ്രാമുകൾ എഴുതാൻ സഹായിക്കുന്ന ഒരു സ്ക്രിപ്റ്റിംഗ് ഭാഷയാണ് മല്ലുസ്ക്രിപ്റ്റ്. കോഡിംഗിൽ പ്രാദേശിക ഭാഷകളുടെ ഉപയോഗം പ്രോത്സാഹിപ്പിക്കുക എന്ന ലക്ഷ്യത്തോടെയാണ് മല്ലുസ്ക്രിപ്റ്റ് രൂപകൽപ്പന ചെയ്തിരിക്കുന്നത്. പ്രോഗ്രാമർമാർക്ക് അവരുടെ ആശയങ്ങളും അൽഗോരിതങ്ങളും സ്വന്തം ഭാഷയിൽ പ്രകടിപ്പിക്കാൻ അനുവദിക്കുന്നതിലൂടെ ഇത് പരമ്പരാഗത പ്രോഗ്രാമിംഗ് ഭാഷകൾക്കും മലയാളത്തിനും ഇടയിലുള്ള ഒരു പാലമായി പ്രവർത്തിക്കുന്നു. നിലവിൽ മല്ലുസ്ക്രിപ്റ്റ് വികസനത്തിന്റെ ഘട്ടത്തിലാണ്. ഇൻ്റർപ്രെറ്ററിനായി റിലീസ് പേജിൽ നിന്ന് കംപൈൽ ചെയ്ത ബൈനറികൾ ഡൗൺലോഡ് ചെയ്യാവുന്നതാണ്.
 
