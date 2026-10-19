@@ -25,6 +25,7 @@ pub enum Expression {
     Add((usize, usize), Box<Expression>, Box<Expression>),
     Subtract((usize, usize), Box<Expression>, Box<Expression>),
     Multiply((usize, usize), Box<Expression>, Box<Expression>),
+    Power((usize, usize), Box<Expression>, Box<Expression>),
     Divide((usize, usize), Box<Expression>, Box<Expression>),
     Modulo((usize, usize), Box<Expression>, Box<Expression>),
 

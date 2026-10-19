@@ -47,6 +47,7 @@ impl<'input> Lexer<'input> {
             || c == '+'
             || c == '-'
             || c == '*'
+            || c == '^'
             || c == '/'
             || c == '%'
             || c == ')'
@@ -82,6 +83,7 @@ impl<'input> Iterator for &mut Lexer<'input> {
                 Some((i, '+')) => return Some(Ok((i, TokenType::Plus, i + 1))),
                 Some((i, '-')) => return Some(Ok((i, TokenType::Minus, i + 1))),
                 Some((i, '*')) => return Some(Ok((i, TokenType::Product, i + 1))),
+                Some((i, '^')) => return Some(Ok((i, TokenType::Power, i + 1))),
                 Some((i, '/')) => return Some(Ok((i, TokenType::Divide, i + 1))),
                 Some((i, '%')) => return Some(Ok((i, TokenType::Modulo, i + 1))),
                 Some((i, ';')) => return Some(Ok((i, TokenType::SemiColon, i + 1))),

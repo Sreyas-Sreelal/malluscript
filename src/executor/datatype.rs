@@ -24,6 +24,13 @@ macro_rules! safe_operation {
             raise_error(RunTimeErrors::IntegerOverFlow)
         }
     };
+    ($l:ident ^ $r:ident) => {
+        if let Some(result) = $l.checked_pow($r as u32) {
+            result
+        } else {
+            raise_error(RunTimeErrors::IntegerOverFlow)
+        }
+    };
     ($l:ident / $r:ident) => {
         if let Some(result) = $l.checked_div($r) {
             result
@@ -138,6 +145,21 @@ impl ops::Mul for DataTypes {
         }
     }
 }
+
+impl DataTypes {
+    pub fn pow(self, rhs: DataTypes) -> Self {
+        match (self, rhs) {
+            (DataTypes::Integer(l), DataTypes::Integer(r)) => {
+                DataTypes::Integer(safe_operation!(l ^ r))
+            }
+            (DataTypes::Float(l), DataTypes::Float(r)) => DataTypes::Float(l.powf(r)),
+            (DataTypes::Float(l), DataTypes::Integer(r)) => DataTypes::Float(l.powf(r as f64)),
+            (DataTypes::Integer(l), DataTypes::Float(r)) => DataTypes::Float((l as f64).powf(r)),
+            _ => raise_error(RunTimeErrors::IncompatibleOperation),
+        }
+    }
+}
+
 
 impl ops::Div for DataTypes {
     type Output = Self;
