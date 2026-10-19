@@ -1,5 +1,5 @@
 // auto-generated: "lalrpop 0.20.0"
-// sha3: 3f57cb0ed26025780397245385c63282228ca8ef87ff992dea7064273feea8d6
+// sha3: 03cf650f2a9ca068e9310debac1773b55a0cb926d358e1f694542b4891ed9943
 use crate::lexer::tokens::*;
 use crate::lexer::LexicalError;
 use crate::executor::ast::*;
