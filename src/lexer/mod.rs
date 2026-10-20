@@ -8,12 +8,13 @@ pub mod tokens;
 pub use error::LexicalError;
 use keywords::Keywords;
 use std::collections::HashMap;
+use std::iter::Peekable;
 use std::str::CharIndices;
 use tokens::TokenType;
 
 #[derive(Clone, Debug)]
 pub struct Lexer<'input> {
-    chars: CharIndices<'input>,
+    chars: Peekable<CharIndices<'input>>, 
     keywords: Keywords,
     pub src: &'input str,
     pub literal_table: HashMap<usize, String>,
@@ -29,7 +30,7 @@ impl<'input> Lexer<'input> {
         lookup_count: usize,
     ) -> Self {
         Lexer {
-            chars: input.char_indices(),
+            chars: input.char_indices().peekable(),
             keywords: Keywords::new(),
             src: input,
             literal_table: HashMap::new(),
@@ -82,7 +83,7 @@ impl<'input> Iterator for &mut Lexer<'input> {
                 Some((i, '+')) => return Some(Ok((i, TokenType::Plus, i + 1))),
                 Some((i, '-')) => return Some(Ok((i, TokenType::Minus, i + 1))),
                 Some((i, '*')) => {
-                    if self.chars.clone().next().map(|(_, next)| next) == Some('*') {
+                    if self.chars.peek().map(|(_, next)| next) == Some(&'*') {
                         self.chars.next();
                         return Some(Ok((i, TokenType::Power, i + 2)));
                     }
