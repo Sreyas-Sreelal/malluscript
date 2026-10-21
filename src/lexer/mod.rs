@@ -40,7 +40,7 @@ impl<'input> Lexer<'input> {
         }
     }
 
-    fn is_operator(&self, c: char) -> bool {
+    fn is_operator(c: char) -> bool {
         c.is_whitespace()
             || c == '\n'
             || c == '\r'
@@ -64,8 +64,8 @@ impl<'input> Lexer<'input> {
             || c == '.'
     }
 
-    fn is_valid_name(&self, c: char) -> bool {
-        !self.is_operator(c)
+    fn is_valid_name(c: char) -> bool {
+        !Self::is_operator(c)
     }
 }
 
@@ -143,8 +143,8 @@ impl<'input> Iterator for &mut Lexer<'input> {
                     let (start, mut end) = (i, 0);
                     let mut word = String::new();
                     word.push(c);
-                    while let Some((_, c)) = self.chars.clone().peekable().peek() {
-                        if self.is_valid_name(*c) {
+                    while let Some((_, c)) = self.chars.peek() {
+                        if Lexer::is_valid_name(*c) {
                             end += 1;
                             word.push(*c);
                             self.chars.next();
@@ -170,8 +170,8 @@ impl<'input> Iterator for &mut Lexer<'input> {
                 Some((i, c)) if c.is_ascii_digit() => {
                     let mut word = String::new();
                     word.push(c);
-                    while let Some((_, c)) = self.chars.clone().peekable().peek() {
-                        if self.is_operator(*c) && *c != '.' {
+                    while let Some((_, c)) = self.chars.peek() {
+                        if Lexer::is_operator(*c) && *c != '.' {
                             break;
                         }
                         word.push(*c);
