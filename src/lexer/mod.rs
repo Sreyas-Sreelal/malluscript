@@ -39,34 +39,34 @@ impl<'input> Lexer<'input> {
             lookup_count,
         }
     }
+}
 
-    fn is_operator(c: char) -> bool {
-        c.is_whitespace()
-            || c == '\n'
-            || c == '\r'
-            || c == ';'
-            || c == '+'
-            || c == '-'
-            || c == '*'
-            || c == '/'
-            || c == '%'
-            || c == ')'
-            || c == '('
-            || c == '<'
-            || c == '>'
-            || c == '='
-            || c == ','
-            || c == '{'
-            || c == '}'
-            || c == '['
-            || c == ']'
-            || c == ':'
-            || c == '.'
-    }
+fn is_operator(c: char) -> bool {
+    c.is_whitespace()
+        || c == '\n'
+        || c == '\r'
+        || c == ';'
+        || c == '+'
+        || c == '-'
+        || c == '*'
+        || c == '/'
+        || c == '%'
+        || c == ')'
+        || c == '('
+        || c == '<'
+        || c == '>'
+        || c == '='
+        || c == ','
+        || c == '{'
+        || c == '}'
+        || c == '['
+        || c == ']'
+        || c == ':'
+        || c == '.'
+}
 
-    fn is_valid_name(c: char) -> bool {
-        !Self::is_operator(c)
-    }
+fn is_valid_name(c: char) -> bool {
+    !is_operator(c)
 }
 
 pub type Spanned<TokenType, Loc, Error> = Result<(Loc, TokenType, Loc), Error>;
@@ -144,7 +144,7 @@ impl<'input> Iterator for &mut Lexer<'input> {
                     let mut word = String::new();
                     word.push(c);
                     while let Some((_, c)) = self.chars.peek() {
-                        if Lexer::is_valid_name(*c) {
+                        if is_valid_name(*c) {
                             end += 1;
                             word.push(*c);
                             self.chars.next();
@@ -171,7 +171,7 @@ impl<'input> Iterator for &mut Lexer<'input> {
                     let mut word = String::new();
                     word.push(c);
                     while let Some((_, c)) = self.chars.peek() {
-                        if Lexer::is_operator(*c) && *c != '.' {
+                        if is_operator(*c) && *c != '.' {
                             break;
                         }
                         word.push(*c);
