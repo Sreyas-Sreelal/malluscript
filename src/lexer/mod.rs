@@ -14,7 +14,7 @@ use tokens::TokenType;
 
 #[derive(Clone, Debug)]
 pub struct Lexer<'input> {
-    chars: Peekable<CharIndices<'input>>, 
+    chars: Peekable<CharIndices<'input>>,
     keywords: Keywords,
     pub src: &'input str,
     pub literal_table: HashMap<usize, String>,

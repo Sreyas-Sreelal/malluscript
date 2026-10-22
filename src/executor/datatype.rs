@@ -150,7 +150,7 @@ impl DataTypes {
     pub fn pow(self, rhs: DataTypes) -> Self {
         match (self, rhs) {
             (DataTypes::Integer(l), DataTypes::Integer(r)) => {
-                DataTypes::Integer(safe_operation!(l ** r))
+                DataTypes::Integer(safe_operation!(l * *r))
             }
             (DataTypes::Float(l), DataTypes::Float(r)) => DataTypes::Float(l.powf(r)),
             (DataTypes::Float(l), DataTypes::Integer(r)) => DataTypes::Float(l.powf(r as f64)),
@@ -159,7 +159,6 @@ impl DataTypes {
         }
     }
 }
-
 
 impl ops::Div for DataTypes {
     type Output = Self;
