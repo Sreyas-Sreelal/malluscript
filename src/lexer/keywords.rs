@@ -20,7 +20,7 @@ impl Keywords {
         // The following list contain keywords that are named meme_style
         // Last word will be in മലയാളലിപി(Malayalalipi)
         let list = keywordize!(
-            ["vachakam_vangikuga","vachakam_vangikuka","vachagam_vangikuga","vachagam_vangikuka","വാചകംവാങ്ങിക്കുക"] => TokenType::InputString,
+            ["vaachakam_vangikuga","vachakam_vangikuga","vachakam_vangikuka","vachagam_vangikuga","vachagam_vangikuka","വാചകംവാങ്ങിക്കുക"] => TokenType::InputString,
             ["akam_vangikuga", "akkam_vangikuga","അക്കംവാങ്ങിക്കുക"] => TokenType::InputNumber,
             ["ezhuthuka","ezhuthuga","kanikuka","kanikuga","എഴുതുക","കാണിക്കുക"] => TokenType::Write,
             ["enkil","engil" ,"എങ്കിൽ"] => TokenType::If,

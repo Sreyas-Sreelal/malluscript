@@ -528,6 +528,26 @@ impl Executor {
                 Ok(l * r)
             }
 
+            Expression::Power(offset, l, r) => {
+                let mut l = self.eval_arithmetic_logic_expression(l)?;
+                let mut r = self.eval_arithmetic_logic_expression(r)?;
+                if let DataTypes::Ref(address) = l {
+                    l = self
+                        .symbol_table
+                        .get(&address)
+                        .ok_or((*offset, RunTimeErrors::InvalidExpression))?
+                        .clone();
+                }
+                if let DataTypes::Ref(address) = r {
+                    r = self
+                        .symbol_table
+                        .get(&address)
+                        .ok_or((*offset, RunTimeErrors::InvalidExpression))?
+                        .clone();
+                }
+                Ok(l.pow(r))
+            }
+
             Expression::Subtract(offset, l, r) => {
                 let mut l = self.eval_arithmetic_logic_expression(l)?;
                 let mut r = self.eval_arithmetic_logic_expression(r)?;

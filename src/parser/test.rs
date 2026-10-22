@@ -114,3 +114,26 @@ fn parser_import_test() {
         panic!("Expected import statement without alias");
     }
 }
+
+#[test]
+fn power_precedence_test() {
+    let code = "result = 2 * 3 ** 2; divided = 12 / 2 ** 2; grouped = (2 * 3) ** 2;";
+    let mut lex = Lexer::new(code, HashMap::new(), 0);
+    let parsed = parse(code, &mut lex).unwrap();
+
+    assert!(matches!(
+        &parsed.0[0],
+        Stmt(Assignment(_, _, Multiply(_, _, power)))
+            if matches!(power.as_ref(), Power(_, _, _))
+    ));
+    assert!(matches!(
+        &parsed.0[1],
+        Stmt(Assignment(_, _, Divide(_, _, power)))
+            if matches!(power.as_ref(), Power(_, _, _))
+    ));
+    assert!(matches!(
+        &parsed.0[2],
+        Stmt(Assignment(_, _, Power(_, left, _)))
+            if matches!(left.as_ref(), Multiply(_, _, _))
+    ));
+}

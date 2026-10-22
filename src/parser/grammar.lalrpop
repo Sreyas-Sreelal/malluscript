@@ -78,9 +78,14 @@ ArithExpression: Expression = {
 };
 
 Factor: Expression= {
-    <l:Factor> <a:@L> "*" <b:@R> <r:Unary> => Expression::Multiply((a,b),Box::new(l),Box::new(r)),
-    <l:Factor> <a:@L> "/" <b:@R> <r:Unary> => Expression::Divide((a,b),Box::new(l),Box::new(r)),
-    <l:Factor> <a:@L> "%" <b:@R> <r:Unary> => Expression::Modulo((a,b),Box::new(l),Box::new(r)),
+    <l:Factor> <a:@L> "*" <b:@R> <r:Power> => Expression::Multiply((a,b),Box::new(l),Box::new(r)),
+    <l:Factor> <a:@L> "/" <b:@R> <r:Power> => Expression::Divide((a,b),Box::new(l),Box::new(r)),
+    <l:Factor> <a:@L> "%" <b:@R> <r:Power> => Expression::Modulo((a,b),Box::new(l),Box::new(r)),
+    Power,
+};
+
+Power: Expression = {
+    <l:Power> <a:@L> "**" <b:@R> <r:Unary> => Expression::Power((a,b),Box::new(l),Box::new(r)),
     Unary,
 };
 
@@ -123,6 +128,7 @@ extern {
         "+" => TokenType::Plus,
         "-" => TokenType::Minus,
         "*" => TokenType::Product,
+        "**" => TokenType::Power,
         "/" => TokenType::Divide,
         "(" => TokenType::OpenParantheses,
         ")" => TokenType::CloseParantheses,
