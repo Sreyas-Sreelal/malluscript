@@ -101,27 +101,30 @@ impl<'input> Iterator for &mut Lexer<'input> {
                                     }
                                     prev_was_star = c == '*';
                                 }
-                                None => return Some(Err(LexicalError::UnknownToken(i, self.src.len()))),
+                                None => {
+                                    return Some(Err(LexicalError::UnknownToken(i, self.src.len())))
+                                }
                             }
                         }
                         continue;
-                    }
-                    else if self.chars.peek().map(|(_, next)| next) == Some(&'/') {
+                    } else if self.chars.peek().map(|(_, next)| next) == Some(&'/') {
                         self.chars.next();
                         loop {
                             match self.chars.next() {
                                 Some((_, c)) => {
-                                    if  c == '\n' {
+                                    if c == '\n' {
                                         break;
                                     }
                                 }
-                                None => return Some(Err(LexicalError::UnknownToken(i, self.src.len()))),
+                                None => {
+                                    return Some(Err(LexicalError::UnknownToken(i, self.src.len())))
+                                }
                             }
                         }
                         continue;
                     }
                     return Some(Ok((i, TokenType::Divide, i + 1)));
-                }   
+                }
                 Some((i, '%')) => return Some(Ok((i, TokenType::Modulo, i + 1))),
                 Some((i, ';')) => return Some(Ok((i, TokenType::SemiColon, i + 1))),
                 Some((i, '(')) => return Some(Ok((i, TokenType::OpenParantheses, i + 1))),
