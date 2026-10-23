@@ -89,7 +89,39 @@ impl<'input> Iterator for &mut Lexer<'input> {
                     }
                     return Some(Ok((i, TokenType::Product, i + 1)));
                 }
-                Some((i, '/')) => return Some(Ok((i, TokenType::Divide, i + 1))),
+                Some((i, '/')) => {
+                    if self.chars.peek().map(|(_, next)| next) == Some(&'*') {
+                        self.chars.next();
+                        let mut prev_was_star = false;
+                        loop {
+                            match self.chars.next() {
+                                Some((_, c)) => {
+                                    if prev_was_star && c == '/' {
+                                        break;
+                                    }
+                                    prev_was_star = c == '*';
+                                }
+                                None => return Some(Err(LexicalError::UnknownToken(i, self.src.len()))),
+                            }
+                        }
+                        continue;
+                    }
+                    else if self.chars.peek().map(|(_, next)| next) == Some(&'/') {
+                        self.chars.next();
+                        loop {
+                            match self.chars.next() {
+                                Some((_, c)) => {
+                                    if  c == '\n' {
+                                        break;
+                                    }
+                                }
+                                None => return Some(Err(LexicalError::UnknownToken(i, self.src.len()))),
+                            }
+                        }
+                        continue;
+                    }
+                    return Some(Ok((i, TokenType::Divide, i + 1)));
+                }   
                 Some((i, '%')) => return Some(Ok((i, TokenType::Modulo, i + 1))),
                 Some((i, ';')) => return Some(Ok((i, TokenType::SemiColon, i + 1))),
                 Some((i, '(')) => return Some(Ok((i, TokenType::OpenParantheses, i + 1))),
