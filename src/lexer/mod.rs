@@ -8,12 +8,13 @@ pub mod tokens;
 pub use error::LexicalError;
 use keywords::Keywords;
 use std::collections::HashMap;
+use std::iter::Peekable;
 use std::str::CharIndices;
 use tokens::TokenType;
 
 #[derive(Clone, Debug)]
 pub struct Lexer<'input> {
-    chars: CharIndices<'input>,
+    chars: Peekable<CharIndices<'input>>,
     keywords: Keywords,
     pub src: &'input str,
     pub literal_table: HashMap<usize, String>,
@@ -29,7 +30,7 @@ impl<'input> Lexer<'input> {
         lookup_count: usize,
     ) -> Self {
         Lexer {
-            chars: input.char_indices(),
+            chars: input.char_indices().peekable(),
             keywords: Keywords::new(),
             src: input,
             literal_table: HashMap::new(),
@@ -38,34 +39,34 @@ impl<'input> Lexer<'input> {
             lookup_count,
         }
     }
+}
 
-    fn is_operator(&self, c: char) -> bool {
-        c.is_whitespace()
-            || c == '\n'
-            || c == '\r'
-            || c == ';'
-            || c == '+'
-            || c == '-'
-            || c == '*'
-            || c == '/'
-            || c == '%'
-            || c == ')'
-            || c == '('
-            || c == '<'
-            || c == '>'
-            || c == '='
-            || c == ','
-            || c == '{'
-            || c == '}'
-            || c == '['
-            || c == ']'
-            || c == ':'
-            || c == '.'
-    }
+fn is_operator(c: char) -> bool {
+    c.is_whitespace()
+        || c == '\n'
+        || c == '\r'
+        || c == ';'
+        || c == '+'
+        || c == '-'
+        || c == '*'
+        || c == '/'
+        || c == '%'
+        || c == ')'
+        || c == '('
+        || c == '<'
+        || c == '>'
+        || c == '='
+        || c == ','
+        || c == '{'
+        || c == '}'
+        || c == '['
+        || c == ']'
+        || c == ':'
+        || c == '.'
+}
 
-    fn is_valid_name(&self, c: char) -> bool {
-        !self.is_operator(c)
-    }
+fn is_valid_name(c: char) -> bool {
+    !is_operator(c)
 }
 
 pub type Spanned<TokenType, Loc, Error> = Result<(Loc, TokenType, Loc), Error>;
@@ -81,8 +82,49 @@ impl<'input> Iterator for &mut Lexer<'input> {
                 Some((i, '}')) => return Some(Ok((i, TokenType::RightBrace, i + 1))),
                 Some((i, '+')) => return Some(Ok((i, TokenType::Plus, i + 1))),
                 Some((i, '-')) => return Some(Ok((i, TokenType::Minus, i + 1))),
-                Some((i, '*')) => return Some(Ok((i, TokenType::Product, i + 1))),
-                Some((i, '/')) => return Some(Ok((i, TokenType::Divide, i + 1))),
+                Some((i, '*')) => {
+                    if self.chars.peek().map(|(_, next)| next) == Some(&'*') {
+                        self.chars.next();
+                        return Some(Ok((i, TokenType::Power, i + 2)));
+                    }
+                    return Some(Ok((i, TokenType::Product, i + 1)));
+                }
+                Some((i, '/')) => {
+                    if self.chars.peek().map(|(_, next)| next) == Some(&'*') {
+                        self.chars.next();
+                        let mut prev_was_star = false;
+                        loop {
+                            match self.chars.next() {
+                                Some((_, c)) => {
+                                    if prev_was_star && c == '/' {
+                                        break;
+                                    }
+                                    prev_was_star = c == '*';
+                                }
+                                None => {
+                                    return Some(Err(LexicalError::UnknownToken(i, self.src.len())))
+                                }
+                            }
+                        }
+                        continue;
+                    } else if self.chars.peek().map(|(_, next)| next) == Some(&'/') {
+                        self.chars.next();
+                        loop {
+                            match self.chars.next() {
+                                Some((_, c)) => {
+                                    if c == '\n' {
+                                        break;
+                                    }
+                                }
+                                None => {
+                                    return Some(Err(LexicalError::UnknownToken(i, self.src.len())))
+                                }
+                            }
+                        }
+                        continue;
+                    }
+                    return Some(Ok((i, TokenType::Divide, i + 1)));
+                }
                 Some((i, '%')) => return Some(Ok((i, TokenType::Modulo, i + 1))),
                 Some((i, ';')) => return Some(Ok((i, TokenType::SemiColon, i + 1))),
                 Some((i, '(')) => return Some(Ok((i, TokenType::OpenParantheses, i + 1))),
@@ -136,8 +178,8 @@ impl<'input> Iterator for &mut Lexer<'input> {
                     let (start, mut end) = (i, 0);
                     let mut word = String::new();
                     word.push(c);
-                    while let Some((_, c)) = self.chars.clone().peekable().peek() {
-                        if self.is_valid_name(*c) {
+                    while let Some((_, c)) = self.chars.peek() {
+                        if is_valid_name(*c) {
                             end += 1;
                             word.push(*c);
                             self.chars.next();
@@ -163,8 +205,8 @@ impl<'input> Iterator for &mut Lexer<'input> {
                 Some((i, c)) if c.is_ascii_digit() => {
                     let mut word = String::new();
                     word.push(c);
-                    while let Some((_, c)) = self.chars.clone().peekable().peek() {
-                        if self.is_operator(*c) && *c != '.' {
+                    while let Some((_, c)) = self.chars.peek() {
+                        if is_operator(*c) && *c != '.' {
                             break;
                         }
                         word.push(*c);
